@@ -1,0 +1,2 @@
+- Intregated APP using PARCEL ( Bundler ) -- npm install -D parcel
+- 

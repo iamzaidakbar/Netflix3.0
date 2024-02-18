@@ -1,0 +1,20 @@
+{
+  "name": "netflix",
+  "version": "1.0.0",
+  "description": "This is Netflix Clone update by Zaid Akbar",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "react",
+    "redux-toolkit",
+    "firebase",
+    "zaid-akbar"
+  ],
+  "author": "Zaid Akbar",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.11.0"
+  }
+}
