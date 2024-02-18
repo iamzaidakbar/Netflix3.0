@@ -4,7 +4,9 @@
   "description": "This is Netflix Clone update by Zaid Akbar",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   },
   "keywords": [
     "react",
@@ -20,6 +22,10 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  }
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.1"
+  },
+  "browsersList": [
+    "last 2 versions"
+  ]
 }
