@@ -1,2 +1,4 @@
-- Intregated APP using PARCEL ( Bundler ) -- npm install -D parcel
-- 
+- Intregated APP using PARCEL ( Bundler )
+- Installed react
+- Added routing using [react-router-dom, createBrowserRouter, RouterProvider, Outlet]
+- added customer hook for conditional bg color of header

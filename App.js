@@ -1,9 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Outlet, RouterProvider } from "react-router-dom";
+import './App.scss';
+import { RouterProvider } from "react-router-dom";
 import router from "./Utils/routes";
-import { Header } from "./components/common/header";
-import { Container } from "./components/app-container/container";
+import { Header } from "./src/components/common/header";
+import { Container } from "./src/components/app-container/container";
 
 const App = () => {
   return (
