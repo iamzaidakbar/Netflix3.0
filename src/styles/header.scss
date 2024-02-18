@@ -1,17 +1,19 @@
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
   display: flex;
   align-items: center;
   height: 68px;
+  width: 100vw;
   padding: 0 44px;
   transition: all .3s ease-in;
   background: linear-gradient(#000000b3 0%, #0000 100%);
+  z-index: 99;
 
   .logo {
     width: 105px;
     height: 32px;
-    margin-right: 36px;
+    margin-right: 38px;
 
     img {
       width: 100%;
@@ -31,7 +33,7 @@
   }
  
   &.scroll {
-    background-color: black;
+    background-color: rgb(27, 25, 25);
   }
   
 }

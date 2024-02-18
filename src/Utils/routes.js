@@ -1,38 +1,63 @@
-import { createBrowserRouter } from "react-router-dom";
-import { App } from "../../App";
-import { ErrorPage } from "../components/common/errorPage";
-import { Home } from "../components/routes/home";
-import { Movies } from "../components/routes/movies";
-import { MyList } from "../components/routes/my-list";
-import { TvShows } from "../components/routes/tv-shows";
-import { Container } from "../components/app-container/container";
-import { Login } from '../components/routes/login';
+import React, { lazy, Suspense } from 'react';
+import { createBrowserRouter } from 'react-router-dom';
+import { ErrorPage } from '../components/common/errorPage';
+import { Container } from '../components/app-container/container';
+
+const Home = lazy(() => import('../components/routes/home'));
+const TvShows = lazy(() => import('../components/routes/tv-shows'));
+const Movies = lazy(() => import('../components/routes/movies'));
+const MyList = lazy(() => import('../components/routes/my-list'));
+const Login = lazy(() => import('../components/routes/login'));
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Container />,
+    path: '/',
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Container />
+      </Suspense>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "Home",
-        element: <Home />,
+        path: '/home',
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Home />
+          </Suspense>
+        ),
       },
       {
-        path: "tvshows",
-        element: <TvShows />,
+        path: '/tvshows',
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <TvShows />
+          </Suspense>
+        ),
       },
       {
-        path: "movies",
-        element: <Movies />,
+        path: '/movies',
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Movies />
+          </Suspense>
+        ),
       },
       {
-        path: "mylist",
-        element: <MyList />,
+        path: '/mylist',
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <MyList />
+          </Suspense>
+        ),
       },
       {
-        path: "login",
-        element: <Login />,
+        path: '/login',
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Login />
+          </Suspense>
+        ),
       },
     ],
   },

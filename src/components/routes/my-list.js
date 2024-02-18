@@ -1,8 +1,9 @@
-export const MyList = () => {
-    return (
-      <div className="MyList">
-        <h2>My-List</h2>
-      </div>
-    );
-  };
-  
+const MyList = () => {
+  return (
+    <div className="MyList">
+      <h2>My-List</h2>
+    </div>
+  );
+};
+
+export default MyList;

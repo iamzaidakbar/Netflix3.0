@@ -1,7 +1,15 @@
-export const Home = () => {
+import React, { useMemo } from 'react';
+import VideoCard from "../common/videoCard";
+
+const Home = () => {
+  // Memoize the VideoCard component
+  const memoizedVideoCard = useMemo(() => <VideoCard />, []);
+
   return (
     <div className="Home">
-      <h2>Home</h2>
+      {memoizedVideoCard}
     </div>
   );
 };
+
+export default Home;

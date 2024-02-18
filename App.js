@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import './App.scss';
 import { RouterProvider } from "react-router-dom";
-import router from "./Utils/routes";
-import { Header } from "./src/components/common/header";
+import router from "./src/Utils/routes";
 import { Container } from "./src/components/app-container/container";
 
 const App = () => {
