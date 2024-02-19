@@ -1,0 +1,25 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-left: 4px;
+  margin-bottom: 64px;
+
+  .title {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 44px;
+  }
+  .showcase {
+    width: 100vw;
+    display: flex;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    &:first-child {
+      margin-left: 44px;
+    }
+  }
+}

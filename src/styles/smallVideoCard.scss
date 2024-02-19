@@ -1,0 +1,54 @@
+.card {
+  border-radius: 4px;
+  margin-left: 5px;
+  transition: all .3s ease-in-out;
+  z-index: 5;
+  width: 250px;
+
+  img {
+    border-radius: 4px;
+    width: 250px;
+  }
+
+  &:first-child {
+    margin-left: 44px;
+  }
+  
+  &.active {
+    z-index: 0;
+    pointer-events: none;
+  }
+}
+
+.smallVideoCard {
+  background-color: rgb(27, 25, 25);
+  z-index: 9;
+  margin-left: -250px;
+  width: 250px;
+  height: 130px;
+  border-radius: 8px;
+  transition: all .2s ease-in-out;
+  z-index: 0;
+
+  .react-player-wrapper {
+    width: 250px;
+    height: 130px;
+    overflow: hidden;
+  border-radius: 8px;
+
+  }
+
+  .material-icons-outlined {
+    color: #fff;
+    font-size: 24px;
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+  }
+
+
+  &.active {
+    transform: scale(1.5);
+    z-index: 10;
+  }
+}

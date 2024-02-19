@@ -1,114 +1,77 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import ReactPlayer from "react-player";
 import barsGif from "../../assets/gifs/bars-animation.gif";
-import useRandomVideo from "../../Utils/useRandomVideo";
 import { VIDEO_URL } from "../../Utils/constants";
 import "../../styles/videocard.scss";
+import useFetchTrailer from "../../Utils/API/useFetchTrailer";
+import { useSelector } from "react-redux";
+import Shimmer from "./shimmer";
 
-const VideoCard = () => {
+const VideoCard = ({ title, description, videoId }) => {
   const [mute, setMute] = useState(true);
-  const [videoEnded, setVideoEnded] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
   const [reduceTextSize, setReduceTextSize] = useState(false);
 
-  // Custom hook for random video ID
-  const { randomVideo, updateRandomVideo } = useRandomVideo();
-
-  // Debouncing logic for reducing text size
-  const startDebounceTimer = useCallback(() => {
-    setReduceTextSize(true);
-  }, []);
+  const fetchTrailers = useFetchTrailer();
 
   useEffect(() => {
-    let debounceTimer;
+    fetchTrailers(videoId);
+  }, []);
 
-    if (isPlaying) {
-      // If video is playing, start the debouncing timer
-      debounceTimer = setTimeout(startDebounceTimer, 5000);
-    } else {
-      // If video is paused or ended, reset the debouncing timer
-      setReduceTextSize(false);
-      clearTimeout(debounceTimer);
+  const trailers = useSelector((store) => {
+    return store.trailer?.movieTrailer;
+  });
+
+  const handleMuteToggle = () => {
+    setMute(!mute);
+  };
+
+  // Memoize the VideoCard component
+  const memoizedReactPlayer = useMemo(() => {
+    if (!trailers || trailers.length === 0) {
+      return null; // Handle the case where trailers is undefined or an empty array
     }
 
-    return () => {
-      // Cleanup on unmount or dependency change
-      clearTimeout(debounceTimer);
-    };
-  }, [isPlaying, startDebounceTimer]);
+    const trailer = trailers.filter((item) => item.type === "Trailer");
 
-  const handleUpdateVideoId = useCallback(() => {
-    updateRandomVideo();
-    setVideoEnded(false);
-  }, [updateRandomVideo]);
+    return (
+      <ReactPlayer
+        width={"100vw"}
+        height={"120vh"}
+        fallback={<h2>Loading....</h2>}
+        volume={1}
+        playing={true}
+        muted={mute}
+        url={VIDEO_URL + trailer[0]?.key}
+        style={{ marginTop: "-60px", scale: "1.3" }}
+      />
+    );
+  }, [trailers, mute]);
 
-  const handleVideoStart = useCallback(() => {
-    setVideoEnded(false);
-    setIsPlaying(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setReduceTextSize(true);
+    }, 5000);
   }, []);
 
-  const handleVideoEnd = useCallback(() => {
-    setVideoEnded(true);
-    setIsPlaying(false);
-  }, []);
-
-  const handlePlayPause = useCallback(() => {
-    setIsPlaying((prevIsPlaying) => !prevIsPlaying);
-  }, []);
-
-  const handleNext = useCallback(() => {
-    handleUpdateVideoId();
-    setIsPlaying(true);
-  }, [handleUpdateVideoId]);
-
-  const handleMuteToggle = useCallback(() => {
-    setMute((prevMute) => !prevMute);
-  }, []);
-
-  return (
+  return trailers ? (
     <div className="videocard">
-      <div className="react-player-wrapper">
-        <ReactPlayer
-          width={"100vw"}
-          height={"120vh"}
-          fallback={<h2>Loading....</h2>}
-          volume={1}
-          playing={isPlaying}
-          muted={mute}
-          onStart={handleVideoStart}
-          onEnded={handleVideoEnd}
-          light={videoEnded}
-          url={VIDEO_URL + randomVideo?.id}
-          style={{ marginTop: "-60px" }}
-        />
-      </div>
+      <div className="react-player-wrapper">{memoizedReactPlayer}</div>
 
       <div className="details">
         <span className={`title ${reduceTextSize && "reduce-title-size"}`}>
-          {randomVideo.title}
+          {title}
         </span>
-        <span className="description">
-          {randomVideo.description}
-        </span>
+        <span className="description">{description}</span>
 
         <span className="buttons">
-          <button onClick={handlePlayPause} className="play">
-            <span className="material-icons-outlined">
-              {isPlaying ? "pause" : "play_arrow"}
-            </span>
-            {isPlaying ? "Pause" : "Play"}
+          <button className="play">
+            <span className="material-icons-outlined">play_arrow</span>
+            Play
           </button>
 
-          {videoEnded ? (
-            <button onClick={handleNext} className="next">
-              <span className="material-icons-outlined">navigate_next</span>
-              Next
-            </button>
-          ) : (
-            <button className="next">
-              <img width={"34px"} src={barsGif} alt="Loading" />
-            </button>
-          )}
+          <button className="next">
+            <img width={"34px"} src={barsGif} alt="Loading" />
+          </button>
         </span>
       </div>
 
@@ -118,6 +81,8 @@ const VideoCard = () => {
         </span>
       </div>
     </div>
+  ) : (
+    <Shimmer width={"98vw"} height={"90vh"} />
   );
 };
 

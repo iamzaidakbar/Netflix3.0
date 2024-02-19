@@ -1,0 +1,56 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  
+  .shimmer {
+    position: relative; 
+    background: #3a3a3a;
+    background-image: linear-gradient(to right, #3a3a3a 0%, #3f3f3f 10%, #4a4a4a 20%, #3f3f3f 30%, #3a3a3a 50%, #3a3a3a 100%);
+    background-repeat: no-repeat;
+    background-size: 95vw 90vh; 
+    
+  /* Animantion */
+    -webkit-animation-duration: 2s;
+    
+    /* Specifies style for element when animation isn't playing */
+    -webkit-animation-fill-mode: forwards;
+    
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-name: shimmer;
+    -webkit-animation-timing-function: ease-in-out;
+  }
+  
+  @-webkit-keyframes shimmer {
+    0% {
+      background-position: -800px 0;
+    }
+    100% {
+      background-position: 95vw 0; 
+    }
+  }
+  
+  #container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+  }
+  
+  #square {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+
+  }
+  
+
+ 
+
+
+  
+  
+  

@@ -1,2 +1,12 @@
 .home {
+  .main-menu {
+    width: 100vw;
+    height: 100vh;
+  }
+  .sections {
+    width: 100vw;
+    overflow: hidden;
+    position: absolute;
+    margin-top: -64px;
+  }
 }
