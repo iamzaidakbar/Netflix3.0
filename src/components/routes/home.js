@@ -4,21 +4,25 @@ import "../../styles/home.scss";
 import List from "../common/list";
 import useFetchMovies from "../../Utils/API/useFetchMovies";
 import { useSelector } from "react-redux";
+import useFetchAnime from "../../Utils/API/useFetchAnime";
 
 const Home = () => {
   const fetchMovies = useFetchMovies();
+  const fetchAnime = useFetchAnime();
 
   useEffect(() => {
     fetchMovies();
+    fetchAnime();
   }, []);
 
   const movies = useSelector((store) => {
     return store.movies?.nowPlayingMovies;
   });
+  const anime = useSelector((store) => store.anime?.animeVideos);
 
   // Memoize the VideoCard component
   const memoizedVideoCard = useMemo(() => {
-    if (!movies || movies.length === 0) {
+    if (!movies || !anime) {
       return <h2>Loading...</h2>; // Handle the case where movies is undefined or an empty array
     }
 
@@ -27,10 +31,11 @@ const Home = () => {
 
     const { original_title, overview, id } = movies[randomIndex];
 
+
     return (
       <VideoCard videoId={id} title={original_title} description={overview} />
     );
-  }, [movies]);
+  }, [movies, anime]);
 
   return (
     <div className="home">
@@ -38,7 +43,7 @@ const Home = () => {
 
       <div className="sections">
         <List data={movies} title="Trending Now" />
-        <List data={movies} title="Movies" />
+        <List data={anime} title="Movies" />
       </div>
     </div>
   );

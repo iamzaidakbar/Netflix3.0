@@ -1,11 +1,10 @@
-import React, { useState, useCallback, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import ReactPlayer from "react-player";
 import barsGif from "../../assets/gifs/bars-animation.gif";
 import { VIDEO_URL } from "../../Utils/constants";
 import "../../styles/videocard.scss";
 import useFetchTrailer from "../../Utils/API/useFetchTrailer";
 import { useSelector } from "react-redux";
-import Shimmer from "./shimmer";
 
 const VideoCard = ({ title, description, videoId }) => {
   const [mute, setMute] = useState(true);
@@ -24,6 +23,23 @@ const VideoCard = ({ title, description, videoId }) => {
   const handleMuteToggle = () => {
     setMute(!mute);
   };
+
+  const handleScroll = () => {
+    // Check if the user has scrolled down, and mute the video
+    if (window.scrollY > 400) {
+      setMute(true);
+    } 
+  };
+
+  useEffect(() => {
+    // Add event listener for scroll
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      // Remove the event listener when the component is unmounted
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   // Memoize the VideoCard component
   const memoizedReactPlayer = useMemo(() => {
@@ -82,7 +98,7 @@ const VideoCard = ({ title, description, videoId }) => {
       </div>
     </div>
   ) : (
-    <Shimmer width={"98vw"} height={"90vh"} />
+   ''
   );
 };
 

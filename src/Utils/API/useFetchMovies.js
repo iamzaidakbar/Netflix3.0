@@ -17,7 +17,6 @@ const useFetchMovies = () => {
       });
 
       const movies = response.data.results;
-      console.log(movies);
 
       // Dispatch the action to update the Redux store
       dispatch(addNowPlayingMovies(movies));

@@ -1,4 +1,3 @@
-import { mockData } from "../../Utils/API/mockData";
 import SmallVideoCard from "./smallVideoCard";
 import '../../styles/list.scss'
 

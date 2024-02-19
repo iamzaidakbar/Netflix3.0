@@ -17,7 +17,6 @@ const useFetchTrailer = () => {
       });
 
       const trailers = response.data.results;
-      console.log(trailers);
 
       // Dispatch the action to update the Redux store
       dispatch(addMovieTrailer(trailers));
