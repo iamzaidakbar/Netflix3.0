@@ -3,21 +3,21 @@ import { TMDB_IMG_URL, VIDEO_URL } from "../../Utils/constants";
 import "../../styles/smallVideoCard.scss";
 import ReactPlayer from "react-player";
 import { useState, useRef } from "react";
+import useFetchTrailer from "../../Utils/API/useFetchTrailer";
+import { useSelector } from "react-redux";
 
 const SmallVideoCard = ({ videoId, imgSrc }) => {
   const [isActive, setIsActive] = useState(false);
   const [mute, setMute] = useState(true);
   const timerRef = useRef();
-
-  const handleMuteToggle = () => {
-    setMute(!mute);
-  };
+  const fetchTrailers = useFetchTrailer();
 
   function handleMouseOver(e) {
     e.stopPropagation();
     clearTimeout(timerRef.current);
-
+    
     timerRef.current = setTimeout(() => {
+      fetchTrailers(videoId);
       setIsActive(true);
     }, 1000);
   }
@@ -29,6 +29,16 @@ const SmallVideoCard = ({ videoId, imgSrc }) => {
     setIsActive(false);
   }
 
+  const trailers = useSelector((store) => {
+    return store.trailer?.movieTrailer;
+  });
+
+  const handleMuteToggle = () => {
+    setMute(!mute);
+  };
+
+  const trailer = trailers?.filter((item) => item.type === "Trailer");
+
   return (
     <>
       <Link
@@ -36,7 +46,7 @@ const SmallVideoCard = ({ videoId, imgSrc }) => {
         className={`card ${isActive ? "active" : ""}`}
       >
         <img
-          onMouseLeave={isActive ? ()=>{} : handleMouseLeave}
+          onMouseLeave={isActive ? () => {} : handleMouseLeave}
           src={TMDB_IMG_URL + imgSrc}
           width={250}
           alt="Thumbnail"
@@ -57,8 +67,8 @@ const SmallVideoCard = ({ videoId, imgSrc }) => {
               volume={1}
               playing={true}
               muted={mute}
-              url={VIDEO_URL + "3jqt7MxifiU"}
-              style={{scale: "1.2"}}
+              url={VIDEO_URL + trailer[0]?.key}
+              style={{ scale: "1.3" }}
             />
           ) : (
             ""

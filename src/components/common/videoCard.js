@@ -25,6 +25,23 @@ const VideoCard = ({ title, description, videoId }) => {
     setMute(!mute);
   };
 
+  const handleScroll = () => {
+    // Check if the user has scrolled down, and mute the video
+    if (window.scrollY > 400) {
+      setMute(true);
+    } 
+  };
+
+  useEffect(() => {
+    // Add event listener for scroll
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      // Remove the event listener when the component is unmounted
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   // Memoize the VideoCard component
   const memoizedReactPlayer = useMemo(() => {
     if (!trailers || trailers.length === 0) {
