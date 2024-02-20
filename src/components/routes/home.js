@@ -11,6 +11,8 @@ const Home = () => {
   const fetchAnime = useFetchAnime();
 
   useEffect(() => {
+    document.title = 'Home - Netflix'
+
     fetchMovies();
     fetchAnime();
   }, []);

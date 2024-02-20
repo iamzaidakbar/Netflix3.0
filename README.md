@@ -1,7 +1,5 @@
 - Intregated APP using PARCEL ( Bundler )
 
-- Installed react
-
 - Added routing using [react-router-dom, createBrowserRouter, RouterProvider, Outlet]
 
 - used lazy loading along with suspense
