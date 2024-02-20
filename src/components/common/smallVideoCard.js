@@ -21,7 +21,7 @@ const SmallVideoCard = ({ item }) => {
   function handleMouseOver(e) {
     e.stopPropagation();
     clearTimeout(timerRef.current);
-
+    
     timerRef.current = setTimeout(() => {
       fetchShortMovieTrailers(id).then((fetchedTrailers) => {
         setTrailers(fetchedTrailers);
