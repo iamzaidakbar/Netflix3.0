@@ -1,7 +1,7 @@
 .card {
   border-radius: 4px;
   margin-left: 5px;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   z-index: 5;
   width: 250px;
 
@@ -13,7 +13,7 @@
   &:first-child {
     margin-left: 44px;
   }
-  
+
   &.active {
     z-index: 0;
     pointer-events: none;
@@ -22,24 +22,35 @@
 
 .smallVideoCard {
   background-color: rgb(27, 25, 25);
-  box-shadow: 10px 10px 13px -3px rgba(0,0,0,0.49);
   z-index: 9;
   margin-left: -250px;
   width: 250px;
   height: 130px;
   border-radius: 8px;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
   z-index: 0;
 
   .react-player-wrapper {
     width: 250px;
     height: 130px;
     overflow: hidden;
-  border-radius: 8px;
-
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
   }
 
-  .material-icons-outlined {
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 250px;
+    height: 120px;
+    background-color: rgb(27, 25, 25);
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    overflow: hidden;
+  }
+  .volume {
     color: #fff;
     font-size: 24px;
     position: absolute;
@@ -47,8 +58,58 @@
     bottom: 14px;
   }
 
+  .col-1 {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 4px;
+    margin-top: 8px;
+
+    .add,
+    .play {
+      color: #fff;
+      font-size: 34px;
+    }
+  }
+
+  .col-2 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 8px;
+
+    .title {
+      color: #fff;
+      margin: 0;
+      font-weight: 400;
+      font-family: "Homemade Apple", cursive;
+      font-size: 15px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 150px;
+    }
+  }
+
+  .col-3 {
+    width: 200px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    .genre {
+      width: 200px;
+      color: white;
+      font-size: 11px;
+      font-weight: 500;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
 
   &.active {
+    box-shadow: 10px 20px 13px -3px rgba(26, 24, 24, 0.49);
     transform: scale(1.5);
     z-index: 10;
   }

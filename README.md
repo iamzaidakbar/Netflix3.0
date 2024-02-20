@@ -5,3 +5,4 @@
 - added customer hook for conditional bg color of header
 - used useMemo to prevent form re-rendering components
 - used debouncing to handle mouseover api call to improve the performance.
+- optimized videomodal to handle api abortion.

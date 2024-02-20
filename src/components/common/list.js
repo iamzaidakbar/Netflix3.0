@@ -7,7 +7,7 @@ const List = ({ data, title }) => {
       <span className="title">{title}</span>
       <span className="showcase">
         {data?.map((item) => (
-          <SmallVideoCard key={item.id} videoId={item.id} imgSrc={item?.backdrop_path} />
+          <SmallVideoCard key={item.id} item={item} videoId={item.id} />
         ))}
       </span>
     </div>

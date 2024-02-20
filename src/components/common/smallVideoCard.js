@@ -4,21 +4,28 @@ import "../../styles/smallVideoCard.scss";
 import ReactPlayer from "react-player";
 import { useState, useRef, useMemo } from "react";
 import useFetchShortMovieTrailer from "../../Utils/API/useShortMovieTrailer";
+import useGenre from "../../Utils/API/useGenre";
 
-const SmallVideoCard = ({ videoId, imgSrc }) => {
+const SmallVideoCard = ({ item }) => {
   const [isActive, setIsActive] = useState(false);
   const [trailers, setTrailers] = useState(false);
+  const [mediaStarted, setMediaStarted] = useState(false);
   const [mute, setMute] = useState(true);
   const timerRef = useRef();
   const fetchShortMovieTrailers = useFetchShortMovieTrailer();
 
-  async function handleMouseOver(e) {
+  const { original_title, genre_ids, backdrop_path, id } = item;
+
+  const genre = useGenre(genre_ids);
+
+  function handleMouseOver(e) {
     e.stopPropagation();
     clearTimeout(timerRef.current);
-    const fetchedTrailers = await fetchShortMovieTrailers(videoId);
-    setTrailers(fetchedTrailers);
 
     timerRef.current = setTimeout(() => {
+      fetchShortMovieTrailers(id).then((fetchedTrailers) => {
+        setTrailers(fetchedTrailers);
+      });
       setIsActive(true);
     }, 1000);
   }
@@ -40,21 +47,25 @@ const SmallVideoCard = ({ videoId, imgSrc }) => {
       console.log("NULL");
       return null; // Handle the case where trailers is undefined or an empty array
     }
-    console.log(trailers, "trailer-short");
 
     const trailer = trailers.filter((item) => item.type === "Trailer");
 
     return (
       <ReactPlayer
-      width={'100%'}
-      height={'100vpx'}
+        width={"100%"}
+        height={"100%"}
         fallback={<h2>Loading....</h2>}
         volume={1}
         playing={true}
         muted={mute}
         controls={false}
+        light={true}
         url={VIDEO_URL + trailer[0]?.key}
-        style={{ scale: '1.3', marginTop: '-10px' }}
+        onStart={() => {
+          setMediaStarted(true);
+        }}
+        onEnded={()=>{setMediaStarted(false)}}
+        playIcon={<span className="material-icons-outlined"></span>}
       />
     );
   }, [trailers, mute]);
@@ -67,7 +78,7 @@ const SmallVideoCard = ({ videoId, imgSrc }) => {
       >
         <img
           onMouseLeave={isActive ? () => {} : handleMouseLeave}
-          src={TMDB_IMG_URL + imgSrc}
+          src={TMDB_IMG_URL + backdrop_path}
           width={250}
           alt="Thumbnail"
         />
@@ -80,11 +91,39 @@ const SmallVideoCard = ({ videoId, imgSrc }) => {
         }}
       >
         <div className="react-player-wrapper">
-          {isActive ? memoizedReactPlayer : ""}
+          {isActive ? (
+            memoizedReactPlayer
+          ) : (
+            <img src={TMDB_IMG_URL + backdrop_path} />
+          )}
         </div>
-        <span onClick={handleMuteToggle} className="material-icons-outlined">
-          {mute ? "volume_off" : "volume_up"}
-        </span>
+        {isActive ? (
+          <div className="details">
+            <div className="col-1">
+              <span className="material-icons-outlined play">play_circle</span>
+              <span className="material-icons-outlined add">add_circle</span>
+            </div>
+            <div className="col-2">
+              <span className="title">{original_title}</span>
+            </div>
+            <div className="col-3">
+              <span className="genre">{genre}</span>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
+        {mediaStarted ? (
+          <span
+            onClick={handleMuteToggle}
+            className="material-icons-outlined volume"
+          >
+            {mute ? "volume_off" : "volume_up"}
+          </span>
+        ) : (
+          ""
+        )}
       </Link>
     </>
   );
