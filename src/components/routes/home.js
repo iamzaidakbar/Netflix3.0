@@ -38,7 +38,7 @@ const Home = () => {
   }, [movies, anime]);
 
   return (
-    <div className="home">
+    <div id="home" className="home">
       <div className="main-menu">{memoizedVideoCard}</div>
 
       <div className="sections">

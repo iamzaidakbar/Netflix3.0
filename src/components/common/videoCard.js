@@ -5,10 +5,15 @@ import { VIDEO_URL } from "../../Utils/constants";
 import "../../styles/videocard.scss";
 import useFetchTrailer from "../../Utils/API/useFetchTrailer";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router";
 
 const VideoCard = ({ title, description, videoId }) => {
   const [mute, setMute] = useState(true);
   const [reduceTextSize, setReduceTextSize] = useState(false);
+
+  const location = useLocation();
+
+  const isBrowsePage = location.pathname.includes("browse");
 
   const fetchTrailers = useFetchTrailer();
 
@@ -28,7 +33,7 @@ const VideoCard = ({ title, description, videoId }) => {
     // Check if the user has scrolled down, and mute the video
     if (window.scrollY > 400) {
       setMute(true);
-    } 
+    }
   };
 
   useEffect(() => {
@@ -59,6 +64,7 @@ const VideoCard = ({ title, description, videoId }) => {
         muted={mute}
         url={VIDEO_URL + trailer[0]?.key}
         style={{ marginTop: "-60px", scale: "1.3" }}
+        controls={false}
       />
     );
   }, [trailers, mute]);
@@ -77,7 +83,7 @@ const VideoCard = ({ title, description, videoId }) => {
         <span className={`title ${reduceTextSize && "reduce-title-size"}`}>
           {title}
         </span>
-        <span className="description">{description}</span>
+        {!isBrowsePage && <span className="description">{description}</span>}
 
         <span className="buttons">
           <button className="play">
@@ -85,20 +91,37 @@ const VideoCard = ({ title, description, videoId }) => {
             Play
           </button>
 
-          <button className="next">
-            <img width={"34px"} src={barsGif} alt="Loading" />
-          </button>
+          {isBrowsePage ? (
+            <>
+              <span className="material-icons-outlined add">add_circle</span>
+              <span
+                onClick={handleMuteToggle}
+                className="material-icons-outlined add"
+              >
+                {mute ? "volume_off" : "volume_up"}
+              </span>
+            </>
+          ) : (
+            <button className="next">
+              <img width={"34px"} src={barsGif} alt="Loading" />
+            </button>
+          )}
         </span>
       </div>
 
-      <div className="action-button">
-        <span onClick={handleMuteToggle} className="material-icons-outlined">
-          {mute ? "volume_off" : "volume_up"}
-        </span>
-      </div>
+      {!isBrowsePage && (
+        <div className="action-button">
+          <span
+            onClick={handleMuteToggle}
+            className={"material-icons-outlined"}
+          >
+            {mute ? "volume_off" : "volume_up"}
+          </span>
+        </div>
+      )}
     </div>
   ) : (
-   ''
+    ""
   );
 };
 
