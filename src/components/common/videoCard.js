@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import ReactPlayer from "react-player";
+import ReactPlayer from "react-player/lazy";
 import barsGif from "../../assets/gifs/bars-animation.gif";
 import { VIDEO_URL } from "../../Utils/constants";
 import "../../styles/videocard.scss";
@@ -7,7 +7,7 @@ import useFetchTrailer from "../../Utils/API/useFetchTrailer";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 
-const VideoCard = ({ title, description, videoId }) => {
+const VideoCard = ({ title, description, videoId, backdrop_path }) => {
   const [mute, setMute] = useState(true);
   const [reduceTextSize, setReduceTextSize] = useState(false);
 
@@ -62,9 +62,24 @@ const VideoCard = ({ title, description, videoId }) => {
         volume={1}
         playing={true}
         muted={mute}
+        light={true}
         url={VIDEO_URL + trailer[0]?.key}
-        style={{ marginTop: "-60px", scale: "1.3" }}
+        style={{ marginTop: "-70px", scale: "1.2" }}
         controls={false}
+        playIcon={<span></span>}
+        config={{
+          youtube: {
+            playerVars: {
+              showinfo: 0,
+              modestbranding: 1,
+              playsinline: 1,
+              controls: 0,
+              fs: 0,
+              rel: 0,
+              quality: "hd1080"
+            },
+          },
+        }}
       />
     );
   }, [trailers, mute]);
@@ -83,7 +98,7 @@ const VideoCard = ({ title, description, videoId }) => {
         <span className={`title ${reduceTextSize && "reduce-title-size"}`}>
           {title}
         </span>
-        {!isBrowsePage && <span className="description">{description}</span>}
+        {!isBrowsePage &&  <span className="description">{description}</span>}
 
         <span className="buttons">
           <button className="play">

@@ -11,7 +11,7 @@ const Home = () => {
   const fetchAnime = useFetchAnime();
 
   useEffect(() => {
-    document.title = 'Home - Netflix'
+    document.title = 'Home - Netflix';
 
     fetchMovies();
     fetchAnime();
@@ -33,19 +33,26 @@ const Home = () => {
 
     const { original_title, overview, id } = movies[randomIndex];
 
-
     return (
       <VideoCard videoId={id} title={original_title} description={overview} />
     );
   }, [movies, anime]);
+
+  // Define categories and corresponding API calls
+  const categories = [
+    { title: "Trending Now", data: movies, fetch: fetchMovies },
+    { title: "Anime", data: anime, fetch: fetchAnime },
+    // Add more categories as needed
+  ];
 
   return (
     <div id="home" className="home">
       <div className="main-menu">{memoizedVideoCard}</div>
 
       <div className="sections">
-        <List data={movies} title="Trending Now" />
-        <List data={anime} title="Movies" />
+        {categories.map(({ title, data, fetch }) => (
+          <List key={title} data={data} title={title} fetch={fetch} />
+        ))}
       </div>
     </div>
   );

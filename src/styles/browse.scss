@@ -1,15 +1,29 @@
 .browse {
   z-index: 99;
+
+  .video-player {
+    position: absolute;
+    height: 83vh;
+    background: black bottom center no-repeat;
+    -webkit-mask-image: linear-gradient(
+    var(--mask-direction, to bottom),
+    transparent,
+    #000 20%,
+    #000 40%,
+    transparent
+  );
+  }
+
   .movieContent {
     position: absolute;
-    width: 93vw;
-    height: 30vh;
-    margin-top: -100px;
+    width: 95vw;
+    bottom: 80px;
     left: 50%;
     transform: translate(-50%);
     display: flex;
     align-items: center;
     gap: 44px;
+    
 
     .left {
       width: 100%;

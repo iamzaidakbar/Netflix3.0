@@ -23,9 +23,15 @@ const SmallVideoCard = ({ item }) => {
 
   const genre = useGenre(genre_ids);
 
+  useEffect(() => {
+    return () => {
+      clearTimeout(timerRef.current);
+    };
+  }, []);
+
   function handleMouseOver(e) {
-    e.stopPropagation();
     clearTimeout(timerRef.current);
+    e.stopPropagation();
 
     timerRef.current = setTimeout(() => {
       fetchShortMovieTrailers(id).then((fetchedTrailers) => {
@@ -36,10 +42,10 @@ const SmallVideoCard = ({ item }) => {
   }
 
   function handleMouseLeave(e) {
+    setIsActive(false);
     e.stopPropagation();
 
     clearTimeout(timerRef.current);
-    setIsActive(false);
   }
 
   const handleMuteToggle = () => {
@@ -72,6 +78,19 @@ const SmallVideoCard = ({ item }) => {
           setMediaStarted(false);
         }}
         playIcon={<span className="material-icons-outlined"></span>}
+        config={{
+          youtube: {
+            playerVars: {
+              showinfo: 0,
+              modestbranding: 1,
+              playsinline: 1,
+              controls: 0,
+              fs: 0,
+              rel: 0,
+              quality: "hd1080",
+            },
+          },
+        }}
       />
     );
   }, [trailers, mute]);

@@ -6,24 +6,6 @@ import useGenre from "../../Utils/API/useGenre";
 
 const Browse = () => {
   const { id: paramsID } = useParams();
-  const mockdata = {
-    adult: false,
-    backdrop_path: "/7grv5ULlK9wMr2T1fkgr56HlbT.jpg",
-    id: 760774,
-    title: "One Life",
-    original_language: "en",
-    original_title: "One Life",
-    overview:
-      "British stockbroker Nicholas Winton visits Czechoslovakia in the 1930s and forms plans to assist in the rescue of Jewish children before the onset of World War II, in an operation that came to be known as the Kindertransport.",
-    poster_path: "/kmGCB4TTMEphUSxDHsDULDgJMuB.jpg",
-    media_type: "movie",
-    genre_ids: [18, 36, 10752],
-    popularity: 71.081,
-    release_date: "2023-09-09",
-    video: false,
-    vote_average: 7.819,
-    vote_count: 69,
-  };
 
   const { overview, original_title, vote_count, genre_ids } = JSON.parse(
     localStorage.getItem("movieDetails")
@@ -33,7 +15,9 @@ const Browse = () => {
 
   return (
     <div className="browse">
-      <VideoCard videoId={paramsID} description={""} title={original_title} />
+      <span className="video-player">
+        <VideoCard videoId={paramsID} description={""} title={original_title} />
+      </span>
 
       <div className="movieContent">
         <div className="left">
