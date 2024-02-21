@@ -5,6 +5,7 @@
   margin-left: 4px;
   margin-bottom: 64px;
   position: relative;
+  transition: all 0.5s ease-in-out;
 
   .title {
     color: #fff;
@@ -15,7 +16,7 @@
   .showcase {
     width: 100vw;
     display: flex;
-    transition: transform 0.5s ease;
+    transition: all 0.5s ease-in-out;
 
     &::-webkit-scrollbar {
       display: none;
@@ -42,6 +43,7 @@
       transition: all 0.3s ease-in-out;
       font-size: 44px;
       color: #fff;
+      user-select: none;
 
       &:hover {
         font-size: 54px;
@@ -64,4 +66,20 @@
       opacity: 0.4;
     }
   }
+}
+
+.active-dash {
+  width: 10px;
+  height: 2px;
+  background-color: rgb(255, 255, 255);
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.inactive-dash {
+  width: 10px;
+  height: 2px;
+  background-color: rgb(50, 50, 50);
+  display: inline-block;
+  margin-right: 5px;
 }

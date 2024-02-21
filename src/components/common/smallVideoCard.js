@@ -7,6 +7,7 @@ import useFetchShortMovieTrailer from "../../Utils/API/useShortMovieTrailer";
 import useGenre from "../../Utils/API/useGenre";
 import { addMovieTrailerDetails } from "../../Utils/Slices/movieTrailerSlice";
 import { useDispatch } from "react-redux";
+import useDeviceType from "../../Utils/API/useDevicetype";
 
 const SmallVideoCard = ({ item }) => {
   const [isActive, setIsActive] = useState(false);
@@ -16,6 +17,7 @@ const SmallVideoCard = ({ item }) => {
   const timerRef = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const deviceType = useDeviceType();
 
   const fetchShortMovieTrailers = useFetchShortMovieTrailer();
 
@@ -77,6 +79,7 @@ const SmallVideoCard = ({ item }) => {
         onEnded={() => {
           setMediaStarted(false);
         }}
+        style={{ scale: "1.4" }}
         playIcon={<span className="material-icons-outlined"></span>}
         config={{
           youtube: {
@@ -129,7 +132,7 @@ const SmallVideoCard = ({ item }) => {
     <>
       <Link
         onMouseOver={handleMouseOver}
-        className={`card ${isActive ? "active" : ""}`}
+        className={`card ${isActive ? "active" : ""}` + deviceType}
       >
         <span className="line"></span>
         <img
@@ -139,9 +142,11 @@ const SmallVideoCard = ({ item }) => {
           alt="Thumbnail"
         />
       </Link>
+
+
       <div
         onMouseLeave={handleMouseLeave}
-        className={`smallVideoCard ${isActive ? "active" : ""}`}
+        className={`smallVideoCard ${isActive ? "active " : ""}` + deviceType}
         style={{
           zIndex: isActive ? 10 : 1,
         }}

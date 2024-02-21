@@ -17,3 +17,5 @@
 - added custom hook for generating Genre's
 
 - implemented helper functions to handle API calls
+
+- implemented infinite small video card scoll like netflix. 
