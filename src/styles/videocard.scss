@@ -3,8 +3,7 @@
   width: 100vw;
   height: 100vh;
   background: black bottom center no-repeat;
-  
- 
+
   mask-image: linear-gradient(
     180deg,
     transparent,
@@ -19,7 +18,6 @@
     #000 40%,
     transparent
   );
- 
 
   .react-player-wrapper {
     width: 100vw;
@@ -36,14 +34,8 @@
       color: #fff;
     }
   }
-  
 
   .details {
-    background: linear-gradient(
-      to right,
-      rgba(0, 0, 0, 0.7) 0%,
-      rgba(0, 0, 0, 0) 100%
-    );
     position: absolute;
     height: 100vh;
     top: 0;
@@ -53,25 +45,48 @@
     flex-direction: column;
     justify-content: center;
     gap: 12px;
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.7) 0%,
+      rgba(0, 0, 0, 0) 70%
+    );
+
+    .logo_text {
+      display: flex;
+      align-items: center;
+      margin-top: 80px;
+
+      .text {
+        font-size: 16px;
+        color: #fff;
+        font-weight: 500;
+        letter-spacing: 2px;
+      }
+    }
 
     .title {
-      margin-top: 80px;
-      font-size: 50px;
       color: #fff;
-      font-family: "Homemade Apple", cursive;
-      font-weight: 400;
+      margin: 0;
+      padding: 0;
+      width: 500px;
+      font-family: Homemade Apple, cursive;
+      font-size: 50px;
       font-style: normal;
-      background: -webkit-linear-gradient(#ffffff, #376a74d8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-weight: 600;
       transition: all 1s ease-in-out;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       &.reduce-title-size {
         font-size: 30px;
       }
     }
     .description {
-      font-size: 17px;
+      cursor: pointer;
+      font-size: 20px;
+      letter-spacing: 1px;
+      font-weight: 500;
       color: #fff;
       width: 400px;
       max-height: 80px;
@@ -79,6 +94,7 @@
       overflow-y: scroll;
       white-space: wrap;
       margin-bottom: 20px;
+      margin-top: -10px;
 
       &::-webkit-scrollbar {
         display: none;

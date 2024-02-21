@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import ReactPlayer from "react-player/lazy";
 import barsGif from "../../assets/gifs/bars-animation.gif";
+import logo from "../../assets/logo/netflix-card-logo.png";
 import { VIDEO_URL } from "../../Utils/constants";
 import "../../styles/videocard.scss";
 import useFetchTrailer from "../../Utils/API/useFetchTrailer";
@@ -76,7 +77,7 @@ const VideoCard = ({ title, description, videoId, backdrop_path }) => {
               controls: 0,
               fs: 0,
               rel: 0,
-              quality: "hd1080"
+              quality: "hd1080",
             },
           },
         }}
@@ -95,45 +96,25 @@ const VideoCard = ({ title, description, videoId, backdrop_path }) => {
       <div className="react-player-wrapper">{memoizedReactPlayer}</div>
 
       <div className="details">
+        <div className="logo_text">
+          <img className="logo" width={30} src={logo} />
+          <span className="text">SERIES</span>
+        </div>
         <span className={`title ${reduceTextSize && "reduce-title-size"}`}>
           {title}
         </span>
-        {!isBrowsePage &&  <span className="description">{description}</span>}
+        {!isBrowsePage && <span className="description">{description}</span>}
 
         <span className="buttons">
-          <button className="play">
-            <span className="material-icons-outlined">play_arrow</span>
-            Play
-          </button>
-
-          {isBrowsePage ? (
-            <>
-              <span className="material-icons-outlined add">add_circle</span>
-              <span
-                onClick={handleMuteToggle}
-                className="material-icons-outlined add"
-              >
-                {mute ? "volume_off" : "volume_up"}
-              </span>
-            </>
-          ) : (
-            <button className="next">
-              <img width={"34px"} src={barsGif} alt="Loading" />
-            </button>
-          )}
-        </span>
-      </div>
-
-      {!isBrowsePage && (
-        <div className="action-button">
+          <span className="material-icons-outlined add">add_circle</span>
           <span
             onClick={handleMuteToggle}
-            className={"material-icons-outlined"}
+            className="material-icons-outlined add"
           >
             {mute ? "volume_off" : "volume_up"}
           </span>
-        </div>
-      )}
+        </span>
+      </div>
     </div>
   ) : (
     ""

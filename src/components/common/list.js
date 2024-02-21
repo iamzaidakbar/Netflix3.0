@@ -3,7 +3,7 @@ import SmallVideoCard from "./smallVideoCard";
 import "../../styles/list.scss";
 import useDeviceType from "../../Utils/API/useDevicetype";
 
-const List = ({ data, title }) => {
+const List = ({ data, title, flag }) => {
   const [startIndex, setStartIndex] = useState(0);
   const [cardsPerScreen, setCardsPerScreen] = useState(3);
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,7 +34,7 @@ const List = ({ data, title }) => {
     let scrollBy;
     switch (deviceType) {
       case "desktop":
-        scrollBy = 7;
+        scrollBy = 5;
         break;
       case "laptop":
         scrollBy = 5;
@@ -87,7 +87,7 @@ const List = ({ data, title }) => {
         {data &&
           [...data, ...data, ...data]
             .map((item, index) => (
-              <SmallVideoCard key={index} item={item} videoId={item.id} />
+              <SmallVideoCard key={index} item={item} flag={flag} videoId={item.id} />
             ))
             .slice(startIndex, startIndex + cardsPerScreen)}
       </div>

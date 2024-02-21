@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { TMDB_IMG_URL, VIDEO_URL } from "../../Utils/constants";
+import logo from "../../assets/logo/netflix-card-logo.png";
 import "../../styles/smallVideoCard.scss";
 import ReactPlayer from "react-player";
 import { useState, useRef, useMemo, useEffect } from "react";
@@ -8,8 +9,9 @@ import useGenre from "../../Utils/API/useGenre";
 import { addMovieTrailerDetails } from "../../Utils/Slices/movieTrailerSlice";
 import { useDispatch } from "react-redux";
 import useDeviceType from "../../Utils/API/useDevicetype";
+import useCardSize from "../../Utils/API/useCardSize";
 
-const SmallVideoCard = ({ item }) => {
+const SmallVideoCard = ({ item, flag = true }) => {
   const [isActive, setIsActive] = useState(false);
   const [trailers, setTrailers] = useState(false);
   const [mediaStarted, setMediaStarted] = useState(false);
@@ -18,24 +20,13 @@ const SmallVideoCard = ({ item }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const deviceType = useDeviceType();
+  const cardSize = useCardSize(deviceType);
 
   const fetchShortMovieTrailers = useFetchShortMovieTrailer();
 
   const { original_title, genre_ids, backdrop_path, id } = item;
 
   const genre = useGenre(genre_ids);
-
-  const handleSize = (deviceType) => {
-    if (deviceType === "mobile") {
-      return "100%";
-    } else if (deviceType === "tablet") {
-      return "190px";
-    } else if (deviceType === "laptop") {
-      return "250px";
-    } else if (deviceType === "desktop") {
-      return "300px";
-    }
-  };
 
   useEffect(() => {
     return () => {
@@ -145,13 +136,24 @@ const SmallVideoCard = ({ item }) => {
       <Link
         onMouseOver={handleMouseOver}
         className={`card ${isActive ? "active" : ""}`}
-        style={{ width: handleSize(deviceType) }}
+        style={{ width: cardSize + "px" }}
       >
         <span className="line"></span>
+        <img className="card-logo" src={logo} width={20} />
+        {flag && (
+          <div class="flag">
+            <div class="ribbon slant-down" style={{ color: "#8975b4" }}>
+              <div class="content">
+                <span className="label-1">TOP</span>
+                <span className="label-2">10</span>
+              </div>
+            </div>
+          </div>
+        )}
         <img
           onMouseLeave={isActive ? () => {} : handleMouseLeave}
           src={TMDB_IMG_URL + backdrop_path}
-          style={{ width: handleSize(deviceType) }}
+          style={{ width: cardSize }}
           alt="Thumbnail"
         />
       </Link>
@@ -161,26 +163,20 @@ const SmallVideoCard = ({ item }) => {
         className={`smallVideoCard ${isActive ? "active " : ""}` + deviceType}
         style={{
           zIndex: isActive ? 10 : 1,
-          width: handleSize(deviceType),
-          marginLeft: "-" + handleSize(deviceType),
+          width: cardSize,
+          marginLeft: "-" + cardSize,
         }}
         to={"/browse/" + id}
       >
-        <div
-          style={{ width: handleSize(deviceType) }}
-          className="react-player-wrapper"
-        >
+        <div style={{ width: cardSize }} className="react-player-wrapper">
           {isActive ? (
             memoizedReactPlayer
           ) : (
-            <img
-              width={handleSize(deviceType)}
-              src={TMDB_IMG_URL + backdrop_path}
-            />
+            <img width={cardSize} src={TMDB_IMG_URL + backdrop_path} />
           )}
         </div>
         {isActive ? (
-          <div style={{ width: handleSize(deviceType) }} className="details">
+          <div style={{ width: cardSize }} className="details">
             <div className="col-1">
               <span
                 onClick={handleNavigate}

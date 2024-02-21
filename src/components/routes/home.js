@@ -5,13 +5,15 @@ import List from "../common/list";
 import useFetchMovies from "../../Utils/API/useFetchMovies";
 import { useSelector } from "react-redux";
 import useFetchAnime from "../../Utils/API/useFetchAnime";
+import logo from "../../assets/logo/netflix-logo.png";
+import { Github, Instagram, Linkedin, Facebook } from "react-bootstrap-icons";
 
 const Home = () => {
   const fetchMovies = useFetchMovies();
   const fetchAnime = useFetchAnime();
 
   useEffect(() => {
-    document.title = 'Home - Netflix';
+    document.title = "Home - Netflix";
 
     fetchMovies();
     fetchAnime();
@@ -40,8 +42,9 @@ const Home = () => {
 
   // Define categories and corresponding API calls
   const categories = [
-    { title: "Trending Now", data: movies, fetch: fetchMovies },
-    { title: "Anime", data: anime, fetch: fetchAnime },
+    { title: "Top 10", data: movies, fetch: fetchMovies, flag: true },
+    { title: "Trending Now", data: movies, fetch: fetchMovies, flag: false },
+    { title: "Anime", data: anime, fetch: fetchAnime, flag: false },
     // Add more categories as needed
   ];
 
@@ -50,9 +53,56 @@ const Home = () => {
       <div className="main-menu">{memoizedVideoCard}</div>
 
       <div className="sections">
-        {categories.map(({ title, data, fetch }) => (
-          <List key={title} data={data} title={title} fetch={fetch} />
+        {categories.map(({ title, data, fetch, flag }) => (
+          <List
+            key={title}
+            data={data}
+            title={title}
+            fetch={fetch}
+            flag={flag}
+          />
         ))}
+      </div>
+      <div className="footer">
+        <div className="social">
+          <span className="links">
+            <a
+              target="_blank"
+              href="https://www.facebook.com/zaidakbarwani/"
+              className="fb"
+            >
+              <Facebook color="white" size={25} />
+            </a>
+            <a
+              target="_blank"
+              href="https://www.instagram.com/1amzaidakbar/"
+              className="insta"
+            >
+              <Instagram color="white" size={25} />
+            </a>
+            <a
+              target="_blank"
+              href="https://github.com/iamzaidakbar"
+              className="github"
+            >
+              <Github color="white" size={25} />
+            </a>
+            <a
+              target="_blank"
+              href="https://www.linkedin.com/in/zaidakbar/"
+              className="linkedin"
+            >
+              <Linkedin color="white" size={25} />
+            </a>
+          </span>
+          <span className="creator">
+            created by <i>Zaid Akbar</i>
+          </span>
+        </div>
+        <span className="line"></span>
+        <div className="netflix">
+          <img src={logo} width={200} />
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 .card {
+  position: relative;
   border-radius: 4px;
   margin-left: 5px;
   transition: all 0.3s ease-in-out;
@@ -11,6 +12,50 @@
     margin-left: 2px;
     width: 0;
     height: 3px;
+  }
+
+  .card-logo {
+    position: absolute;
+    margin-top: 6px;
+    margin-left: 4px;
+  }
+
+  .ribbon {   
+    position: absolute;
+    right: 0;
+    top: 0;
+    filter: drop-shadow(2px 3px 2px rgba(rgb(27, 25, 25), 0.5));
+
+    .content {
+      color: white;
+      text-align: center;
+      font-weight: 600;
+      background: red;
+      width: 23px;
+      height: 34px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .label-1 {
+        font-size: 9px;
+        height: 5px;
+        margin-top: 3px;
+      }
+      .label-2 {
+        font-size: 13px;
+      }
+    }
+
+    &.slant-down > .content {
+      clip-path: polygon(
+        0 0,
+        100% 0,
+        100% 100%,
+        50% calc(100% - 4.9px),
+        0 calc(100% - 7px)
+      );
+    }
   }
 
   img {
