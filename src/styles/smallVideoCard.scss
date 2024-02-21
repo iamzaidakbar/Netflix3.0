@@ -3,7 +3,6 @@
   margin-left: 5px;
   transition: all 0.3s ease-in-out;
   z-index: 5;
-  width: 250px;
 
   .line {
     transition: all 1s ease-out;
@@ -16,7 +15,6 @@
 
   img {
     border-radius: 4px;
-    width: 250px;
   }
 
   &:first-child {
@@ -37,8 +35,6 @@
 .smallVideoCard {
   background-color: rgb(27, 25, 25);
   z-index: 9;
-  margin-left: -250px;
-  width: 250px;
   height: 130px;
   border-radius: 8px;
   transition: all 0.2s ease-in-out;

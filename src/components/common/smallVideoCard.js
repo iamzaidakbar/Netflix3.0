@@ -25,6 +25,18 @@ const SmallVideoCard = ({ item }) => {
 
   const genre = useGenre(genre_ids);
 
+  const handleSize = (deviceType) => {
+    if (deviceType === "mobile") {
+      return "100%";
+    } else if (deviceType === "tablet") {
+      return "190px";
+    } else if (deviceType === "laptop") {
+      return "250px";
+    } else if (deviceType === "desktop") {
+      return "300px";
+    }
+  };
+
   useEffect(() => {
     return () => {
       clearTimeout(timerRef.current);
@@ -132,35 +144,43 @@ const SmallVideoCard = ({ item }) => {
     <>
       <Link
         onMouseOver={handleMouseOver}
-        className={`card ${isActive ? "active" : ""}` + deviceType}
+        className={`card ${isActive ? "active" : ""}`}
+        style={{ width: handleSize(deviceType) }}
       >
         <span className="line"></span>
         <img
           onMouseLeave={isActive ? () => {} : handleMouseLeave}
           src={TMDB_IMG_URL + backdrop_path}
-          width={250}
+          style={{ width: handleSize(deviceType) }}
           alt="Thumbnail"
         />
       </Link>
-
 
       <div
         onMouseLeave={handleMouseLeave}
         className={`smallVideoCard ${isActive ? "active " : ""}` + deviceType}
         style={{
           zIndex: isActive ? 10 : 1,
+          width: handleSize(deviceType),
+          marginLeft: "-" + handleSize(deviceType),
         }}
         to={"/browse/" + id}
       >
-        <div className="react-player-wrapper">
+        <div
+          style={{ width: handleSize(deviceType) }}
+          className="react-player-wrapper"
+        >
           {isActive ? (
             memoizedReactPlayer
           ) : (
-            <img src={TMDB_IMG_URL + backdrop_path} />
+            <img
+              width={handleSize(deviceType)}
+              src={TMDB_IMG_URL + backdrop_path}
+            />
           )}
         </div>
         {isActive ? (
-          <div className="details">
+          <div style={{ width: handleSize(deviceType) }} className="details">
             <div className="col-1">
               <span
                 onClick={handleNavigate}
