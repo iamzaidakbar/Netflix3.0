@@ -141,9 +141,9 @@ const SmallVideoCard = ({ item, flag = true }) => {
         <span className="line"></span>
         <img className="card-logo" src={logo} width={20} />
         {flag && (
-          <div class="flag">
-            <div class="ribbon slant-down" style={{ color: "#8975b4" }}>
-              <div class="content">
+          <div className="flag">
+            <div className="ribbon slant-down" style={{ color: "#8975b4" }}>
+              <div className="content">
                 <span className="label-1">TOP</span>
                 <span className="label-2">10</span>
               </div>

@@ -7,16 +7,19 @@ import { useSelector } from "react-redux";
 import useFetchAnime from "../../Utils/API/useFetchAnime";
 import logo from "../../assets/logo/netflix-logo.png";
 import { Github, Instagram, Linkedin, Facebook } from "react-bootstrap-icons";
+import useFetchTopRated from "../../Utils/API/useFetchTopRated";
 
 const Home = () => {
   const fetchMovies = useFetchMovies();
   const fetchAnime = useFetchAnime();
+  const fetchTopRated = useFetchTopRated();
 
   useEffect(() => {
     document.title = "Home - Netflix";
 
     fetchMovies();
     fetchAnime();
+    fetchTopRated();
   }, []);
 
   const movies = useSelector((store) => {
@@ -24,9 +27,11 @@ const Home = () => {
   });
   const anime = useSelector((store) => store.anime?.animeVideos);
 
+  const top10 = useSelector((store) => store?.topRated?.topRatedVideos);
+
   // Memoize the VideoCard component
   const memoizedVideoCard = useMemo(() => {
-    if (!movies || !anime) {
+    if (!movies || !anime || !top10) {
       return <h2>Loading...</h2>; // Handle the case where movies is undefined or an empty array
     }
 
@@ -38,11 +43,11 @@ const Home = () => {
     return (
       <VideoCard videoId={id} title={original_title} description={overview} />
     );
-  }, [movies, anime]);
+  }, [movies, anime, top10]);
 
   // Define categories and corresponding API calls
   const categories = [
-    { title: "Top 10", data: movies, fetch: fetchMovies, flag: true },
+    { title: "Top 10", data: top10, fetch: fetchTopRated, flag: true },
     { title: "Trending Now", data: movies, fetch: fetchMovies, flag: false },
     { title: "Anime", data: anime, fetch: fetchAnime, flag: false },
     // Add more categories as needed
