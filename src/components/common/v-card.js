@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 import logo from "../../assets/logo/netflix-card-logo.png";
 import { TMDB_IMG_URL, VIDEO_URL } from "../../Utils/constants";
 import { addMovieTrailerDetails } from "../../Utils/Slices/movieTrailerSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import React, { useMemo, useState } from "react";
 import { TMDB_IMG_URL } from "../../Utils/constants";
 import usePageNavigation from "../../Utils/API/usePageNavigation";
@@ -11,6 +11,7 @@ import usePageAnimation from "../../Utils/API/usePageAnimation";
 import useMuteToggle from "../../Utils/API/useMuteToggle";
 import useHover from "../../Utils/API/useHover";
 import useGenre from "../../Utils/API/useGenre";
+import { addMyList } from "../../Utils/Slices/useMyListSlice";
 
 const VCard = ({ data, flag }) => {
   const { isActive, trailers, handleMouseOver, handleMouseLeave } = useHover(
@@ -24,6 +25,9 @@ const VCard = ({ data, flag }) => {
   const animate = usePageAnimation();
   const { mute, handleMuteToggle } = useMuteToggle(false);
   const genres = useGenre(data?.genre_ids);
+
+  const myListVideos = useSelector((store) => store?.myList?.myListVideos);
+  const isItemInList = myListVideos?.some((item) => item?.id === data?.id);
 
   function handleNavigation() {
     dispatch(addMovieTrailerDetails(data));
@@ -90,7 +94,19 @@ const VCard = ({ data, flag }) => {
             >
               {playing ? "pause_circle" : "play_circle"}
             </span>
-            <span className="material-icons-outlined">add_circle</span>
+            {isItemInList ? (
+              <span className="material-icons-outlined">check_circle</span>
+            ) : (
+              <span
+                onClick={() => {
+                  dispatch(addMyList(data));
+                }}
+                className="material-icons-outlined"
+              >
+                add_circle
+              </span>
+            )}
+
             <button onClick={handleNavigation} className="more-info">
               <span className="material-icons-outlined">info</span>
               <span> More Info</span>

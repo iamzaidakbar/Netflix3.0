@@ -1,0 +1,40 @@
+.footer {
+    padding: 40px;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 44px;
+
+    .social {
+      display: flex;
+      align-items: center;
+      gap: 44px;
+      border-bottom: 2px solid #fff;
+      padding-bottom: 8px;
+
+      .links {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .creator {
+        color: #fff;
+
+        i {
+          color: red;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+      }
+    }
+
+    .line {
+      width: 2px;
+      height: 60px;
+      background-color: #fff;
+      border: 1px solid #fff;
+    }
+  }

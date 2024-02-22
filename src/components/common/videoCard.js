@@ -21,7 +21,7 @@ const VideoCard = () => {
 
   const handleScroll = () => {
     if (window.scrollY > 400) {
-      setMute(true);
+      handleMuteToggle()
     }
   };
 

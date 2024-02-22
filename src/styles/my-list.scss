@@ -1,0 +1,34 @@
+.mylist-wrapper {
+  box-sizing: border-box;
+  height: 100vh;
+  width: 100vw;
+  padding: 90px 44px 0 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+
+  .label {
+    color: #fff;
+    font-size: 24px;
+  }
+
+  .mylist {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    width: 100%;
+
+    .vcard {
+        width: 250px;
+    }
+  }
+}
+
+.no-result {
+  font-size: 40px;
+  color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

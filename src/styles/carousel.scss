@@ -1,49 +1,50 @@
 .custom-carousel {
+  .scroll-back,
+  .scroll-forward {
+    position: absolute;
+    height: 100%;
+    width: 60px;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: #fff;
+    user-select: none;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+  }
 
-    .scroll-back, .scroll-forward {
-        position: absolute;
-        height: 100%;
-        width: 60px;
-        z-index: 99;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 40px;
-        color: #fff;
-        user-select: none;
-        opacity: 0;
-        transition: all .2s ease-in-out;
-    }
+  .scroll-back {
+    left: -44px;
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.7) 0%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+  .scroll-forward {
+    right: 0;
+    background: linear-gradient(
+      to left,
+      rgba(0, 0, 0, 0.7) 0%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
 
-    .scroll-back {
-        left: -44px;
-        background: linear-gradient(
-            to right,
-            rgba(0, 0, 0, 0.7) 0%,
-            rgba(0, 0, 0, 0) 100%
-          );
+  .styles-module_item-provider__YgMwz {
+    overflow: unset;
+
+    .styles-module_item-container__a8zaY {
+      margin: 0 3px;
     }
+  }
+
+  &:hover {
+    .scroll-back,
     .scroll-forward {
-        right: 0;
-        background: linear-gradient(
-            to left,
-            rgba(0, 0, 0, 0.7) 0%,
-            rgba(0, 0, 0, 0) 100%
-          );
+      opacity: 1;
     }
-
-    .styles-module_item-provider__YgMwz {
-        overflow: unset;
-
-        .styles-module_item-container__a8zaY {
-            width: 250px !important;
-            margin: 0 3px;
-        }
-    }
-
-    &:hover {
-        .scroll-back, .scroll-forward {
-            opacity: 1;
-        }
-    }
+  }
 }
+

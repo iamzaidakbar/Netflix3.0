@@ -114,7 +114,10 @@
       top: 0;
       transition: all 0.5s ease-in-out;
       opacity: 1;
-      
+      border-radius: 0;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+
       &.hide {
         opacity: 0;
       }

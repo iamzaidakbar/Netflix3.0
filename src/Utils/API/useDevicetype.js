@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 
 const useDeviceType = () => {
-  const [deviceType, setDeviceType] = useState("desktop");
+  const [deviceType, setDeviceType] = useState("laptop");
 
   useEffect(() => {
+    console.log('aa');
     const updateDeviceType = () => {
       const screenWidth = window.innerWidth;
 
@@ -27,7 +28,7 @@ const useDeviceType = () => {
     return () => {
       window.removeEventListener("resize", updateDeviceType);
     };
-  }, []);
+  }, [window.innerWidth]);
 
   return deviceType;
 };

@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 const usePageAnimation = () => {
   const animatePage = () => {
-    const root = document.getElementById("home");
+    const root = document.getElementById("root");
     if (root) {
       root.style.transition = "transform 3s";
       root.style.opacity = "1";
