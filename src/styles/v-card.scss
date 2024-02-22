@@ -19,7 +19,7 @@
     width: 25px;
   }
 
-  .ribbon {   
+  .ribbon {
     position: absolute;
     right: 0;
     top: 0;
@@ -57,6 +57,19 @@
     }
   }
 
+  .progress-bar-wrapper {
+    height: 3px;
+    position: relative;
+    top: 5px;
+    margin: 0 auto;
+    background-color: rgb(76, 73, 73);
+
+    .bar {
+      position: absolute;
+      background-color: red;
+      height: 3px;
+    }
+  }
 
   img {
     border-radius: 8px;
@@ -67,7 +80,7 @@
     z-index: 9;
 
     .line {
-      width: 240px;
+      width: 230px;
     }
   }
 }
@@ -86,7 +99,6 @@
   }
 
   .react-player-wrapper {
-    pointer-events: none;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     width: 100%;

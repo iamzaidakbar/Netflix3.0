@@ -24,6 +24,20 @@
     height: 100vh;
     overflow: hidden;
   }
+  .thumbnail {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    object-fit: cover;
+    top: 0;
+    transition: all 0.5s ease-in-out;
+    opacity: 1;
+    
+    &.hide {
+      opacity: 0;
+    }
+  }
   .action-button {
     position: absolute;
     right: 24px;

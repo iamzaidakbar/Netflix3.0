@@ -18,4 +18,6 @@
 
 - implemented helper functions to handle API calls
 
-- implemented infinite small video card scoll like netflix. 
+- implemented infinite small video card scoll like netflix using Carousal.
+
+- implemented Localstore functionility for storing the video duration.

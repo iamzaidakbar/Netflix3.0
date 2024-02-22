@@ -1,89 +1,72 @@
 import React, { useState, useEffect, useMemo } from "react";
 import ReactPlayer from "react-player/lazy";
-import barsGif from "../../assets/gifs/bars-animation.gif";
 import logo from "../../assets/logo/netflix-card-logo.png";
-import { VIDEO_URL } from "../../Utils/constants";
 import "../../styles/videocard.scss";
-import useFetchTrailer from "../../Utils/API/useFetchTrailer";
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
+import useRandomVideo from "../../Utils/API/useRandomVideo";
+import useMuteToggle from "../../Utils/API/useMuteToggle";
 
-const VideoCard = ({ title, description, videoId, backdrop_path }) => {
-  const [mute, setMute] = useState(true);
+const VideoCard = () => {
   const [reduceTextSize, setReduceTextSize] = useState(false);
-
+  const [videoDetails, setVideoDetails] = useState(false);
+  const videoInfo = useRandomVideo();
   const location = useLocation();
-
   const isBrowsePage = location.pathname.includes("browse");
-
-  const fetchTrailers = useFetchTrailer();
+  const { mute, handleMuteToggle } = useMuteToggle(false);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
-    fetchTrailers(videoId);
+    setVideoDetails(videoInfo);
   }, []);
 
-  const trailers = useSelector((store) => {
-    return store.trailer?.movieTrailer;
-  });
-
-  const handleMuteToggle = () => {
-    setMute(!mute);
-  };
-
   const handleScroll = () => {
-    // Check if the user has scrolled down, and mute the video
     if (window.scrollY > 400) {
       setMute(true);
     }
   };
 
   useEffect(() => {
-    // Add event listener for scroll
     window.addEventListener("scroll", handleScroll);
 
     return () => {
-      // Remove the event listener when the component is unmounted
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   // Memoize the VideoCard component
   const memoizedReactPlayer = useMemo(() => {
-    if (!trailers || trailers.length === 0) {
-      return null; // Handle the case where trailers is undefined or an empty array
+    if (!videoDetails.video_url || videoDetails.video_url.length === 0) {
+      return null;
     }
 
-    const trailer = trailers.filter((item) => item.type === "Trailer");
-
     return (
-      <ReactPlayer
-        width={"100vw"}
-        height={"120vh"}
-        fallback={<h2>Loading....</h2>}
-        volume={1}
-        playing={true}
-        muted={mute}
-        light={true}
-        url={VIDEO_URL + trailer[0]?.key}
-        style={{ marginTop: "-70px", scale: "1.2" }}
-        controls={false}
-        playIcon={<span></span>}
-        config={{
-          youtube: {
-            playerVars: {
-              showinfo: 0,
-              modestbranding: 1,
-              playsinline: 1,
-              controls: 0,
-              fs: 0,
-              rel: 0,
-              quality: "hd1080",
-            },
-          },
-        }}
-      />
+      <>
+        <ReactPlayer
+          width={"100vw"}
+          height={"100vh"}
+          fallback={<h2>Loading....</h2>}
+          volume={1}
+          playing={playing}
+          muted={mute}
+          url={videoDetails.video_url}
+          style={{ scale: "1.2" }}
+          controls={false}
+          onEnded={() => {
+            setPlaying(false);
+          }}
+          onError={() => {
+            setPlaying(false);
+          }}
+        />
+        {!isBrowsePage && (
+          <img
+            className={`thumbnail ${playing ? "hide" : ""}`}
+            src={videoDetails.thumbnail}
+          />
+        )}
+      </>
     );
-  }, [trailers, mute]);
+  }, [videoDetails, playing, mute]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -91,21 +74,34 @@ const VideoCard = ({ title, description, videoId, backdrop_path }) => {
     }, 5000);
   }, []);
 
-  return trailers ? (
+  return (
     <div className="videocard">
       <div className="react-player-wrapper">{memoizedReactPlayer}</div>
 
       <div className="details">
         <div className="logo_text">
-          <img className="logo" width={30} src={logo} />
+          <img className="logo" width={30} src={logo} alt="Logo" />
           <span className="text">SERIES</span>
         </div>
-        <span className={`title ${reduceTextSize && "reduce-title-size"}`}>
-          {title}
+        <span
+          style={{ color: videoDetails.video_color }}
+          className={`title ${reduceTextSize && "reduce-title-size"}`}
+        >
+          {videoDetails.video_title}
         </span>
-        {!isBrowsePage && <span className="description">{description}</span>}
+        {!isBrowsePage && (
+          <span className="description">{videoDetails.video_description}</span>
+        )}
 
         <span className="buttons">
+          <span
+            onClick={() => {
+              setPlaying(!playing);
+            }}
+            className="material-icons-outlined add"
+          >
+            {playing ? "pause_circle" : "play_circle"}
+          </span>
           <span className="material-icons-outlined add">add_circle</span>
           <span
             onClick={handleMuteToggle}
@@ -116,8 +112,6 @@ const VideoCard = ({ title, description, videoId, backdrop_path }) => {
         </span>
       </div>
     </div>
-  ) : (
-    ""
   );
 };
 
