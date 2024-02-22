@@ -14,12 +14,10 @@ const useFetchTopRated = () => {
         ...API_OPTIONS,
       });
 
-      const topRated = response.data.results.slice(0, 10);;
+      const topRated = response.data.results.slice(0, 10);
 
       // Dispatch the action to update the Redux store
       dispatch(addTopedVideos(topRated));
-
-      console.log(topRated)
     } catch (error) {
       console.error(error);
       throw error;
