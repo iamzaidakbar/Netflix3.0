@@ -1,0 +1,93 @@
+.vcard {
+  position: relative;
+  transition: all 0.1s ease-in-out;
+  width: 100%;
+
+  .line {
+    transition: all 1.5s ease-out;
+    background-color: red;
+    position: absolute;
+    margin-left: 2px;
+    width: 0;
+    height: 3px;
+  }
+  img {
+    border-radius: 8px;
+    width: 100%;
+  }
+
+  &:hover {
+    z-index: 9;
+
+    .line {
+      width: 240px;
+    }
+  }
+}
+.wrapper {
+  width: 300px;
+  position: absolute;
+  top: -75px;
+  margin-left: -30px;
+  scale: 0.8 0.5;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    z-index: 9;
+    scale: 1;
+  }
+
+  .react-player-wrapper {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    width: 100%;
+    height: 167px;
+    overflow: hidden;
+    z-index: 99;
+    background-color: rgb(27, 25, 25);
+  }
+
+  .details {
+    background-color: rgb(34, 33, 33);
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    .icons {
+      display: flex;
+      align-items: center;
+      padding: 8px;
+
+      .material-icons-outlined {
+        color: #fff;
+        font-size: 34px;
+      }
+    }
+    .trailer-details {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0 8px;
+      gap: 4px;
+
+      .title {
+        width: 200px;
+        font-size: 25px;
+        color: #fff;
+        font-weight: 600;
+        font-family: Homemade Apple, cursive;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        line-height: 45px;
+      }
+      .genre {
+        font-size: 14px;
+        color: #fff;
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+    }
+  }
+}

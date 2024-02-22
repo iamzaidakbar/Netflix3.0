@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import VideoCard from "../common/videoCard";
 import "../../styles/home.scss";
+import "../../styles/carousel.scss";
 import List from "../common/list";
 import useFetchMovies from "../../Utils/API/useFetchMovies";
 import { useSelector } from "react-redux";
@@ -8,6 +9,8 @@ import useFetchAnime from "../../Utils/API/useFetchAnime";
 import logo from "../../assets/logo/netflix-logo.png";
 import { Github, Instagram, Linkedin, Facebook } from "react-bootstrap-icons";
 import useFetchTopRated from "../../Utils/API/useFetchTopRated";
+import { Carousel } from "@trendyol-js/react-carousel";
+import VCard from "../common/v-card";
 
 const Home = () => {
   const fetchMovies = useFetchMovies();
@@ -22,11 +25,8 @@ const Home = () => {
     fetchTopRated();
   }, []);
 
-  const movies = useSelector((store) => {
-    return store.movies?.nowPlayingMovies;
-  });
+  const movies = useSelector((store) => store.movies?.nowPlayingMovies);
   const anime = useSelector((store) => store.anime?.animeVideos);
-
   const top10 = useSelector((store) => store?.topRated?.topRatedVideos);
 
   // Memoize the VideoCard component
@@ -37,7 +37,6 @@ const Home = () => {
 
     // Generate a random index within the movies array
     const randomIndex = Math.floor(Math.random() * movies.length);
-
     const { original_title, overview, id } = movies[randomIndex];
 
     return (
@@ -45,28 +44,35 @@ const Home = () => {
     );
   }, [movies, anime, top10]);
 
-  // Define categories and corresponding API calls
-  const categories = [
-    { title: "Top 10", data: top10, fetch: fetchTopRated, flag: true },
-    { title: "Trending Now", data: movies, fetch: fetchMovies, flag: false },
-    { title: "Anime", data: anime, fetch: fetchAnime, flag: false },
-    // Add more categories as needed
-  ];
+  const carouselItems = top10?.map((item, index) => (
+    <VCard key={index} data={item} img_url={item?.backdrop_path} />
+  ));
+
+  const carouselConfig = {
+    useArrowKeys: true,
+    responsive: true,
+    show: 5.5,
+    slide: 2,
+    swiping: true,
+    dynamic: true,
+    leftArrow: (
+      <span className="material-icons-outlined scroll-back">arrow_back</span>
+    ),
+    rightArrow: (
+      <span className="material-icons-outlined scroll-forward">
+        arrow_forward
+      </span>
+    ),
+    className: "custom-carousel",
+  };
 
   return (
     <div id="home" className="home">
       <div className="main-menu">{memoizedVideoCard}</div>
 
       <div className="sections">
-        {categories.map(({ title, data, fetch, flag }) => (
-          <List
-            key={title}
-            data={data}
-            title={title}
-            fetch={fetch}
-            flag={flag}
-          />
-        ))}
+        <label className="label">Top 10</label>
+      {carouselItems &&  <Carousel children={carouselItems} {...carouselConfig} />}
       </div>
       <div className="footer">
         <div className="social">
