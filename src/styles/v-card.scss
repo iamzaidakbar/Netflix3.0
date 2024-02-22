@@ -11,6 +11,53 @@
     width: 0;
     height: 3px;
   }
+
+  .card-logo {
+    position: absolute;
+    top: 24px;
+    left: 4px;
+    width: 25px;
+  }
+
+  .ribbon {   
+    position: absolute;
+    right: 0;
+    top: 0;
+    filter: drop-shadow(2px 3px 2px rgba(rgb(27, 25, 25), 0.5));
+
+    .content {
+      color: white;
+      text-align: center;
+      font-weight: 600;
+      background: red;
+      width: 23px;
+      height: 34px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .label-1 {
+        font-size: 9px;
+        height: 5px;
+        margin-top: 3px;
+      }
+      .label-2 {
+        font-size: 13px;
+      }
+    }
+
+    &.slant-down > .content {
+      clip-path: polygon(
+        0 0,
+        100% 0,
+        100% 100%,
+        50% calc(100% - 4.9px),
+        0 calc(100% - 7px)
+      );
+    }
+  }
+
+
   img {
     border-radius: 8px;
     width: 100%;
@@ -31,6 +78,7 @@
   margin-left: -30px;
   scale: 0.8 0.5;
   transition: all 0.2s ease-in-out;
+  z-index: 9;
 
   &:hover {
     z-index: 9;
@@ -38,6 +86,7 @@
   }
 
   .react-player-wrapper {
+    pointer-events: none;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     width: 100%;
@@ -59,6 +108,21 @@
       .material-icons-outlined {
         color: #fff;
         font-size: 34px;
+      }
+
+      .volume-icon {
+        font-size: 22px;
+        padding: 2px;
+        color: #fff;
+        border: 1px solid #fff;
+        border-radius: 50%;
+        transition: all 0.2s ease-in-out;
+        margin-left: auto;
+
+        &:hover {
+          scale: 1.1;
+          color: #ffffff9b;
+        }
       }
     }
     .trailer-details {

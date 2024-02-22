@@ -6,8 +6,6 @@ const useHover = (id) => {
   const [trailers, setTrailers] = useState([]);
   const timerRef = useRef(null);
 
-  console.log(id);
-
   const fetchShortMovieTrailers = useFetchShortMovieTrailer(id);
 
   const handleMouseOver = (e) => {

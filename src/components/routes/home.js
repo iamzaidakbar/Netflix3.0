@@ -2,7 +2,6 @@ import React, { useEffect, useMemo } from "react";
 import VideoCard from "../common/videoCard";
 import "../../styles/home.scss";
 import "../../styles/carousel.scss";
-import List from "../common/list";
 import useFetchMovies from "../../Utils/API/useFetchMovies";
 import { useSelector } from "react-redux";
 import useFetchAnime from "../../Utils/API/useFetchAnime";
@@ -29,13 +28,11 @@ const Home = () => {
   const anime = useSelector((store) => store.anime?.animeVideos);
   const top10 = useSelector((store) => store?.topRated?.topRatedVideos);
 
-  // Memoize the VideoCard component
   const memoizedVideoCard = useMemo(() => {
     if (!movies || !anime || !top10) {
-      return <h2>Loading...</h2>; // Handle the case where movies is undefined or an empty array
+      return <h2>Loading...</h2>;
     }
 
-    // Generate a random index within the movies array
     const randomIndex = Math.floor(Math.random() * movies.length);
     const { original_title, overview, id } = movies[randomIndex];
 
@@ -45,7 +42,12 @@ const Home = () => {
   }, [movies, anime, top10]);
 
   const carouselItems = top10?.map((item, index) => (
-    <VCard key={index} data={item} img_url={item?.backdrop_path} />
+    <VCard
+      key={item?.id}
+      flag={true}
+      data={item}
+      img_url={item?.backdrop_path}
+    />
   ));
 
   const carouselConfig = {
@@ -71,8 +73,12 @@ const Home = () => {
       <div className="main-menu">{memoizedVideoCard}</div>
 
       <div className="sections">
-        <label className="label">Top 10</label>
-      {carouselItems &&  <Carousel children={carouselItems} {...carouselConfig} />}
+        <span className="top10">
+          <label className="label">Top 10</label>
+          {carouselItems && (
+            <Carousel children={carouselItems} {...carouselConfig} />
+          )}
+        </span>
       </div>
       <div className="footer">
         <div className="social">
