@@ -1,0 +1,40 @@
+.search-bar {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  margin-right: 24px;
+
+  &.active {
+    overflow: visible;
+
+    input {
+      width: 200px;
+      border: 1px solid #fff;
+      background-color: rgba(0, 0, 0, 0.493);
+    }
+  }
+
+  input {
+    transition: all 0.3s ease-in-out;
+    width: 0;
+    background-color: transparent;
+    padding: 8px;
+    color: #fff;
+    padding-left: 40px;
+    z-index: 1;
+    border: 0;
+
+    &::placeholder {
+      color: #fff;
+    }
+  }
+
+  .icon-left {
+    position: absolute;
+    font-size: 27px !important;
+    top: 2px;
+    left: 6px;
+    color: #fff !important;
+    z-index: -1;
+  }
+}

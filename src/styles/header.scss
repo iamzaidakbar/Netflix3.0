@@ -38,6 +38,8 @@
 
   .actions {
     margin-right: 24px;
+    display: flex;
+    align-items: center;
 
     .material-icons-outlined {
       font-size: 34px;
@@ -51,6 +53,6 @@
   }
 
   &.scroll {
-    background-color: rgb(27, 25, 25);
+    background-color: rgb(17,17,17);
   }
 }

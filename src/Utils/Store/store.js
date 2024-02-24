@@ -4,6 +4,7 @@ import trailerReducer from "../Slices/movieTrailerSlice";
 import animeReducer from "../Slices/animeSlice";
 import topRatedReducer from "../Slices/topRatedSlice";
 import myListReducer from "../Slices/useMyListSlice";
+import searchReducer from "../Slices/searchSlice"
 
 const Store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const Store = configureStore({
     anime: animeReducer,
     topRated: topRatedReducer,
     myList: myListReducer,
+    search: searchReducer,
   },
 });
 

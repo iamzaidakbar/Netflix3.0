@@ -1,16 +1,19 @@
 import React, { useEffect, useMemo, useState } from "react";
-import VideoCard from "../common/videoCard";
-import "../../styles/home.scss";
-import "../../styles/carousel.scss";
-import useFetchMovies from "../../Utils/API/useFetchMovies";
-import { useSelector } from "react-redux";
-import useFetchAnime from "../../Utils/API/useFetchAnime";
-import useFetchTopRated from "../../Utils/API/useFetchTopRated";
+import { useNavigate } from "react-router";
 import { Carousel } from "@trendyol-js/react-carousel";
-import VCard from "../common/v-card";
-import useDeviceType from "../../Utils/API/useDevicetype";
+import { useSelector } from "react-redux";
+import { genre_details } from "../../Utils/constants";
 import usePageNavigation from "../../Utils/API/usePageNavigation";
+import useFetchTopRated from "../../Utils/API/useFetchTopRated";
+import useFetchMovies from "../../Utils/API/useFetchMovies";
+import makeApiRequest from "../../Utils/API/useFetchGenre";
+import useFetchAnime from "../../Utils/API/useFetchAnime";
+import useDeviceType from "../../Utils/API/useDevicetype";
+import VideoCard from "../common/videoCard";
+import VCard from "../common/v-card";
 import Footer from "../common/footer";
+import "../../styles/carousel.scss";
+import "../../styles/home.scss";
 
 const Home = () => {
   const fetchMovies = useFetchMovies();
@@ -20,13 +23,21 @@ const Home = () => {
   const deviceType = useDeviceType();
   const navigatePage = usePageNavigation();
   const myListVideos = useSelector((store) => store?.myList?.myListVideos);
+  const [getItOnAction, setGettOnAction] = useState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = "Home - Netflix";
 
+    async function fetchGetItOnAction() {
+      const response = await makeApiRequest(genre_details["action"]);
+      setGettOnAction(response);
+    }
+
     fetchMovies();
     fetchAnime();
     fetchTopRated();
+    fetchGetItOnAction();
   }, []);
 
   useEffect(() => {
@@ -89,6 +100,15 @@ const Home = () => {
     />
   ));
 
+  const actionCarouselItems = getItOnAction?.map((action, index) => (
+    <VCard
+      key={action?.id}
+      flag={false}
+      data={action}
+      img_url={action?.backdrop_path}
+    />
+  ));
+
   const carouselConfig = {
     useArrowKeys: true,
     responsive: true,
@@ -125,6 +145,12 @@ const Home = () => {
     return <Carousel children={animeCarouselItems} {...carouselConfig} />;
   }, [deviceType, animeCarouselItems]);
 
+  const memoizedActionCarousel = useMemo(() => {
+    if (!actionCarouselItems) return <h2>Loading...</h2>;
+
+    return <Carousel children={actionCarouselItems} {...carouselConfig} />;
+  }, [deviceType, actionCarouselItems]);
+
   const memoizedMyListCarousel = useMemo(() => {
     if (!myListItems) return <h2>Loading...</h2>;
 
@@ -148,6 +174,20 @@ const Home = () => {
           <label className="label">Popular Anime</label>
           {memoizedAnimeCarousel}
         </span>
+        <span className="action">
+          <label className="label">
+            Get It On Action
+            <small
+              onClick={() => {
+                navigate("/genre");
+              }}
+              className="explore_more"
+            >
+              Explore All Genre &#62;
+            </small>
+          </label>
+          {memoizedActionCarousel}
+        </span>
         {myListVideos.length > 6 && (
           <span className="mylist">
             <label className="label">
@@ -165,7 +205,7 @@ const Home = () => {
                   cursor: "pointer",
                 }}
               >
-                Explore More{" "}
+                Explore More
                 <span
                   style={{ fontSize: "10px" }}
                   className="material-icons-outlined"

@@ -19,19 +19,6 @@ const VideoCard = () => {
     setVideoDetails(videoInfo);
   }, []);
 
-  const handleScroll = () => {
-    if (window.scrollY > 400) {
-      handleMuteToggle()
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   // Memoize the VideoCard component
   const memoizedReactPlayer = useMemo(() => {

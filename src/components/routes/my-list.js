@@ -6,9 +6,6 @@ import Footer from "../common/footer";
 const MyList = () => {
   const myListVideos = useSelector((store) => store?.myList?.myListVideos);
 
-  // Add console logs for debugging
-  console.log("myListVideos:", myListVideos);
-
   if (myListVideos.length === 0) {
     return <div className="no-result">No videos in the list!</div>;
   }

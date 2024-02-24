@@ -21,3 +21,9 @@
 - implemented infinite small video card scoll like netflix using Carousal.
 
 - implemented Localstore functionility for storing the video duration.
+
+- Implemented My List based on local storage.
+
+- Implemented debounce for search using lodash.
+
+- implemented caching in search results.

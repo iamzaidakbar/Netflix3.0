@@ -1,18 +1,19 @@
-import React, { lazy, Suspense } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
-import { ErrorPage } from '../components/common/errorPage';
-import { Container } from '../components/app-container/container';
-import Browse from '../components/routes/browse';
+import React, { lazy, Suspense } from "react";
+import { createBrowserRouter } from "react-router-dom";
+import { ErrorPage } from "../components/common/errorPage";
+import { Container } from "../components/app-container/container";
+import Browse from "../components/routes/browse";
+import ExploreGenre from "../components/routes/explore-genre";
+import Search from "../components/routes/search-page";
 
-const Home = lazy(() => import('../components/routes/home'));
-const TvShows = lazy(() => import('../components/routes/tv-shows'));
-const Movies = lazy(() => import('../components/routes/movies'));
-const MyList = lazy(() => import('../components/routes/my-list'));
-const Login = lazy(() => import('../components/routes/login'));
+const Home = lazy(() => import("../components/routes/home"));
+const Genre = lazy(() => import("../components/routes/genre"));
+const MyList = lazy(() => import("../components/routes/my-list"));
+const Login = lazy(() => import("../components/routes/login"));
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: (
       <Suspense fallback={<div>Loading...</div>}>
         <Container />
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '/home',
+        path: "/home",
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <Home />
@@ -29,31 +30,31 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/browse/:id',
+        path: "/browse/:id",
         element: (
           <Suspense fallback={<div>Loading...</div>}>
-             <Browse />
+            <Browse />
           </Suspense>
         ),
       },
       {
-        path: '/tvshows',
+        path: "/genre",
         element: (
           <Suspense fallback={<div>Loading...</div>}>
-            <TvShows />
+            <Genre />
           </Suspense>
         ),
       },
       {
-        path: '/movies',
+        path: "/explore/genre/:id",
         element: (
           <Suspense fallback={<div>Loading...</div>}>
-            <Movies />
+            <ExploreGenre />
           </Suspense>
         ),
       },
       {
-        path: '/mylist',
+        path: "/mylist",
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <MyList />
@@ -61,7 +62,15 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/login',
+        path: "/search/:query",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Search />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/login",
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <Login />

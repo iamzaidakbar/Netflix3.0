@@ -8,7 +8,11 @@
     padding-bottom: 100px;
     margin-left: 44px;
 
-    .top10, .movies, .anime, .mylist {
+    .top10,
+    .movies,
+    .anime,
+    .mylist,
+    .action {
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -17,8 +21,26 @@
         color: #fff;
         font-weight: 600;
         font-size: 25px;
+        cursor: pointer;
+
+        .explore_more {
+          font-size: 13px;
+          padding-left: 10px;
+          color: skyblue;
+          position: relative;
+          top: -2px;
+          left: -124px;
+          opacity: 0;
+          transition: all 0.2s ease-in-out;
+        }
+
+        &:hover {
+          .explore_more {
+            left: 0;
+            opacity: 1;
+          }
+        }
       }
     }
   }
-  
 }

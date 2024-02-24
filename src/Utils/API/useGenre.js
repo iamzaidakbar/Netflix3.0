@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-const useGenre = (genreIds, separator = '  •  ') => {
-  const [genres, setGenres] = useState('');
+const useGenre = (genreIds, separator = "  •  ") => {
+  const [genres, setGenres] = useState("");
 
   useEffect(() => {
     const genresData = {
@@ -34,10 +34,10 @@ const useGenre = (genreIds, separator = '  •  ') => {
 
     // Set the genre values based on the provided genreIds
     const genreArray = genreIds
-      .map((id) => genresData[id])
-      .filter((genre) => genre !== undefined && genre !== null);
+      ?.map((id) => genresData[id])
+      ?.filter((genre) => genre !== undefined && genre !== null);
 
-    setGenres(genreArray.join(separator));
+    setGenres(genreArray?.join(separator));
   }, [genreIds, separator]);
 
   return genres;

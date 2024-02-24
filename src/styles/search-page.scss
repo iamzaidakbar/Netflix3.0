@@ -1,0 +1,32 @@
+.Search {
+    box-sizing: border-box;
+    width: 100vw;
+    padding: 144px 44px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+
+    .vcard {
+        width: 250px;
+        height: 170px;
+        margin-bottom: 24px;
+    }
+}
+.label {
+    color: #fff;
+    position: relative;
+    left: 44px;
+    top: 88px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    .text {
+        color: #666262;
+        font-size: 16px;
+    }
+    .query {
+        font-size: 36px;
+        text-transform: capitalize;
+    }
+}

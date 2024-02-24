@@ -4,7 +4,6 @@ const useDeviceType = () => {
   const [deviceType, setDeviceType] = useState("laptop");
 
   useEffect(() => {
-    console.log('aa');
     const updateDeviceType = () => {
       const screenWidth = window.innerWidth;
 

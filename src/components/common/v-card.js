@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useMemo, useState } from "react";
 import { TMDB_IMG_URL } from "../../Utils/constants";
 import usePageNavigation from "../../Utils/API/usePageNavigation";
-import usePageAnimation from "../../Utils/API/usePageAnimation";
+// import usePageAnimation from "../../Utils/API/usePageAnimation";
 import useMuteToggle from "../../Utils/API/useMuteToggle";
 import useHover from "../../Utils/API/useHover";
 import useGenre from "../../Utils/API/useGenre";
@@ -22,7 +22,7 @@ const VCard = ({ data, flag }) => {
   const [duration, setDuration] = useState("");
   const dispatch = useDispatch();
   const navigatePage = usePageNavigation();
-  const animate = usePageAnimation();
+  // const animate = usePageAnimation();
   const { mute, handleMuteToggle } = useMuteToggle(false);
   const genres = useGenre(data?.genre_ids);
 
@@ -32,10 +32,8 @@ const VCard = ({ data, flag }) => {
   function handleNavigation() {
     dispatch(addMovieTrailerDetails(data));
     localStorage.setItem("movieDetails", JSON.stringify(data));
-    animate();
-    setTimeout(() => {
-      navigatePage("/browse/" + data?.id);
-    }, 2000);
+    // animate();
+    navigatePage("/browse/" + data?.id);
   }
   function handleProgress(state) {
     const storedData = JSON.parse(localStorage.getItem("video_played")) || [];

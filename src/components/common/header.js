@@ -2,6 +2,8 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo/netflix-logo.png";
 import "../../styles/header.scss";
 import useScroll from "../../Utils/useScroll";
+import SearchBar from "./search-bar";
+import Notification from "./notification";
 
 export const Header = () => {
   const scrolled = useScroll();
@@ -17,12 +19,14 @@ export const Header = () => {
         </span>
         <span className="links">
           {isBrowsePage ? null : <Link to={"home"}>Home</Link>}
-          {isBrowsePage ? null : <Link to={"tvshows"}>Tv Shows</Link>}
+          {isBrowsePage ? null : <Link to={"genre"}>Genre</Link>}
           {isBrowsePage ? null : <Link to={"movies"}>Movies</Link>}
           <Link to={"mylist"}>My List</Link>
         </span>
       </span>
       <span className="actions">
+        <SearchBar />
+        <Notification />
         {isBrowsePage ? (
           <Link to={"/home"}>
             <span className="material-icons-outlined back">arrow_back</span>

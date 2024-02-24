@@ -1,0 +1,39 @@
+.explore-genre-label-wrapper {
+  color: #7e7676;
+  align-items: center;
+  gap: 8px;
+  display: flex;
+  position: absolute;
+  top: 86px;
+  left: 44px;
+
+  .text {
+    font-size: 20px;
+  }
+
+  .material-icons-outlined {
+    font-size: 11px;
+  }
+  .genre-label {
+    font-size: 43px;
+    color: #fff;
+    padding-left: 20px;
+  }
+}
+
+.explore-genre {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  padding: 0px;
+  gap: 8px;
+  margin-top: 180px;
+
+  .vcard {
+    width: 250px;
+    height: 140px;
+    margin-bottom: 44px;
+  }
+}
