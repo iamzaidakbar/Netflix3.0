@@ -110,7 +110,7 @@
         display: flex;
         justify-content: flex-end;
         gap: 8px;
-        .label {
+        .col-1-label {
           color: rgb(120, 122, 120);
           font-size: 15px;
         }
@@ -131,7 +131,7 @@
           justify-content: flex-end;
           gap: 6px;
 
-          .label {
+          .col-2-label {
             color: #fff;
             font-size: 12px;
           }

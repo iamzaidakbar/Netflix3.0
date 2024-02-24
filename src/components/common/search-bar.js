@@ -1,36 +1,25 @@
-import { useState } from "react";
+import React from "react";
 import "../../styles/search-bar.scss";
-import { useNavigate } from "react-router";
-import _debounce from "lodash/debounce";
+import useSearchBar from "../../Utils/API/useSearchBar";
 
 const SearchBar = () => {
-  const [active, setActive] = useState(false);
-  const [query, setQuery] = useState("");
-  const navigate = useNavigate();
-
-  const debouncedNavigate = _debounce((value) => {
-    navigate("/search/" + value);
-  }, 1500);
-
-  const handleChange = (e) => {
-    setQuery(e.target.value)
-    debouncedNavigate(e.target.value);
-  };
+  const {
+    active,
+    query,
+    handleChange,
+    handleFocus,
+    handleBlur,
+  } = useSearchBar();
 
   return (
     <>
       <div className={`search-bar ${active ? "active" : ""}`}>
         <span className="material-icons-outlined icon-left">search</span>
         <input
-          onFocus={() => {
-            setActive(true);
-          }}
-          onBlur={() => {
-            setActive(false);
-            setQuery("")
-          }}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           value={query}
-          type="text"
+          type="search"
           placeholder="Titles, people, genres"
           onChange={handleChange}
         />

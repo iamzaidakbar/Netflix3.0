@@ -3,7 +3,7 @@ import { Header } from "../common/header";
 
 export const Container = () => {
   return (
-    <div className="container">
+    <div style={{ overflow: "hidden" }} className="container">
       <Header />
       <Outlet />
     </div>

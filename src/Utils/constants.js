@@ -2,6 +2,7 @@ export const VIDEO_URL = "https://www.youtube.com/watch?v=";
 export const TMDB_BASE_URL = "https://api.themoviedb.org/3/";
 export const TMDB_IMG_URL = "https://image.tmdb.org/t/p/w300";
 export const MOVIES_KEY = "trending/movie/day";
+export const GOOGLE_SUGGESTION_API = "https://corsproxy.io/?http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
 
 export const API_OPTIONS = {
   method: "GET",

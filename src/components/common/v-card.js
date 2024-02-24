@@ -7,11 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useMemo, useState } from "react";
 import { TMDB_IMG_URL } from "../../Utils/constants";
 import usePageNavigation from "../../Utils/API/usePageNavigation";
-// import usePageAnimation from "../../Utils/API/usePageAnimation";
+import defaultBackdropPath from "../../assets/images/default-card-bg.png";
 import useMuteToggle from "../../Utils/API/useMuteToggle";
 import useHover from "../../Utils/API/useHover";
 import useGenre from "../../Utils/API/useGenre";
 import { addMyList } from "../../Utils/Slices/useMyListSlice";
+import Badge from "./badge";
 
 const VCard = ({ data, flag }) => {
   const { isActive, trailers, handleMouseOver, handleMouseLeave } = useHover(
@@ -19,10 +20,10 @@ const VCard = ({ data, flag }) => {
   );
 
   const [playing, setPlaying] = useState(false);
+  const [preview, setPreview] = useState(true);
   const [duration, setDuration] = useState("");
   const dispatch = useDispatch();
   const navigatePage = usePageNavigation();
-  // const animate = usePageAnimation();
   const { mute, handleMuteToggle } = useMuteToggle(false);
   const genres = useGenre(data?.genre_ids);
 
@@ -32,7 +33,6 @@ const VCard = ({ data, flag }) => {
   function handleNavigation() {
     dispatch(addMovieTrailerDetails(data));
     localStorage.setItem("movieDetails", JSON.stringify(data));
-    // animate();
     navigatePage("/browse/" + data?.id);
   }
   function handleProgress(state) {
@@ -79,7 +79,11 @@ const VCard = ({ data, flag }) => {
           <img
             width={"250px"}
             className={`thumbnail ${playing ? "hide" : ""}`}
-            src={TMDB_IMG_URL + data?.backdrop_path}
+            src={
+              data?.backdrop_path
+                ? TMDB_IMG_URL + data?.backdrop_path
+                : defaultBackdropPath
+            }
           />
         </div>
         <div style={{ width: "300px", height: "130px" }} className="details">
@@ -118,8 +122,12 @@ const VCard = ({ data, flag }) => {
             </span>
           </div>
           <div className="trailer-details">
-            <span className="title">{data?.original_title}</span>
-            <span className="genre">{genres}</span>
+            <span className="title">
+              {data?.original_title
+                ? data?.original_title
+                : "Netflix Originals"}
+            </span>
+            <span className="genre">{genres ? genres : ""}</span>
           </div>
         </div>
       </div>
@@ -129,7 +137,7 @@ const VCard = ({ data, flag }) => {
 
   const image = (
     <>
-      <span className="line"></span>
+      {preview && <span className="line"></span>}
       <img className="card-logo" src={logo} />
       {flag && (
         <div className="flag">
@@ -141,7 +149,14 @@ const VCard = ({ data, flag }) => {
           </div>
         </div>
       )}
-      <img src={TMDB_IMG_URL + data?.backdrop_path} />
+      <img
+        src={
+          data?.backdrop_path
+            ? TMDB_IMG_URL + data?.backdrop_path
+            : defaultBackdropPath
+        }
+      />
+      {!preview && <Badge message={"Preview not available"} />}
       {JSON.parse(localStorage.getItem("video_played"))?.find(
         (video) => video.id === data?.id
       )?.played > 0 && (
@@ -166,8 +181,20 @@ const VCard = ({ data, flag }) => {
   return (
     <>
       <div
-        onMouseLeave={handleMouseLeave}
-        onMouseOver={handleMouseOver}
+        onMouseLeave={
+          data?.backdrop_path
+            ? handleMouseLeave
+            : () => {
+                setPreview(true);
+              }
+        }
+        onMouseOver={
+          data?.backdrop_path
+            ? handleMouseOver
+            : () => {
+                setPreview(false);
+              }
+        }
         className="vcard"
       >
         {isActive ? videoWrapper : image}

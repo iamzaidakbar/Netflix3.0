@@ -68,13 +68,13 @@ const Browse = () => {
             </span>
           </div>
           <div className="col-1">
-            <span className="label">Genre : </span>
+            <span className="col-1-label">Genre : </span>
             <span className="genre">{genre}</span>
           </div>
           <div className="col-2">
             <img className="netflix-logo" src={logo} />
             <div className="author">
-              <span className="label">Created by</span>
+              <span className="col-2-label">Created by</span>
               <span className="author-name">ZAID AKBAR</span>
             </div>
           </div>

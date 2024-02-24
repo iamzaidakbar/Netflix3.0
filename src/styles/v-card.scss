@@ -2,6 +2,7 @@
   position: relative;
   transition: all 0.1s ease-in-out;
   width: 100%;
+  cursor: pointer;
 
   .line {
     transition: all 1.5s ease-out;
@@ -155,20 +156,20 @@
 
       .more-info {
         margin-left: 12px;
-        background-color: #111;
+        background-color: #fff;
         border: none;
-        border-radius: 4px;
+        border-radius: 8px;
         margin-right: auto;
-        color: #fff;
+        color: #111;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 4px;
         font-size: 14px;
-        padding: 6px;
-
+        padding: 4px 6px;
+        
         .material-icons-outlined {
-          color: #fff;
+          color: #111;
           font-size: 24px;
         }
       }
@@ -188,9 +189,9 @@
 
       .title {
         width: 200px;
-        font-size: 25px;
+        font-size: 18px;
         color: #fff;
-        font-weight: 600;
+        font-weight: 500;
         font-family: Homemade Apple, cursive;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -200,7 +201,7 @@
       .genre {
         font-size: 14px;
         color: #fff;
-        font-weight: 500;
+        font-weight: 400;
         letter-spacing: 1px;
         text-overflow: ellipsis;
         overflow: hidden;
