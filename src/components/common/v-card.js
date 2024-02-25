@@ -13,6 +13,7 @@ import useHover from "../../Utils/API/useHover";
 import useGenre from "../../Utils/API/useGenre";
 import { addMyList } from "../../Utils/Slices/useMyListSlice";
 import Badge from "./badge";
+import useNotifications from "../../Utils/API/useNotifications";
 
 const VCard = ({ data, flag }) => {
   const { isActive, trailers, handleMouseOver, handleMouseLeave } = useHover(
@@ -27,8 +28,17 @@ const VCard = ({ data, flag }) => {
   const { mute, handleMuteToggle } = useMuteToggle(false);
   const genres = useGenre(data?.genre_ids);
 
+  const { addNotification } = useNotifications();
+
   const myListVideos = useSelector((store) => store?.myList?.myListVideos);
   const isItemInList = myListVideos?.some((item) => item?.id === data?.id);
+
+  function handleAddNotification() {
+    const date = new Date().toISOString();
+    const title = data?.original_title + " added in mylist.";
+    const navigateTo = "/mylist";
+    addNotification(data?.id, data?.backdrop_path, title, date, navigateTo);
+  }
 
   function handleNavigation() {
     dispatch(addMovieTrailerDetails(data));
@@ -102,6 +112,7 @@ const VCard = ({ data, flag }) => {
               <span
                 onClick={() => {
                   dispatch(addMyList(data));
+                  handleAddNotification();
                 }}
                 className="material-icons-outlined"
               >

@@ -19,10 +19,10 @@ export const Header = () => {
           <img src={logo} alt="Logo" />
         </span>
         <span className="links">
-          {isBrowsePage ? null : <Link to={"home"}>Home</Link>}
-          {isBrowsePage ? null : <Link to={"genre"}>Genre</Link>}
-          {isBrowsePage ? null : <Link to={"movies"}>Movies</Link>}
-          <Link to={"mylist"}>My List</Link>
+          {isBrowsePage ? null : <Link to={"/home"}>Home</Link>}
+          {isBrowsePage ? null : <Link to={"/genre"}>Genre</Link>}
+          {isBrowsePage ? null : <Link to={"/movies"}>Movies</Link>}
+          <Link to={"/mylist"}>My List</Link>
         </span>
       </span>
       <span className="actions">
