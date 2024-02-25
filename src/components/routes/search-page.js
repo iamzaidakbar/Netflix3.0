@@ -37,7 +37,6 @@ const Search = () => {
     debouncedNavigate(formattedQuery);
   };
 
-  console.log(cachedResults[query]);
   return (
     <>
       {loading && <p>Loading...</p>}

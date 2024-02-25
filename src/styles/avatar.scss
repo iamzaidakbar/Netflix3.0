@@ -1,0 +1,92 @@
+.avatar {
+  position: relative;
+
+  .avatar-logo {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+      .drop {
+        rotate: 180deg;
+      }
+      .settings {
+        opacity: 1;
+        z-index: 1;
+        pointer-events: all;
+      }
+    }
+
+    img {
+      border-radius: 4px;
+    }
+
+    .material-icons-outlined {
+      font-size: 24px;
+      transition: all 0.2s ease-in-out;
+    }
+  }
+}
+
+// Dropdown
+
+.settings {
+  background-color: rgba(0, 0, 0, 0.76);
+  position: absolute;
+  top: 40px;
+  right: 0;
+  border: 1px solid #2d2a2a;
+  opacity: 0;
+  z-index: -1;
+  cursor: pointer;
+  pointer-events: none;
+  padding: 8px;
+  transition: all 0.2s ease-in-out;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    right: 32px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent rgba(255, 255, 255, 0.76) transparent;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .edit-icon {
+      font-size: 30px !important;
+    }
+    .text {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .log-out {
+    border: 0;
+    background-color: transparent;
+    border-top: 1px solid #413d3d;
+    white-space: nowrap;
+    font-size: 14px;
+    padding: 12px 50px;
+    color: #fff;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

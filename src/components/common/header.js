@@ -4,6 +4,7 @@ import "../../styles/header.scss";
 import useScroll from "../../Utils/useScroll";
 import SearchBar from "./search-bar";
 import Notification from "./notification";
+import Avatar from "./avatar";
 
 export const Header = () => {
   const scrolled = useScroll();
@@ -27,6 +28,7 @@ export const Header = () => {
       <span className="actions">
         <SearchBar />
         <Notification />
+        <Avatar/>
         {isBrowsePage ? (
           <Link to={"/home"}>
             <span className="material-icons-outlined back">arrow_back</span>

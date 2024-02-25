@@ -5,9 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(17,17,17);
+  background-color: rgb(17, 17, 17);
   user-select: none;
-  
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -51,4 +51,8 @@ code {
 
   /* Support for IE. */
   font-feature-settings: "liga";
+}
+
+* {
+  box-sizing: border-box;
 }

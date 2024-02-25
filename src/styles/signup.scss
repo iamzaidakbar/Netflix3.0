@@ -1,0 +1,222 @@
+.signup {
+  box-sizing: border-box;
+  background-image: url("../assets//images//login-background-image.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+
+  .header {
+    background: linear-gradient(
+      to bottom,
+      rgb(0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    width: 100vw;
+    height: 82px;
+    padding: 0 150px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      .dropdown {
+        select {
+          border: 1px solid #fff;
+          background: rgba(0, 0, 0, 0.524);
+          color: #fff;
+          padding: 6px 8px;
+          border-radius: 4px;
+          font-size: 16px;
+        }
+      }
+
+      button {
+        background-color: red;
+        color: #fff;
+        border: 1px solid red;
+        padding: 7px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  .body-wrapper {
+    background-color: #111111a7;
+    overflow: hidden;
+
+    .body {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 50rem;
+      width: auto;
+      transition: all 0.3s ease-in-out;
+      display: flex;
+      position: relative;
+      top: 18rem;
+
+      &.active {
+        top: -61rem;
+      }
+
+      .membership {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .label-1 {
+          color: #fff;
+          font-weight: 600;
+          font-size: 50px;
+        }
+        .label-2,
+        .label-3 {
+          font-size: 25px;
+          color: #fff;
+        }
+
+        .label-2 {
+          margin: 24px 0;
+        }
+        .form {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          margin: 18px 0;
+          .fields {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            .input-field {
+              position: relative;
+              label {
+                font-size: 20px;
+                font-weight: 500;
+                color: white;
+                position: absolute;
+                left: 12px;
+                top: 17px;
+                transition: all 0.1s ease-in-out;
+              }
+
+              input {
+                border: 1px solid #fff;
+                background-color: rgba(0, 0, 0, 0.694);
+                color: #fff;
+                font-size: 24px;
+                width: 400px;
+                padding: 24px 13px 8px 13px;
+                border-radius: 4px;
+              }
+
+              &.active {
+                label {
+                  font-size: 12px;
+                  color: gray;
+                  top: 6px;
+                }
+              }
+            }
+
+            button {
+              height: 54px;
+              border: 0;
+              border-radius: 4px;
+              background-color: red;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              font-weight: 600;
+              color: #fff;
+              font-size: 24px;
+              padding: 0 24px;
+              cursor: pointer;
+            }
+          }
+        
+        }
+      }
+      .signup-form {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        padding: 54px;
+        background-color: rgba(0, 0, 0, 0.682);
+
+        label {
+          color: #fff;
+          font-size: 30px;
+          margin-bottom: 8px;
+        }
+
+        input {
+          border: 1px solid #7d7a7a;
+          padding: 16px 20px;
+          background-color: rgba(0, 0, 0, 0.441);
+          color: #fff;
+          font-size: 16px;
+          width: 300px;
+          border-radius: 4px;
+
+          &::placeholder {
+            font-size: 16px;
+          }
+
+          &:disabled {
+            color: rgb(65, 63, 63);
+            cursor: not-allowed;
+            border: 1px solid rgb(65, 63, 63);
+          }
+        }
+        button {
+          background-color: red;
+          border: 0;
+          border-radius: 4px;
+          color: #fff;
+          font-weight: 600;
+          font-size: 16px;
+          padding: 14px;
+          cursor: pointer;
+        }
+     
+        .change-email {
+          color: #fff;
+          font-size: 12px;
+          text-align: center;
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
+
+  .error-message {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .material-icons-outlined {
+      border: 1px solid red;
+      border-radius: 50%;
+      color: red;
+      font-size: 12px;
+    }
+    .message {
+      color: red;
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }

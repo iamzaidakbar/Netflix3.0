@@ -1,0 +1,124 @@
+.login {
+  box-sizing: border-box;
+  background-image: url("../assets//images//login-background-image.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+
+  .header {
+    background: linear-gradient(
+      to bottom,
+      rgb(0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    width: 100vw;
+    height: 82px;
+    padding: 0 150px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      .dropdown {
+        select {
+          border: 1px solid #fff;
+          background: rgba(0, 0, 0, 0.524);
+          color: #fff;
+          padding: 6px 8px;
+          border-radius: 4px;
+          font-size: 16px;
+        }
+      }
+
+      button {
+        background-color: red;
+        color: #fff;
+        border: 1px solid red;
+        padding: 7px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  .signin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 54px;
+    padding-bottom: 100px;
+    background-color: rgba(0, 0, 0, 0.682);
+    width: 400px;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    label {
+      color: #fff;
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    input {
+      border: 1px solid #7d7a7a;
+      padding: 16px 20px;
+      background-color: rgba(0, 0, 0, 0.441);
+      color: #fff;
+      font-size: 16px;
+      width: 100%;
+      border-radius: 4px;
+
+      &::placeholder {
+        font-size: 16px;
+      }
+    }
+    button {
+      background-color: red;
+      border: 0;
+      border-radius: 4px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 16px;
+      padding: 14px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .change-email {
+      color: #fff;
+      font-size: 12px;
+      text-align: center;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .material-icons-outlined {
+    border: 1px solid red;
+    border-radius: 50%;
+    color: red;
+    font-size: 12px;
+  }
+  .message {
+    color: red;
+    font-size: 12px;
+    font-weight: 500;
+  }
+}

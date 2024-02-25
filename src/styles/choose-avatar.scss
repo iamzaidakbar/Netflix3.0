@@ -1,0 +1,103 @@
+.choose-avatar {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  margin: auto 0;
+
+  label {
+    font-size: 80px;
+    color: #fff;
+  }
+
+  .select-profile {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    img {
+      border: 1px solid rgb(17, 17, 17);
+      border-radius: 8px;
+      filter: contrast(1.2);
+      cursor: pointer;
+
+      &:hover {
+        border: 1px solid white;
+      }
+    }
+  }
+
+  .update-profile {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    img {
+      border-radius: 8px;
+    }
+
+    .update-display-name {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      
+
+      input {
+        border: 1px solid #fff;
+        background-color: rgba(0, 0, 0, 0.671);
+        color: white;
+        font-size: 20px;
+        padding: 14px;
+
+        &::placeholder {
+          color: #b1a1a1;
+        }
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        button {
+          width: 100%;
+          border: 0;
+          font-size: 17px;
+          font-weight: 600;
+          padding: 8px;
+          cursor: pointer;
+
+          &.continue {
+            background-color: #fff;
+          }
+          &.cancel {
+            background-color: #1b1a1a;
+            border: 1px solid rgb(44, 42, 42);
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .material-icons-outlined {
+    border: 1px solid red;
+    border-radius: 50%;
+    color: red;
+    font-size: 12px;
+  }
+  .message {
+    color: red;
+    font-size: 10px;
+    font-weight: 500;
+  }
+}
