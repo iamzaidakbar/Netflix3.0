@@ -13,11 +13,12 @@ const useScroll = () => {
     // Attach the scroll event listener
     window.addEventListener('scroll', handleScroll);
 
+    console.log(scrolled)
     // Cleanup the event listener on component unmount
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []); // Empty dependency array means this effect will only run once on mount
+  }, [scrolled]); // Empty dependency array means this effect will only run once on mount
 
   return scrolled;
 };

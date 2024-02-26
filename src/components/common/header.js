@@ -11,26 +11,34 @@ export const Header = () => {
   const location = useLocation();
 
   const isBrowsePage = location.pathname.includes("browse");
+  const isHomePage = location.pathname.includes("home");
 
   return (
-    <div className={`header ${scrolled ? "scroll" : ""}`}>
+    <div
+      className={`header ${scrolled ? "scroll" : ""} ${
+        !isHomePage && !isBrowsePage ? "dark" : ""
+      }`}
+    >
       <span className="logo_links">
         <span className="logo">
           <img src={logo} alt="Logo" />
         </span>
         <span className="links">
-          {isBrowsePage ? null : <Link to={"/home"}>Home</Link>}
-          {isBrowsePage ? null : <Link to={"/genre"}>Genre</Link>}
-          {isBrowsePage ? null : <Link to={"/movies"}>Movies</Link>}
+          <Link to={"/home"}>Home</Link>
+          <Link to={"/genre"}>Exlpore Genre</Link>
           <Link to={"/mylist"}>My List</Link>
         </span>
       </span>
       <span className="actions">
         <SearchBar />
         <Notification />
-        <Avatar/>
+        <Avatar />
         {isBrowsePage ? (
-          <Link to={"/home"}>
+          <Link
+            onClick={() => {
+              history.back();
+            }}
+          >
             <span className="material-icons-outlined back">arrow_back</span>
           </Link>
         ) : null}

@@ -68,7 +68,9 @@ const Genre = () => {
     const genreCards = Object.entries(genreData).map(
       ([genreKey, genreVideos]) => (
         <div key={genreKey} className="genre-section">
-          <label className="genre-label">{genreVideos ? genreKey.replace(/_/g, ' ') : ""}</label>
+          <label className="genre-label">
+            {genreVideos ? genreKey.replace(/_/g, " ") : ""}
+          </label>
           <Carousel
             children={genreVideos.map((data) => (
               <VCard key={data.id} data={data} flag={false} />
@@ -84,23 +86,23 @@ const Genre = () => {
 
   return (
     <div className="Genre-wrapper">
-      <span className={`label-wrapper ${scrolled ? "scroll" : ""}`}>
-        <label className="label">Genre</label>
+      <span className="g-label-wrapper">
+        <label className="g-label">Genre</label>
         <button
           onClick={() => {
             setShowDropdown(!showDropdown);
           }}
-          className="dropdown-button"
+          className="g-dropdown-button"
         >
           <span>Genres</span>
           <span className="material-icons-outlined">expand_more</span>
         </button>
         {showDropdown && (
-          <span className="dropdown-list">
+          <span className="g-dropdown-list">
             {Object.entries(genre_details).map(([genreKey, genreId]) => (
               <ul key={genreKey}>
                 <li onClick={() => navigate(`/explore/genre/${genreId}`)}>
-                {genre_names[genreId]}
+                  {genre_names[genreId]}
                 </li>
               </ul>
             ))}
@@ -108,9 +110,7 @@ const Genre = () => {
         )}
       </span>
       {memoizedMyGenreCarousel}
-      <div className="footer">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };

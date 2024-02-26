@@ -1,4 +1,5 @@
 import "../../styles/v-card.scss";
+import { useLocation } from "react-router-dom";
 import ReactPlayer from "react-player";
 import logo from "../../assets/logo/netflix-card-logo.png";
 import { TMDB_IMG_URL, VIDEO_URL } from "../../Utils/constants";
@@ -11,9 +12,9 @@ import defaultBackdropPath from "../../assets/images/default-card-bg.png";
 import useMuteToggle from "../../Utils/API/useMuteToggle";
 import useHover from "../../Utils/API/useHover";
 import useGenre from "../../Utils/API/useGenre";
-import { addMyList } from "../../Utils/Slices/useMyListSlice";
 import Badge from "./badge";
 import useNotifications from "../../Utils/API/useNotifications";
+import useMyList from "../../Utils/API/useMyList";
 
 const VCard = ({ data, flag }) => {
   const { isActive, trailers, handleMouseOver, handleMouseLeave } = useHover(
@@ -27,15 +28,21 @@ const VCard = ({ data, flag }) => {
   const navigatePage = usePageNavigation();
   const { mute, handleMuteToggle } = useMuteToggle(false);
   const genres = useGenre(data?.genre_ids);
+  const location = useLocation();
 
+  // Check if the current route is '/mylist'
+  const isMyListRoute = location.pathname === "/mylist";
+
+  const { myList, addToMyList, removeFromMyList } = useMyList();
   const { addNotification } = useNotifications();
 
-  const myListVideos = useSelector((store) => store?.myList?.myListVideos);
-  const isItemInList = myListVideos?.some((item) => item?.id === data?.id);
+  const isItemInList = myList?.some((item) => item?.id === data?.id);
 
-  function handleAddNotification() {
+  function handleAddNotification(message) {
     const date = new Date().toISOString();
-    const title = data?.original_title + " added in mylist.";
+    const title = data?.original_title
+      ? data?.original_title + " " + message
+      : "Item" + " " + message;
     const navigateTo = "/mylist";
     addNotification(data?.id, data?.backdrop_path, title, date, navigateTo);
   }
@@ -106,13 +113,25 @@ const VCard = ({ data, flag }) => {
             >
               {playing ? "pause_circle" : "play_circle"}
             </span>
-            {isItemInList ? (
-              <span className="material-icons-outlined">check_circle</span>
-            ) : (
+            {isMyListRoute && (
               <span
                 onClick={() => {
-                  dispatch(addMyList(data));
-                  handleAddNotification();
+                  removeFromMyList(data?.id);
+                  handleAddNotification("removed from the list.");
+                }}
+                className="material-icons-outlined"
+              >
+                cancel
+              </span>
+            )}
+            {isItemInList && !isMyListRoute && (
+              <span className="material-icons-outlined">check_circle</span>
+            )}
+            {!isItemInList && !isMyListRoute && (
+              <span
+                onClick={() => {
+                  addToMyList(data);
+                  handleAddNotification("added to list");
                 }}
                 className="material-icons-outlined"
               >

@@ -16,4 +16,4 @@
 - Implemented debounce for search using lodash.
 - implemented caching in search results.
 - implemented authentication for login and sigup using firebasea and localStorage.
-- Implemented Notifications using local storage.
+- Implemented Notifications using local storage and setInterval.

@@ -1,5 +1,4 @@
 import { useParams } from "react-router";
-import VideoCard from "../common/videoCard";
 import "../../styles/browse.scss";
 import logo from "../../assets/logo/netflix-logo.png";
 import useGenre from "../../Utils/API/useGenre";

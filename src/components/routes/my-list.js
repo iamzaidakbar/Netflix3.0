@@ -1,27 +1,29 @@
-import { useSelector } from "react-redux";
 import VCard from "../common/v-card";
 import "../../styles/my-list.scss";
 import Footer from "../common/footer";
+import useMyList from "../../Utils/API/useMyList";
+import { useMemo } from "react";
 
 const MyList = () => {
-  const myListVideos = useSelector((store) => store?.myList?.myListVideos);
+  const { myList } = useMyList();
 
-  if (myListVideos.length === 0) {
+  const memoized_my_list = useMemo(() => {
+    return myList.map((data) => (
+      <VCard className="vcard" key={data?.id} data={data} flag={false} />
+    ));
+  }, [myList]);
+
+  if (myList.length === 0) {
     return <div className="no-result">No videos in the list!</div>;
   }
 
-  const my_list = myListVideos.map((data) => {
-    console.log("VCard data:", data);
-    return <VCard className="vcard" key={data?.id} data={data} flag={false} />;
-  });
-
-  console.log("myListVideos:", myListVideos, "asa");
-
   return (
     <div className="mylist-wrapper">
-      <label className="label">My List</label>
-      <div className="mylist">{my_list}</div>
-      <div className="footer"><Footer/></div>
+      <label className="m-label">My List</label>
+      <div className="m-mylist">{memoized_my_list}</div>
+      <div className="m-footer">
+        <Footer />
+      </div>
     </div>
   );
 };

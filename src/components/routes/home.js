@@ -14,6 +14,7 @@ import VCard from "../common/v-card";
 import Footer from "../common/footer";
 import "../../styles/carousel.scss";
 import "../../styles/home.scss";
+import useMyList from "../../Utils/API/useMyList";
 
 const Home = () => {
   const fetchMovies = useFetchMovies();
@@ -22,9 +23,9 @@ const Home = () => {
   const [showSlides, setShowSlides] = useState(5.5);
   const deviceType = useDeviceType();
   const navigatePage = usePageNavigation();
-  const myListVideos = useSelector((store) => store?.myList?.myListVideos);
   const [getItOnAction, setGettOnAction] = useState();
   const navigate = useNavigate();
+  const { myList } = useMyList();
 
   useEffect(() => {
     document.title = "Home - Netflix";
@@ -91,7 +92,7 @@ const Home = () => {
     />
   ));
 
-  const myListItems = myListVideos?.map((myList, index) => (
+  const myListItems = myList?.map((myList, index) => (
     <VCard
       key={myList?.id}
       flag={false}
@@ -159,38 +160,38 @@ const Home = () => {
 
   return (
     <div id="home" className="home">
-      <div className="main-menu">{memoizedVideoCard}</div>
+      <div className="h-main-menu">{memoizedVideoCard}</div>
 
-      <div className="sections">
+      <div className="h-sections">
         <span className="top10">
-          <label className="label">Top 10</label>
+          <label className="h-label">Top 10</label>
           {memoizedCarousel}
         </span>
         <span className="movies">
-          <label className="label">Popular Movies</label>
+          <label className="h-label">Popular Movies</label>
           {memoizedMoviesCarousel}
         </span>
         <span className="anime">
-          <label className="label">Popular Anime</label>
+          <label className="h-label">Popular Anime</label>
           {memoizedAnimeCarousel}
         </span>
         <span className="action">
-          <label className="label">
+          <label className="h-label">
             Get It On Action
             <small
               onClick={() => {
                 navigate("/genre");
               }}
-              className="explore_more"
+              className="h-explore_more"
             >
               Explore All Genre &#62;
             </small>
           </label>
           {memoizedActionCarousel}
         </span>
-        {myListVideos.length > 6 && (
+        {myList.length > 6 && (
           <span className="mylist">
-            <label className="label">
+            <label className="h-label">
               My List
               <small
                 onClick={() => {

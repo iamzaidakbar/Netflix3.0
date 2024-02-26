@@ -16,6 +16,7 @@ const useNotifications = () => {
       clearInterval(intervalId);
     };
   }, []); // Dependency array is left empty to run only once when component mounts
+  
 
   const addNotification = (id, img, title, date, to) => {
     const newNotification = { id, img, title, date, to };

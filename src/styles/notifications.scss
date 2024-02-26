@@ -1,13 +1,28 @@
 .n-container {
   position: relative;
+  margin-right: 14px;
 
-  &:hover {
+  &::before {
+    content: "";
+    border: 10px solid #0000;
+    border-bottom-color: #ffffffc2;
+    position: absolute;
+    top: 26px;
+    right: 7px;
+    display: none;
+  }
+
+  &.active {
+    &::before {
+      display: block;
+    }
     .notifications {
       opacity: 1;
       z-index: 1;
       pointer-events: all;
     }
   }
+
   .n-badge {
     color: #fff;
     background-color: red;
@@ -27,7 +42,7 @@
     height: 400px;
     position: absolute;
     right: 0;
-    top: 40px;
+    top: 50px;
     display: flex;
     flex-direction: column;
     overflow: auto;
@@ -37,14 +52,13 @@
     z-index: -1;
     pointer-events: none;
 
-
     .notification-wrapper {
       display: flex;
       align-items: center;
       gap: 12px;
       width: 100%;
       padding: 12px;
-      border-bottom: 1px solid silver;
+      border-bottom: 1px solid rgba(131, 126, 126, 0.685);
       cursor: pointer;
       transition: all 0.1s ease-in-out;
       text-decoration: none;

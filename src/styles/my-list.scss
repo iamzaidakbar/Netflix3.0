@@ -4,14 +4,15 @@
   width: 100vw;
   padding: 90px 44px 0 44px;
   display: flex;
+  flex-direction: column;
   gap: 44px;
 
-  .label {
+  .m-label {
     color: #fff;
     font-size: 24px;
   }
 
-  .mylist {
+  .m-mylist {
     display: flex;
     gap: 4px;
     flex-wrap: wrap;

@@ -30,6 +30,7 @@
     "@reduxjs/toolkit": "^2.2.1",
     "@trendyol-js/react-carousel": "^3.0.2",
     "axios": "^1.6.7",
+    "date-fns": "^3.3.1",
     "dotenv": "^16.4.4",
     "firebase": "^10.8.0",
     "formik": "^2.4.5",
