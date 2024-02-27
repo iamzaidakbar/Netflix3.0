@@ -16,8 +16,6 @@ const useFetchTrailer = () => {
         ...API_OPTIONS,
       });
 
-      console.log(response)
-
       const trailers = response.data.results;
 
       // Dispatch the action to update the Redux store
