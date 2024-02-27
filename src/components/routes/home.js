@@ -15,6 +15,8 @@ import Footer from "../common/footer";
 import "../../styles/carousel.scss";
 import "../../styles/home.scss";
 import useMyList from "../../Utils/API/useMyList";
+import Main_Card_Shimmer from "../shimmer/ui/main-card-shimmer";
+import ShimmeMap from "../../Utils/shimmerMap";
 
 const Home = () => {
   const fetchMovies = useFetchMovies();
@@ -54,8 +56,17 @@ const Home = () => {
   const recently_played = JSON.parse(localStorage.getItem("video_played"));
 
   const memoizedVideoCard = useMemo(() => {
-    if (!movies || !anime || !top10) {
-      return <h2>Loading...</h2>;
+    if (!movies) {
+      return (
+        <Main_Card_Shimmer
+          w={"90vw"}
+          h={"500px"}
+          mb={"90px"}
+          mt={"90px"}
+          mr={"auto"}
+          ml={"auto"}
+        />
+      );
     }
 
     const randomIndex = Math.floor(Math.random() * movies.length);
@@ -64,7 +75,7 @@ const Home = () => {
     return (
       <VideoCard videoId={id} title={original_title} description={overview} />
     );
-  }, [movies, anime, top10]);
+  }, [movies]);
 
   const topRatedCarouselItems = top10?.map((item, index) => (
     <VCard
@@ -139,37 +150,37 @@ const Home = () => {
   };
 
   const memoizedCarousel = useMemo(() => {
-    if (!topRatedCarouselItems) return <h2>Loading...</h2>;
+    if (!topRatedCarouselItems) return <ShimmeMap />;
 
     return <Carousel children={topRatedCarouselItems} {...carouselConfig} />;
   }, [deviceType, topRatedCarouselItems]);
 
   const memoizedMoviesCarousel = useMemo(() => {
-    if (!moviesCarouselItems) return <h2>Loading...</h2>;
+    if (!moviesCarouselItems) return <ShimmeMap />;
 
     return <Carousel children={moviesCarouselItems} {...carouselConfig} />;
   }, [deviceType, moviesCarouselItems]);
 
   const memoizedAnimeCarousel = useMemo(() => {
-    if (!animeCarouselItems) return <h2>Loading...</h2>;
+    if (!animeCarouselItems) return <ShimmeMap />;
 
     return <Carousel children={animeCarouselItems} {...carouselConfig} />;
   }, [deviceType, animeCarouselItems]);
 
   const memoizedActionCarousel = useMemo(() => {
-    if (!actionCarouselItems) return <h2>Loading...</h2>;
+    if (!actionCarouselItems) return <ShimmeMap />;
 
     return <Carousel children={actionCarouselItems} {...carouselConfig} />;
   }, [deviceType, actionCarouselItems]);
 
   const memoizedMyListCarousel = useMemo(() => {
-    if (!myListItems) return <h2>Loading...</h2>;
+    if (!myListItems) return <ShimmeMap />;
 
     return <Carousel children={myListItems} {...carouselConfig} />;
   }, [deviceType, myListItems]);
 
   const memoizedRecentlyPlayedCarousel = useMemo(() => {
-    if (!recentlyplayed) return <h2>Loading...</h2>;
+    if (!recentlyplayed) return <ShimmeMap />;
 
     return <Carousel children={recentlyplayed} {...carouselConfig} />;
   }, [deviceType, recentlyplayed]);
@@ -179,15 +190,7 @@ const Home = () => {
       <div className="h-main-menu">{memoizedVideoCard}</div>
 
       <div className="h-sections">
-        {recentlyplayed && recentlyplayed?.length > 6 &&(
-          <span className="recently-played">
-            <label className="h-label">Recently Played</label>
-            {memoizedRecentlyPlayedCarousel}
-          </span>
-        )}
-        <span
-          className="top10"
-        >
+        <span className="top10">
           <label className="h-label">Top 10</label>
           {memoizedCarousel}
         </span>
@@ -213,6 +216,12 @@ const Home = () => {
           </label>
           {memoizedActionCarousel}
         </span>
+        {recentlyplayed && recentlyplayed?.length > 6 && (
+          <span className="recently-played">
+            <label className="h-label">Recently Played</label>
+            {memoizedRecentlyPlayedCarousel}
+          </span>
+        )}
         {myList.length > 6 && (
           <span className="mylist">
             <label className="h-label">

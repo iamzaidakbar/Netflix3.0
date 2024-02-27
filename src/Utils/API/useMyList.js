@@ -3,7 +3,9 @@
 import { useState, useEffect } from "react";
 
 const useMyList = () => {
-  const [myList, setMyList] = useState([]);
+  const [myList, setMyList] = useState(
+    JSON.parse(localStorage.getItem("my_list")) || []
+  );
 
   useEffect(() => {
     // Periodically check for updates in local storage
@@ -41,7 +43,9 @@ const useMyList = () => {
   const removeFromMyList = (movieId) => {
     console.log(movieId);
     // Filter out the movie with the specified ID
+    console.log(myList);
     const updatedList = myList.filter((movie) => movie.id !== movieId);
+    console.log(updatedList);
 
     // Save the updated list to localStorage
     localStorage.setItem("my_list", JSON.stringify(updatedList));

@@ -18,7 +18,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
         <Container />
       </Suspense>
     ),
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
       {
         path: "/update-avatar",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
             <ChooseAvatar />
           </Suspense>
         ),
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
       {
         path: "/home",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
             <Header />
             <Home />
           </Suspense>
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
       {
         path: "/browse/:id",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
             <Header />
             <Browse />
           </Suspense>
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
       {
         path: "/genre",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
             <Header />
             <Genre />
           </Suspense>
@@ -62,7 +62,7 @@ const router = createBrowserRouter([
       {
         path: "/explore/genre/:id",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
             <Header />
             <ExploreGenre />
           </Suspense>
@@ -71,7 +71,7 @@ const router = createBrowserRouter([
       {
         path: "/mylist",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
             <Header />
             <MyList />
           </Suspense>
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
       {
         path: "/search/:query",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
             <Header />
             <Search />
           </Suspense>
@@ -89,7 +89,7 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
             <Login />
           </Suspense>
         ),
@@ -97,7 +97,7 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
             <Signup />
           </Suspense>
         ),

@@ -7,7 +7,7 @@ import logo from "../../assets/logo/netflix-card-logo.png";
 import usePageNavigation from "../../Utils/API/usePageNavigation";
 import ReactPlayer from "react-player";
 import { addMovieTrailerDetails } from "../../Utils/Slices/movieTrailerSlice";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { TMDB_IMG_URL, VIDEO_URL } from "../../Utils/constants";
 
 const FrameMotionVideo = ({ data, trailers }) => {
@@ -30,7 +30,7 @@ const FrameMotionVideo = ({ data, trailers }) => {
       ? data?.original_title + " " + message
       : "Item" + " " + message;
     const navigateTo = "/mylist";
-    addNotification(data?.id, data?.backdrop_path, title, date, navigateTo);
+    addNotification(data, title, date, navigateTo);
   }
 
   function handleNavigation() {

@@ -7,6 +7,8 @@ export const Container = () => {
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       navigate("/login");
+    } else {
+      navigate("/home")
     }
   }, []);
 

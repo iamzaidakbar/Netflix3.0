@@ -7,7 +7,6 @@ import { Carousel } from "@trendyol-js/react-carousel";
 import VCard from "../common/v-card";
 import Footer from "../common/footer";
 import useDeviceType from "../../Utils/API/useDevicetype";
-import useScroll from "../../Utils/useScroll";
 import { useNavigate } from "react-router";
 
 const Genre = () => {
@@ -15,7 +14,7 @@ const Genre = () => {
   const deviceType = useDeviceType();
   const [genreData, setGenreData] = useState({});
   const [showDropdown, setShowDropdown] = useState(false);
-  const scrolled = useScroll();
+
   const navigate = useNavigate();
 
   useEffect(() => {

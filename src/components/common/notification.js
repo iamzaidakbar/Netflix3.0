@@ -9,11 +9,6 @@ const Notification = () => {
   const { notifications } = useNotifications();
   const [active, setActive] = useState(false);
 
-  const formatDate = (dateString) => {
-    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
   const formatRelativeTime = (dateString) => {
     const distance = formatDistanceToNow(new Date(dateString), {
       addSuffix: true,
@@ -55,16 +50,16 @@ const Notification = () => {
               return (
                 <Link
                   to={notification?.to}
-                  key={notification?.id}
+                  key={notification?.data?.id}
                   className="notification-wrapper"
                 >
                   <img
                     width={120}
                     height={70}
-                    src={TMDB_IMG_URL + notification?.img}
+                    src={TMDB_IMG_URL + notification?.data?.backdrop_path}
                   />
                   <div className="n-wrap">
-                    <span className="n-title">{notification?.title}</span>
+                    <span className="n-title">{notification.title}</span>
                     <span className="n-date">
                       {formatRelativeTime(notification?.date)}
                     </span>

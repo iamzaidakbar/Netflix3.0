@@ -93,7 +93,6 @@ const VideoCard = () => {
             >
               {playing ? "pause_circle" : "play_circle"}
             </span>
-            <span className="material-icons-outlined add">add_circle</span>
             <span
               onClick={handleMuteToggle}
               className="material-icons-outlined add"

@@ -3,6 +3,7 @@ import "../../styles/my-list.scss";
 import Footer from "../common/footer";
 import useMyList from "../../Utils/API/useMyList";
 import { useMemo } from "react";
+import ShimmerMap from "../../Utils/shimmerMap";
 
 const MyList = () => {
   const { myList } = useMyList();
@@ -14,7 +15,11 @@ const MyList = () => {
   }, [myList]);
 
   if (myList.length === 0) {
-    return <div className="no-result">No videos in the list!</div>;
+    return (
+      <div className="no-result">
+        <ShimmerMap />
+      </div>
+    );
   }
 
   return (

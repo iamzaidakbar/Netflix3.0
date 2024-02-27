@@ -15,15 +15,17 @@ const useNotifications = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, []); // Dependency array is left empty to run only once when component mounts
-  
+  }, []); // Dependency array is left empty to run only once when the component mounts
 
-  const addNotification = (id, img, title, date, to) => {
-    const newNotification = { id, img, title, date, to };
-    const updatedNotifications = [...notifications, newNotification];
+  const addNotification = (data, title, date, to) => {
+    // Use the functional update form of setNotifications to ensure correct updating
+    setNotifications(prevNotifications => {
+      const newNotification = { data, title, date, to };
+      const updatedNotifications = [...prevNotifications, newNotification];
 
-    setNotifications(updatedNotifications);
-    localStorage.setItem('notifications', JSON.stringify(updatedNotifications));
+      localStorage.setItem('notifications', JSON.stringify(updatedNotifications));
+      return updatedNotifications;
+    });
   };
 
   return { notifications, addNotification };

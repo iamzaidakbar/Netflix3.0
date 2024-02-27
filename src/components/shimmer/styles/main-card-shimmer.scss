@@ -1,0 +1,19 @@
+.breathing {
+  border-radius: 8px !important;
+  background: #1c1c1c;
+  animation: breathingWithFade 1.5s ease-in-out infinite;
+
+  &:first-child {
+    margin-left: 22px;
+  }
+}
+
+@keyframes breathingWithFade {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}

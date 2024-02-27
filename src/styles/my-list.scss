@@ -2,7 +2,7 @@
   box-sizing: border-box;
   height: 100vh;
   width: 100vw;
-  padding: 124px 100px;
+  padding: 124px 44px;
   display: flex;
   flex-direction: column;
   gap: 44px;
@@ -14,12 +14,12 @@
 
   .m-mylist {
     display: flex;
-    gap: 4px;
+    gap: 14px;
     flex-wrap: wrap;
     width: 100%;
 
     .vcard {
-        width: 250px;
+        width: 244px;
     }
   }
 }
@@ -28,7 +28,8 @@
   font-size: 40px;
   color: #fff;
   position: absolute;
-  top: 50%;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 95%;
 }

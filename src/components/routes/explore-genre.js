@@ -4,7 +4,7 @@ import makeApiRequest from "../../Utils/API/useFetchGenre";
 import VCard from "../common/v-card";
 import "../../styles/explore-genre.scss";
 import Footer from "../common/footer";
-import { genre_details, genre_names } from "../../Utils/constants";
+import { genre_names } from "../../Utils/constants";
 
 const ExploreGenre = () => {
   const [genres, setGenres] = useState(null);
@@ -32,6 +32,7 @@ const ExploreGenre = () => {
 
     return items;
   }, [genres]);
+
 
   return (
     <>
