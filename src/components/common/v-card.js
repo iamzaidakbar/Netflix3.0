@@ -4,7 +4,7 @@ import ReactPlayer from "react-player";
 import logo from "../../assets/logo/netflix-card-logo.png";
 import { TMDB_IMG_URL, VIDEO_URL } from "../../Utils/constants";
 import { addMovieTrailerDetails } from "../../Utils/Slices/movieTrailerSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import React, { useMemo, useState } from "react";
 import { TMDB_IMG_URL } from "../../Utils/constants";
 import usePageNavigation from "../../Utils/API/usePageNavigation";
@@ -15,6 +15,7 @@ import useGenre from "../../Utils/API/useGenre";
 import Badge from "./badge";
 import useNotifications from "../../Utils/API/useNotifications";
 import useMyList from "../../Utils/API/useMyList";
+import useDeviceType from "../../Utils/API/useDevicetype";
 
 const VCard = ({ data, flag }) => {
   const { isActive, trailers, handleMouseOver, handleMouseLeave } = useHover(
@@ -29,6 +30,8 @@ const VCard = ({ data, flag }) => {
   const { mute, handleMuteToggle } = useMuteToggle(false);
   const genres = useGenre(data?.genre_ids);
   const location = useLocation();
+  const deviceType = useDeviceType();
+  const date = new Date().toISOString();
 
   // Check if the current route is '/mylist'
   const isMyListRoute = location.pathname === "/mylist";
@@ -39,7 +42,6 @@ const VCard = ({ data, flag }) => {
   const isItemInList = myList?.some((item) => item?.id === data?.id);
 
   function handleAddNotification(message) {
-    const date = new Date().toISOString();
     const title = data?.original_title
       ? data?.original_title + " " + message
       : "Item" + " " + message;
@@ -64,9 +66,9 @@ const VCard = ({ data, flag }) => {
         id: data?.id,
         played: state.played,
         title: data?.original_title,
+        data,
       });
     }
-
     localStorage.setItem("video_played", JSON.stringify(dataArray));
   }
   function handleDuration(duration) {
@@ -80,7 +82,7 @@ const VCard = ({ data, flag }) => {
 
   const videoWrapper = useMemo(
     () => (
-      <div className={"wrapper"}>
+      <div className="wrapper">
         <div className="react-player-wrapper">
           <ReactPlayer
             width={"100%"}
@@ -89,12 +91,17 @@ const VCard = ({ data, flag }) => {
             playing={playing}
             muted={mute}
             controls={false}
-            url={VIDEO_URL + trailers[0]?.key}
+            url={
+              trailers
+                ? VIDEO_URL + trailers[0]?.key
+                : "https://youtu.be/riYaNOBOIbY"
+            }
             onProgress={handleProgress}
             onDuration={handleDuration}
           />
+          <img className="card-logo" src={logo} />
+          <span className="duration">{duration}</span>
           <img
-            width={"250px"}
             className={`thumbnail ${playing ? "hide" : ""}`}
             src={
               data?.backdrop_path
@@ -103,7 +110,7 @@ const VCard = ({ data, flag }) => {
             }
           />
         </div>
-        <div style={{ width: "300px", height: "130px" }} className="details">
+        <div className="details">
           <div className="icons">
             <span
               onClick={(e) => {
@@ -143,7 +150,7 @@ const VCard = ({ data, flag }) => {
               <span className="material-icons-outlined">info</span>
               <span> More Info</span>
             </button>
-            <span className="duration">{duration}</span>
+
             <span
               onClick={handleMuteToggle}
               className="material-icons-outlined volume-icon"
@@ -180,6 +187,10 @@ const VCard = ({ data, flag }) => {
         </div>
       )}
       <img
+        className="image"
+        onClick={() => {
+          if (deviceType === "mobile") handleNavigation();
+        }}
         src={
           data?.backdrop_path
             ? TMDB_IMG_URL + data?.backdrop_path
@@ -211,21 +222,21 @@ const VCard = ({ data, flag }) => {
   return (
     <>
       <div
+        className="vcard"
         onMouseLeave={
-          data?.backdrop_path
+          data?.backdrop_path && data?.id && deviceType != "mobile"
             ? handleMouseLeave
             : () => {
                 setPreview(true);
               }
         }
         onMouseOver={
-          data?.backdrop_path
+          data?.backdrop_path && data?.id && deviceType != "mobile"
             ? handleMouseOver
             : () => {
                 setPreview(false);
               }
         }
-        className="vcard"
       >
         {isActive ? videoWrapper : image}
       </div>

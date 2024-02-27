@@ -13,7 +13,6 @@ const useScroll = () => {
     // Attach the scroll event listener
     window.addEventListener('scroll', handleScroll);
 
-    console.log(scrolled)
     // Cleanup the event listener on component unmount
     return () => {
       window.removeEventListener('scroll', handleScroll);

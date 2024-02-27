@@ -41,7 +41,7 @@ const useRandomVideo = () => {
       video_id: "4",
       video_description:
         "I've been a rich man and I've been a poor man. And I choose rich every f*cking time! Poverty in my opinion is a passport to misery.",
-      video_color: "green",
+      video_color: "white",
       thumbnail: wolfofwallstreet,
     },
     {

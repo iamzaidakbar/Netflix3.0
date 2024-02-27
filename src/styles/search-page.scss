@@ -1,10 +1,11 @@
 .Search {
   box-sizing: border-box;
-  width: 100vw;
-  padding: 144px 44px;
-  display: flex;
   flex-wrap: wrap;
   gap: 4px;
+  width: 100vw;
+  padding: 174px 100px 100px;
+  display: flex;
+  justify-content: center;
 
   .vcard {
     width: 250px;

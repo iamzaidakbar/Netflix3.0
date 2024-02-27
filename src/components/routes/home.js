@@ -42,15 +42,16 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (deviceType === "laptop") setShowSlides(5.5);
     if (deviceType === "desktop") setShowSlides(6);
+    if (deviceType === "laptop") setShowSlides(5.5);
     if (deviceType === "tablet") setShowSlides(3);
-    if (deviceType === "mobile") setShowSlides(1);
+    if (deviceType === "mobile") setShowSlides(2);
   }, [deviceType]);
 
   const movies = useSelector((store) => store.movies?.nowPlayingMovies);
   const anime = useSelector((store) => store.anime?.animeVideos);
   const top10 = useSelector((store) => store?.topRated?.topRatedVideos);
+  const recently_played = JSON.parse(localStorage.getItem("video_played"));
 
   const memoizedVideoCard = useMemo(() => {
     if (!movies || !anime || !top10) {
@@ -110,6 +111,15 @@ const Home = () => {
     />
   ));
 
+  const recentlyplayed = recently_played?.map((recently_played) => (
+    <VCard
+      key={recently_played?.data?.id}
+      flag={false}
+      data={recently_played?.data}
+      img_url={recently_played?.data?.backdrop_path}
+    />
+  ));
+
   const carouselConfig = {
     useArrowKeys: true,
     responsive: true,
@@ -158,12 +168,26 @@ const Home = () => {
     return <Carousel children={myListItems} {...carouselConfig} />;
   }, [deviceType, myListItems]);
 
+  const memoizedRecentlyPlayedCarousel = useMemo(() => {
+    if (!recentlyplayed) return <h2>Loading...</h2>;
+
+    return <Carousel children={recentlyplayed} {...carouselConfig} />;
+  }, [deviceType, recentlyplayed]);
+
   return (
     <div id="home" className="home">
       <div className="h-main-menu">{memoizedVideoCard}</div>
 
       <div className="h-sections">
-        <span className="top10">
+        {recentlyplayed && recentlyplayed?.length > 6 &&(
+          <span className="recently-played">
+            <label className="h-label">Recently Played</label>
+            {memoizedRecentlyPlayedCarousel}
+          </span>
+        )}
+        <span
+          className="top10"
+        >
           <label className="h-label">Top 10</label>
           {memoizedCarousel}
         </span>

@@ -7,7 +7,7 @@ const useDeviceType = () => {
     const updateDeviceType = () => {
       const screenWidth = window.innerWidth;
 
-      if (screenWidth <= 576) {
+      if (screenWidth <= 700) {
         setDeviceType("mobile");
       } else if (screenWidth <= 992) {
         setDeviceType("tablet");
@@ -27,7 +27,7 @@ const useDeviceType = () => {
     return () => {
       window.removeEventListener("resize", updateDeviceType);
     };
-  }, [window.innerWidth]);
+  }, []);
 
   return deviceType;
 };

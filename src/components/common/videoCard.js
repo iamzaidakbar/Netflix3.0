@@ -5,11 +5,13 @@ import "../../styles/videocard.scss";
 import { useLocation } from "react-router";
 import useRandomVideo from "../../Utils/API/useRandomVideo";
 import useMuteToggle from "../../Utils/API/useMuteToggle";
+import useDeviceType from "../../Utils/API/useDevicetype";
 
 const VideoCard = () => {
   const [reduceTextSize, setReduceTextSize] = useState(false);
   const [videoDetails, setVideoDetails] = useState(false);
   const videoInfo = useRandomVideo();
+  const deviceType = useDeviceType();
   const location = useLocation();
   const isBrowsePage = location.pathname.includes("browse");
   const { mute, handleMuteToggle } = useMuteToggle(false);
@@ -19,7 +21,6 @@ const VideoCard = () => {
     setVideoDetails(videoInfo);
   }, []);
 
-
   // Memoize the VideoCard component
   const memoizedReactPlayer = useMemo(() => {
     if (!videoDetails.video_url || videoDetails.video_url.length === 0) {
@@ -28,23 +29,25 @@ const VideoCard = () => {
 
     return (
       <>
-        <ReactPlayer
-          width={"100vw"}
-          height={"100vh"}
-          fallback={<h2>Loading....</h2>}
-          volume={1}
-          playing={playing}
-          muted={mute}
-          url={videoDetails.video_url}
-          style={{ scale: "1.2" }}
-          controls={false}
-          onEnded={() => {
-            setPlaying(false);
-          }}
-          onError={() => {
-            setPlaying(false);
-          }}
-        />
+        {deviceType != "mobile" && (
+          <ReactPlayer
+            width={"100vw"}
+            height={"100vh"}
+            fallback={<h2>Loading....</h2>}
+            volume={1}
+            playing={playing}
+            muted={mute}
+            url={videoDetails.video_url}
+            style={{ scale: "1.2" }}
+            controls={false}
+            onEnded={() => {
+              setPlaying(false);
+            }}
+            onError={() => {
+              setPlaying(false);
+            }}
+          />
+        )}
         {!isBrowsePage && (
           <img
             className={`thumbnail ${playing ? "hide" : ""}`}
@@ -80,23 +83,25 @@ const VideoCard = () => {
           <span className="description">{videoDetails.video_description}</span>
         )}
 
-        <span className="buttons">
-          <span
-            onClick={() => {
-              setPlaying(!playing);
-            }}
-            className="material-icons-outlined add"
-          >
-            {playing ? "pause_circle" : "play_circle"}
+        {deviceType != "mobile" && (
+          <span className="buttons">
+            <span
+              onClick={() => {
+                setPlaying(!playing);
+              }}
+              className="material-icons-outlined add"
+            >
+              {playing ? "pause_circle" : "play_circle"}
+            </span>
+            <span className="material-icons-outlined add">add_circle</span>
+            <span
+              onClick={handleMuteToggle}
+              className="material-icons-outlined add"
+            >
+              {mute ? "volume_off" : "volume_up"}
+            </span>
           </span>
-          <span className="material-icons-outlined add">add_circle</span>
-          <span
-            onClick={handleMuteToggle}
-            className="material-icons-outlined add"
-          >
-            {mute ? "volume_off" : "volume_up"}
-          </span>
-        </span>
+        )}
       </div>
     </div>
   );

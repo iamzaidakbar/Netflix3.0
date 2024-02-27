@@ -1,6 +1,7 @@
 import ReactPlayer from "react-player";
 
 const BrowseVideCard = ({ volume, playing, mute, url }) => {
+
   return (
     <>
       <ReactPlayer
@@ -13,6 +14,7 @@ const BrowseVideCard = ({ volume, playing, mute, url }) => {
         url={url}
         style={{ scale: "1.4" }}
         controls={false}
+        className="b-v-player"
       />
     </>
   );

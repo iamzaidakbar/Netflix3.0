@@ -6,12 +6,12 @@
     height: 100%;
     background: black bottom center no-repeat;
     -webkit-mask-image: linear-gradient(
-    var(--mask-direction, to bottom),
-    transparent,
-    #000 20%,
-    #000 40%,
-    transparent
-  );
+      var(--mask-direction, to bottom),
+      transparent,
+      #000 20%,
+      #000 40%,
+      transparent
+    );
   }
 
   .movieContent {
@@ -23,7 +23,6 @@
     display: flex;
     align-items: center;
     gap: 44px;
-    
 
     .left {
       width: 100%;
@@ -31,8 +30,6 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
-
-      
 
       .col-1 {
         display: flex;
@@ -138,6 +135,30 @@
           .author-name {
             color: red;
             font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .browse {
+    .video-player {
+      .b-v-player {
+        height: 44% !important;
+        scale: 1 !important;
+      }
+    }
+    .movieContent {
+      position: unset;
+      flex-direction: column;
+      transform: translate(0);
+
+      .left {
+        .col-2 {
+          .title {
+            font-size: 20;
           }
         }
       }

@@ -18,13 +18,14 @@
     position: absolute;
     top: 6px;
     left: 4px;
+    z-index: 8;
   }
 
   .ribbon {
     position: absolute;
     right: 0;
     top: 0;
-    filter: drop-shadow(2px 3px 2px rgba(rgb(17,17,17), 0.5));
+    filter: drop-shadow(2px 3px 2px rgba(rgb(17, 17, 17), 0.5));
 
     .content {
       color: white;
@@ -89,11 +90,11 @@
   width: 300px;
   position: absolute;
   top: -75px;
-  margin-left: -30px;
   scale: 0.8 0.5;
-  transition: all 0.2s ease-in-out;
-  z-index: 9;
-
+  transition: all 0.1s ease-in-out;
+  box-shadow: 5px 5px 15px 5px #000000;
+  margin-left: -30px;
+  
   &:hover {
     z-index: 9;
     scale: 1;
@@ -106,7 +107,17 @@
     height: 167px;
     overflow: hidden;
     z-index: 99;
-    background-color: rgb(17,17,17);
+    background-color: rgb(17, 17, 17);
+
+    .duration {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      position: absolute;
+      right: 8px;
+      margin-top: -24px;
+      z-index: 9;
+    }
 
     .thumbnail {
       position: absolute;
@@ -129,6 +140,8 @@
     background-color: rgb(34, 33, 33);
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
+    height: 130px;
+    width: 300px;
     .icons {
       display: flex;
       align-items: center;
@@ -156,28 +169,22 @@
 
       .more-info {
         margin-left: 12px;
-        background-color: #fff;
+        background-color: #111;
         border: none;
         border-radius: 8px;
         margin-right: auto;
-        color: #111;
+        color: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 4px;
         font-size: 14px;
         padding: 4px 6px;
-        
+
         .material-icons-outlined {
-          color: #111;
+          color: #fff;
           font-size: 24px;
         }
-      }
-
-      .duration {
-        color: #fff;
-        font-size: 15px;
-        font-weight: 500;
       }
     }
     .trailer-details {
@@ -189,7 +196,7 @@
 
       .title {
         width: 200px;
-        font-size: 18px;
+        font-size: 16px;
         color: #fff;
         font-weight: 500;
         font-family: Homemade Apple, cursive;
@@ -199,14 +206,55 @@
         line-height: 45px;
       }
       .genre {
-        font-size: 14px;
+        font-size: 12px;
         color: #fff;
         font-weight: 400;
-        letter-spacing: 1px;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
       }
+    }
+  }
+}
+
+// MEDIA QUERIES
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    width: 95vw;
+
+    .thumbnail {
+      width: 95vw;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+}
+
+// Large Devices
+
+@media screen and (min-width: 1200px) {
+}
+
+// Extra Large Devices
+
+@media screen and (min-width: 1600px) {
+  .wrapper {
+    width: 400px;
+
+    &:hover {
+      scale: 1.1 1.2;
+    }
+
+    .thumbnail {
+      width: 402px;
+      height: 169px;
+      margin-top: -1px;
+      margin-left: -1px;
+    }
+    .details {
+      width: 400px;
     }
   }
 }

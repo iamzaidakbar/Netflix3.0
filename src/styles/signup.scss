@@ -142,7 +142,6 @@
               cursor: pointer;
             }
           }
-        
         }
       }
       .signup-form {
@@ -187,7 +186,7 @@
           padding: 14px;
           cursor: pointer;
         }
-     
+
         .change-email {
           color: #fff;
           font-size: 12px;
@@ -203,20 +202,73 @@
   }
 }
 
-  .error-message {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 
-    .material-icons-outlined {
-      border: 1px solid red;
-      border-radius: 50%;
-      color: red;
-      font-size: 12px;
+  .material-icons-outlined {
+    border: 1px solid red;
+    border-radius: 50%;
+    color: red;
+    font-size: 12px;
+  }
+  .message {
+    color: red;
+    font-size: 12px;
+    font-weight: 500;
+  }
+}
+
+// MEDIA QUERIES
+
+@media screen and (max-width: 768px) {
+  .signup {
+    .header {
+      padding: 12px;
+
+      .actions {
+        margin-right: 0;
+      }
     }
-    .message {
-      color: red;
-      font-size: 12px;
-      font-weight: 500;
+    .body-wrapper {
+      .body {
+        &.active {
+          top: -50rem;
+        }
+        .membership {
+          .label-1 {
+            font-size: 20px;
+          }
+          .label-2,
+          .label-3 {
+            margin: 0 auto;
+            text-align: center;
+            width: 50%;
+            font-size: 16px;
+            white-space: wrap;
+          }
+          .form {
+            margin: 18px 0;
+            .fields {
+              flex-direction: column;
+
+              .input-field {
+                position: relative;
+
+                input {
+                  width: 100%;
+                  padding: 24px 13px 8px 13px;
+                }
+              }
+
+              button {
+                font-size: 15px;
+              }
+            }
+          }
+        }
+      }
     }
   }
+}

@@ -122,3 +122,16 @@
     font-weight: 500;
   }
 }
+
+
+@media screen and (max-width: 768px) {
+  .login {
+    .header {
+      padding: 8px;
+
+      .actions {
+        margin-right: 0;
+      }
+    }
+  }
+}

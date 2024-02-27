@@ -43,7 +43,7 @@ const Genre = () => {
     if (deviceType === "laptop") setShowSlides(5.5);
     if (deviceType === "desktop") setShowSlides(6);
     if (deviceType === "tablet") setShowSlides(3);
-    if (deviceType === "mobile") setShowSlides(1);
+    if (deviceType === "mobile") setShowSlides(2);
   }, [deviceType]);
 
   const carouselConfig = {
