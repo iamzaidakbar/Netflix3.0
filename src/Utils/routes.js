@@ -14,6 +14,8 @@ const Login = lazy(() => import("../components/routes/login"));
 const ExploreGenre = lazy(() => import("../components/routes/explore-genre"));
 const CreateProfile = lazy(() => import("../components/routes/create-profile"));
 const UpdateProfile = lazy(() => import("../components/routes/update-profile"));
+const SelectProfile = lazy(() => import("../components/routes/select-profile"));
+const AddProfile = lazy(() => import("../components/routes/add-profile"));
 const ChooseAvatar = lazy(() => import("../components/routes/chooseAvatar"));
 
 const router = createBrowserRouter([
@@ -35,10 +37,26 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/add-profile",
+        element: (
+          <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
+            <AddProfile />
+          </Suspense>
+        ),
+      },
+      {
         path: "/update-profile",
         element: (
           <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
             <UpdateProfile />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/select-profile",
+        element: (
+          <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
+            <SelectProfile />
           </Suspense>
         ),
       },

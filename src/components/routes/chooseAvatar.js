@@ -87,6 +87,7 @@ const ChooseAvatar = () => {
   const renderAvatarImages = (avatars) => {
     return avatars.map((avatar, index) => (
       <img
+      className="choose-avatar-image"
         key={index}
         src={avatar}
         width={140}

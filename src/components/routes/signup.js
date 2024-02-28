@@ -1,23 +1,30 @@
 import "../../styles/signup.scss";
 import logo from "../../assets/logo/netflix-logo.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useFormValidation from "../../Utils/API/useValidations";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../Utils/firebase";
 import { addUser } from "../../Utils/Slices/userSlice";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Signup = () => {
   const [active, setActive] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
-  const [email, setEmail] = useState("");
+  const [isUserUpdated, setIsUserUpdated] = useState(false);
+  const [Email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const { errors, validateInput } = useFormValidation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const USER = useSelector((store) => store?.user?.loggedInUser) || [];
+
+  useEffect(() => {
+    setIsUserUpdated(true);
+  }, [USER]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -28,14 +35,14 @@ const Signup = () => {
   };
 
   const handleGetStarted = () => {
-    if (!errors.email && email.length > 0) {
+    if (!errors.email && Email.length > 0) {
       setShowSignup(true);
     }
   };
 
   const validate = () => {
     return (
-      !email ||
+      !Email ||
       !password ||
       !confirmPassword ||
       errors.email ||
@@ -44,24 +51,37 @@ const Signup = () => {
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate) {
       setError("Invalid credentials");
     } else {
       setError("");
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const { email, displayName, photoUrl } = userCredential.user;
-          dispatch(addUser({email, displayName, photoUrl}));
-          console.log(email, displayName, photoUrl);
-          navigate("/create-profile");
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setError(errorCode + errorMessage);
-        });
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          Email,
+          password
+        );
+        const user = {
+          email: userCredential?.user?.email,
+          displayName: "",
+          photoUrl: "",
+        };
+        console.log(user);
+        // dispatch(addUser(user));
+        setTimeout(() => {
+         isUserUpdated ? navigate("/create-profile") : '';
+        }, 500);
+      } catch (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        if (errorCode === "auth/email-already-in-use") {
+          setError("Email is already in use");
+        } else {
+          setError("Error creating user: " + errorMessage);
+        }
+      }
     }
   };
 
@@ -100,7 +120,7 @@ const Signup = () => {
               <div className="fields">
                 <div
                   className={`input-field ${
-                    active || email.length > 0 ? "active" : ""
+                    active || Email.length > 0 ? "active" : ""
                   }`}
                 >
                   <label>Email address</label>
@@ -141,7 +161,7 @@ const Signup = () => {
               type="text"
               placeholder="Email address"
               onChange={handleInputChange}
-              value={email}
+              value={Email}
               disabled
               style={{
                 borderColor: errors.email && "red",

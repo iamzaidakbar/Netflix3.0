@@ -4,15 +4,14 @@ const profileSlice = createSlice({
   name: "avatar",
   initialState: {
     selectedAvatar: null,
-    name: "",
   },
   reducers: {
     addAvatar: (state, action) => {
       state.selectedAvatar = action.payload;
     },
-    addDisplayName: (state, action) => {
-      state.name = action.payload;
-    },
+    removeAvatar: () => {
+      return null;
+    }
   },
 });
 

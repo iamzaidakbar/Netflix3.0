@@ -6,14 +6,12 @@ import { auth } from "../../Utils/firebase";
 import "../../styles/login.scss";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { addUser } from "../../Utils/Slices/userSlice";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const { errors, validateInput } = useFormValidation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const validate = () => {
     return (
@@ -39,16 +37,8 @@ const Login = () => {
     setError("");
 
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-      const { email, displayName, photoURL } = userCredential.user;
-
-      dispatch(addUser({ email, displayName, photoURL }));
-      console.log(email, displayName, photoURL);
-      photoURL ? navigate("/home") : navigate("/create-profile");
+      await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      navigate("/select-profile");
     } catch (error) {
       const errorMessage = error.message;
       setError(errorMessage);

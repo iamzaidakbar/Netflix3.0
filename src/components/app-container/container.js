@@ -11,21 +11,22 @@ const Container = () => {
   const location = useLocation();
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        const { email, displayName, photoURL } = user;
-        dispatch(addUser({ email, displayName, photoURL }));
-
-        // Check if the current route is '/'
         if (location.pathname === "/") {
           navigate("/home");
         }
       } else {
-        console.log("CON");
-        navigate("/login");
+        // Redirect to the corresponding route based on the current path
+        if (location.pathname !== "/login" && location.pathname !== "/signup") {
+          // Redirect to login if the path is neither login nor signup
+          navigate("/login");
+        }
       }
     });
-  }, [location.pathname, navigate]);
+
+    return () => unsubscribe(); // Cleanup the subscription when the component unmounts
+  }, [location.pathname, navigate, dispatch]);
 
   return (
     <div style={{ overflow: "hidden" }} className="container">

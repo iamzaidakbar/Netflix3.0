@@ -6,6 +6,7 @@ import topRatedReducer from "../Slices/topRatedSlice";
 import searchReducer from "../Slices/searchSlice";
 import avatarReducer from "../Slices/profileSlice";
 import userReducer from "../Slices/userSlice";
+import currentProfileReducer from "../Slices/currentProfileSlice";
 
 const Store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const Store = configureStore({
     search: searchReducer,
     avatar: avatarReducer,
     user: userReducer,
+    currentProfile: currentProfileReducer,
   },
 });
 

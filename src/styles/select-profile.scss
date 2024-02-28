@@ -1,0 +1,66 @@
+.select-profile {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 80px;
+
+  label {
+    color: #fff;
+    font-size: 55px;
+  }
+
+  .profiles-container {
+    display: flex;
+    align-items: center;
+    gap: 54px;
+
+    .profile {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      &.current_user {
+        border-right: 1px solid #272727;
+        height: 100%;
+        padding-right: 58px;
+
+        img {
+          border-radius: 25px;
+          
+          cursor: pointer;
+  
+          &:hover {
+            border:unset;
+          }
+        }
+
+        small {
+          color: #958f8f;
+          font-size: 15px;
+          font-weight: 600;
+          margin: 14px 0;
+        }
+      }
+
+      img {
+        border-radius: 16px;
+        border: 1px solid rgb(17, 17, 17);
+        cursor: pointer;
+
+        &:hover {
+          border: 1px solid #fff;
+        }
+      }
+      p {
+        color: #fff;
+        font-weight: 400;
+        font-size: 24px;
+        text-transform: capitalize;
+      }
+    }
+  }
+}

@@ -3,14 +3,23 @@ const { createSlice } = require("@reduxjs/toolkit");
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    loggedInUser: null,
+    loggedInUser: {
+      email: "",
+      displayName: "",
+      photoURL: "",
+    },
   },
   reducers: {
     addUser: (state, action) => {
-      state.loggedInUser = action.payload;
+      console.log(state);
+      state.loggedInUser = { ...action.payload };
     },
     removeUser: () => {
-      return null;
+      return {
+        email: "",
+        displayName: "",
+        photoURL: "",
+      };
     },
   },
 });

@@ -17,7 +17,7 @@ const useFormValidation = () => {
     switch (name) {
       case "name":
         // Example: Validate name (letters, numbers, and spaces allowed)
-        const nameRegex = /^[a-zA-Z0-9\s]+$/;
+        const nameRegex = /^[a-zA-Z0-9\s._-]+$/;
         newErrors[name] = nameRegex.test(value)
           ? ""
           : "Invalid name (only letters, numbers, and spaces allowed)";
