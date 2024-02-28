@@ -11,25 +11,21 @@ const UpdateProfile = () => {
   const [displayName, setDisplayName] = useState("");
 
   const navigate = useNavigate();
-  const { currentProfileData, loading } = useUserProfile();
+  const { currentProfileData, updateProfile, loading } = useUserProfile();
   const { errors, validateInput } = useFormValidation();
   const selectedAvatar = useSelector((store) => store?.profile?.selectedAvatar);
 
   if (loading) return <div id="loader" className="nfLoader"></div>;
 
-
   const updateUserProfile = async () => {
-    try {
-      await updateProfile(auth.currentUser, {
-        displayName: displayName,
-        photoURL: selectedAvatar,
-      });
+    const updatedDetails = {
+      displayName: displayName ? displayName : currentProfileData?.displayName,
+      photoURL: selectedAvatar ? selectedAvatar : currentProfileData?.photoURL,
+    };
+    await updateProfile(currentProfileData.profileKey, updatedDetails);
 
-      console.log("User Updated.");
-      navigate("/home");
-    } catch (error) {
-      console.error(error);
-    }
+    console.log("User Updated.");
+    navigate("/home");
   };
 
   const handleOnChange = (e) => {

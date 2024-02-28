@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { auth, database, push } from "../../Utils/firebase";
-import { ref, get, remove, set, push } from "firebase/database";
+import { ref, get, remove, set, push, update } from "firebase/database";
 
 const useUserProfile = () => {
   const [currentProfileData, setCurrentProfileData] = useState(null);
@@ -24,6 +24,7 @@ const useUserProfile = () => {
 
     try {
       await remove(profileRef);
+      setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
     } catch (error) {
       console.error("Error deleting user profile:", error);
     }
@@ -47,6 +48,22 @@ const useUserProfile = () => {
       setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
     } catch (error) {
       console.error("Error adding user profile:", error);
+    }
+  };
+
+  // Function to update a user profile
+  const updateProfile = async (profileKey, updatedDetails) => {
+    const userID = auth.currentUser.uid;
+    const profileRef = ref(
+      database,
+      `profiles/${userID}/userProfiles/${profileKey}`
+    );
+
+    try {
+      await update(profileRef, updatedDetails);
+      setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
+    } catch (error) {
+      console.error("Error updating user profile:", error);
     }
   };
 
@@ -105,6 +122,7 @@ const useUserProfile = () => {
     switchProfile,
     deleteProfile,
     addProfile,
+    updateProfile,
   };
 };
 
