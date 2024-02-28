@@ -33,7 +33,7 @@
 .settings {
   background-color: rgba(0, 0, 0, 0.76);
   position: absolute;
-  top: 40px;
+  top: 45px;
   right: 0;
   border: 1px solid #2d2a2a;
   opacity: 0;
@@ -46,9 +46,9 @@
   &::before {
     content: "";
     position: absolute;
-    top: -20px;
-    right: 32px;
-    border-width: 10px;
+    top: -32px;
+    right: 28px;
+    border-width: 15px;
     border-style: solid;
     border-color: transparent transparent rgba(255, 255, 255, 0.76) transparent;
   }

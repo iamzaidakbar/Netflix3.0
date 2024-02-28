@@ -3,7 +3,7 @@
 - Intregated APP using PARCEL ( Bundler )
 - Added routing using [react-router-dom, createBrowserRouter, RouterProvider, Outlet]
 - used lazy loading along with suspense
-- added customer hook for conditional bg color of header
+- added custom hook for conditional bg color of header
 - used useMemo to prevent form re-rendering components
 - used debouncing to handle mouseover api call to improve the performance.
 - optimized videomodal to handle api abortion.
@@ -18,3 +18,20 @@
 - implemented authentication for login and sigup using firebasea and localStorage.
 - Implemented Notifications using local storage and setInterval.
 - added recently played videos list using localstorage.
+- added shimmer ui and loader to improve user performance.
+- implemented create-profile, update-profile using redux toolkit and firebase.
+
+
+
+
+# Structure
+
+- signup
+  - Create Profile
+  - Choose Avatar
+  - Save User
+  - Navigate to home
+
+- login
+  - Select Profile
+  - Navigate Home

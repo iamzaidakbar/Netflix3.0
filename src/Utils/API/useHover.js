@@ -17,7 +17,7 @@ const useHover = (id) => {
 
     timerRef.current = setTimeout(() => {
       fetchShortMovieTrailers(id).then((fetchedVideos) => {
-        const fetchedTrailers = fetchedVideos.filter(
+        const fetchedTrailers = fetchedVideos?.filter(
           (item) => item.type === "Trailer"
         );
         setTrailers(fetchedTrailers);

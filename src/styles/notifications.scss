@@ -4,11 +4,11 @@
 
   &::before {
     content: "";
-    border: 10px solid #0000;
+    border: 15px solid #0000;
     border-bottom-color: #ffffffc2;
     position: absolute;
     top: 26px;
-    right: 7px;
+    right: 3px;
     display: none;
   }
 
@@ -42,7 +42,7 @@
     height: 400px;
     position: absolute;
     right: 0;
-    top: 50px;
+    top: 57px;
     display: flex;
     flex-direction: column;
     overflow: auto;

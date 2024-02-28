@@ -57,6 +57,28 @@ code {
   box-sizing: border-box;
 }
 
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .material-icons-outlined {
+    border: 1px solid red;
+    border-radius: 50%;
+    color: red;
+    font-size: 12px;
+  }
+  .message {
+    color: red;
+    font-size: 10px;
+    font-weight: 500;
+  }
+}
+
+button {
+  cursor: pointer;
+}
+
 .nfLoader {
   width: 100px;
   height: 100px;

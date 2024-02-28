@@ -1,33 +1,51 @@
 import React, { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import { ErrorPage } from "../components/common/errorPage";
-import { Container } from "../components/app-container/container";
-import Browse from "../components/routes/browse";
-import ExploreGenre from "../components/routes/explore-genre";
-import Search from "../components/routes/search-page";
-import Signup from "../components/routes/signup";
-import { Header } from "../components/common/header";
-import ChooseAvatar from "../components/routes/chooseAvatar";
 
+const ErrorPage = lazy(() => import("../components/common/errorPage"));
+const Container = lazy(() => import("../components/app-container/container"));
+const Header = lazy(() => import("../components/common/header"));
 const Home = lazy(() => import("../components/routes/home"));
+const Browse = lazy(() => import("../components/routes/browse"));
 const Genre = lazy(() => import("../components/routes/genre"));
 const MyList = lazy(() => import("../components/routes/my-list"));
+const Search = lazy(() => import("../components/routes/search-page"));
+const Signup = lazy(() => import("../components/routes/signup"));
 const Login = lazy(() => import("../components/routes/login"));
+const ExploreGenre = lazy(() => import("../components/routes/explore-genre"));
+const CreateProfile = lazy(() => import("../components/routes/create-profile"));
+const UpdateProfile = lazy(() => import("../components/routes/update-profile"));
+const ChooseAvatar = lazy(() => import("../components/routes/chooseAvatar"));
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
+      <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
         <Container />
       </Suspense>
     ),
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/update-avatar",
+        path: "/create-profile",
         element: (
-          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
+          <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
+            <CreateProfile />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/update-profile",
+        element: (
+          <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
+            <UpdateProfile />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/choose-avatar",
+        element: (
+          <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
             <ChooseAvatar />
           </Suspense>
         ),
@@ -35,7 +53,7 @@ const router = createBrowserRouter([
       {
         path: "/home",
         element: (
-          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
+          <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
             <Header />
             <Home />
           </Suspense>
@@ -44,7 +62,7 @@ const router = createBrowserRouter([
       {
         path: "/browse/:id",
         element: (
-          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
+          <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
             <Header />
             <Browse />
           </Suspense>
@@ -53,7 +71,7 @@ const router = createBrowserRouter([
       {
         path: "/genre",
         element: (
-          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
+          <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
             <Header />
             <Genre />
           </Suspense>
@@ -62,7 +80,7 @@ const router = createBrowserRouter([
       {
         path: "/explore/genre/:id",
         element: (
-          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
+          <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
             <Header />
             <ExploreGenre />
           </Suspense>
@@ -71,7 +89,7 @@ const router = createBrowserRouter([
       {
         path: "/mylist",
         element: (
-          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
+          <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
             <Header />
             <MyList />
           </Suspense>
@@ -80,7 +98,7 @@ const router = createBrowserRouter([
       {
         path: "/search/:query",
         element: (
-          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
+          <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
             <Header />
             <Search />
           </Suspense>
@@ -89,7 +107,7 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: (
-          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
+          <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
             <Login />
           </Suspense>
         ),
@@ -97,7 +115,7 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: (
-          <Suspense fallback={<div id="loader" class="nfLoader"></div>}>
+          <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
             <Signup />
           </Suspense>
         ),

@@ -4,7 +4,9 @@ import { useState } from "react";
 import useFormValidation from "../../Utils/API/useValidations";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../Utils/firebase";
+import { addUser } from "../../Utils/Slices/userSlice";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 
 const Signup = () => {
   const [active, setActive] = useState(false);
@@ -15,6 +17,7 @@ const Signup = () => {
   const [error, setError] = useState("");
   const { errors, validateInput } = useFormValidation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +29,6 @@ const Signup = () => {
 
   const handleGetStarted = () => {
     if (!errors.email && email.length > 0) {
-      console.log(email);
       setShowSignup(true);
     }
   };
@@ -45,16 +47,15 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate) {
-      console.log(name, email, password, confirmPassword);
       setError("Invalid credentials");
     } else {
       setError("");
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          const user = userCredential.user;
-          localStorage.setItem("token", user.accessToken);
-          console.log(user);
-          navigate("/update-avatar");
+          const { email, displayName, photoUrl } = userCredential.user;
+          dispatch(addUser({email, displayName, photoUrl}));
+          console.log(email, displayName, photoUrl);
+          navigate("/create-profile");
         })
         .catch((error) => {
           const errorCode = error.code;

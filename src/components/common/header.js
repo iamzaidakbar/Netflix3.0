@@ -7,7 +7,7 @@ import Notification from "./notification";
 import Avatar from "./avatar";
 import useDeviceType from "../../Utils/API/useDevicetype";
 
-export const Header = () => {
+const Header = () => {
   const scrolled = useScroll();
   const location = useLocation();
   const deviceType = useDeviceType();
@@ -52,3 +52,5 @@ export const Header = () => {
     </div>
   );
 };
+
+export default Header

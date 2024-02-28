@@ -5,42 +5,53 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../Utils/firebase";
 import "../../styles/login.scss";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { addUser } from "../../Utils/Slices/userSlice";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const { errors, validateInput } = useFormValidation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const validate = () => {
-    return !email || !password || errors.email || errors.password;
+    return (
+      !formData.email || !formData.password || errors.email || errors.password
+    );
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     validateInput(name, value);
-    if (name === "email") setEmail(value);
-    else if (name === "password") setPassword(value);
+
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validate) {
       setError("Invalid credentials");
-    } else {
-      setError("");
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          localStorage.setItem("token", user.accessToken);
-          navigate("/update-avatar");
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          setError(errorMessage);
-        });
+      return;
+    }
+
+    setError("");
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+      const { email, displayName, photoURL } = userCredential.user;
+
+      dispatch(addUser({ email, displayName, photoURL }));
+      console.log(email, displayName, photoURL);
+      photoURL ? navigate("/home") : navigate("/create-profile");
+    } catch (error) {
+      const errorMessage = error.message;
+      setError(errorMessage);
     }
   };
 
@@ -74,7 +85,7 @@ const Login = () => {
           type="text"
           placeholder="Email address"
           onChange={handleInputChange}
-          value={email}
+          value={formData.email}
           style={{
             borderColor: errors.email && "red",
             outline: errors.email && "red",
@@ -91,7 +102,7 @@ const Login = () => {
           type="password"
           placeholder="Password"
           onChange={handleInputChange}
-          value={password}
+          value={formData.password}
           style={{
             borderColor: errors.password && "red",
             outline: errors.password && "red",
