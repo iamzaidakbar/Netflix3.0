@@ -6,6 +6,8 @@
   justify-content: center;
   flex-direction: column;
   gap: 80px;
+  background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8)),
+    url("../assets/images/login-background-image.jpg");
 
   label {
     color: #fff;
@@ -23,36 +25,13 @@
       justify-content: center;
       align-items: center;
 
-      &.current_user {
-        border-right: 1px solid #272727;
-        height: 100%;
-        padding-right: 58px;
-
-        img {
-          border-radius: 25px;
-          
-          cursor: pointer;
-  
-          &:hover {
-            border:unset;
-          }
-        }
-
-        small {
-          color: #958f8f;
-          font-size: 15px;
-          font-weight: 600;
-          margin: 14px 0;
-        }
-      }
-
       img {
         border-radius: 16px;
-        border: 1px solid rgb(17, 17, 17);
+        border: 2px solid rgb(17, 17, 17);
         cursor: pointer;
 
         &:hover {
-          border: 1px solid #fff;
+          border: 2px solid #fff;
         }
       }
       p {
@@ -61,6 +40,61 @@
         font-size: 24px;
         text-transform: capitalize;
       }
+      .delete-icon {
+        font-size: 24px;
+        color: #fff;
+        transition: all .2s ease-in-out;
+
+        &:hover {
+          color: red;
+          scale: 1.1;
+        }
+      }
+      .user-icon {
+        font-size: 24px;
+        color: #fff;
+        transition: all .1s ease-in-out;
+
+        &:hover {
+          color: rgb(48, 235, 39);
+          scale: 1.1;
+        }
+      }
+    }
+  }
+}
+
+// Current User Avatar
+
+.current_user {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  padding: 24px 44px;
+
+  .arrow-back {
+    font-size: 44px;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 50%;
+  }
+
+  .current_user_profile {
+    display: flex;
+    align-items: center;
+    img {
+      border-radius: 8px;
+    }
+    .current_user_name {
+      position: absolute;
+      font-size: 15px;
+      color: #fff;
+      top: 80px;
+      margin-left: 3px;
     }
   }
 }

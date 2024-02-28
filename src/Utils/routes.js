@@ -61,7 +61,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/choose-avatar",
+        path: "/choose-avatar/:id",
         element: (
           <Suspense fallback={<div id="loader" className="nfLoader"></div>}>
             <ChooseAvatar />

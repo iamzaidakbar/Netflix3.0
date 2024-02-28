@@ -58,17 +58,42 @@
     align-items: center;
     gap: 8px;
     color: #fff;
-    font-size: 14px;
+    font-size: 13px;
     margin-bottom: 12px;
 
     &:last-child {
       margin-bottom: 0;
     }
 
+    &.user_profiles {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-right: 24px;
+
+      &.first_child {
+        border-top: 1px solid #413d3d;
+        padding-top: 14px;
+      }
+
+      .profile-details {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+
     .edit-icon {
       font-size: 30px !important;
     }
+    .display-name {
+      width: 120px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
     .text {
+      font-size: 13px;
       &:hover {
         text-decoration: underline;
       }
@@ -88,5 +113,32 @@
     &:hover {
       text-decoration: underline;
     }
+  }
+}
+
+input[type="radio"] {
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 0 rgb(255, 255, 255);
+  cursor: pointer;
+  font: inherit;
+  height: 20px;
+  outline: none;
+  width: 20px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    border: 2px solid rgb(255, 255, 255);
+    scale: 1.1;
+  }
+
+  &:checked {
+    background-color: white;
+    box-shadow: inset 0 0 0 0.1875em #26d265;
+    -webkit-transition: background 0.15s, box-shadow 0.1s;
+    transition: background 0.15s, box-shadow 0.1s;
   }
 }

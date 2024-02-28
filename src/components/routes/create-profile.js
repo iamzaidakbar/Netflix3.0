@@ -1,60 +1,33 @@
 import { useNavigate } from "react-router";
 import avatar from "../../assets/images/Avatars/avatar1.png";
 import "../../styles/create-profile.scss";
-import { auth, database } from "../../Utils/firebase";
-import { set, push, ref } from "firebase/database";
+import { auth } from "../../Utils/firebase";
 import useFormValidation from "../../Utils/API/useValidations";
-import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "../../Utils/Slices/userSlice";
+import { useSelector } from "react-redux";
 import { useState } from "react";
+import useUserProfile from "../../Utils/API/useUserData";
 
 const CreateProfile = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const user = auth.currentUser;
+  const { addProfile } = useUserProfile();
 
   const { errors, validateInput } = useFormValidation();
 
   const [displayName, setDisplayName] = useState("");
-  const selectedAvatar = useSelector((store) => store?.avatar?.selectedAvatar);
+  const selectedAvatar = useSelector((store) => store?.profile?.selectedAvatar);
+
+  console.log(user)
 
   const createProfile = () => {
-    if (user) {
-      const userID = user.uid;
-
-      // Generate a unique key for each profile
-      const profileKey = push(
-        ref(database, `profiles/${userID}/userProfiles`)
-      ).key;
-
-      const profileData = {
-        profileKey,
-        email: user.email,
-        displayName: displayName,
-        photoURL: selectedAvatar ? selectedAvatar : avatar,
-      };
-
-      // Set the profile data under the generated key
-      set(
-        ref(database, `profiles/${userID}/userProfiles/${profileKey}`),
-        profileData
-      )
-        .then(() => {
-          // Dispatch action to add user information to Redux store
-          console.log(profileData);
-          if (user && user.email) {
-            console.log("User and Profile Created.");
-            localStorage.setItem("currentProfileID", profileKey);
-            navigate("/home");
-          }
-        })
-        .catch((error) => {
-          console.error("Error creating profile:", error);
-        });
-    } else {
-      console.error("User not authenticated");
-      navigate("/login");
-    }
+    const profileData = {
+      profileKey: user?.profileKey,
+      email: user.email,
+      displayName: displayName,
+      photoURL: selectedAvatar ? selectedAvatar : avatar,
+    };
+    addProfile(profileData);
+    navigate('/home')
   };
 
   const handleOnChange = (e) => {
@@ -109,7 +82,9 @@ const CreateProfile = () => {
           </button>
           <button
             onClick={() => {
-              navigate("/choose-avatar");
+              navigate(
+                "/choose-avatar/profileType=create-profile&username=null"
+              );
             }}
             className="btn-choose-avatar"
           >

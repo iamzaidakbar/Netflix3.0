@@ -9,7 +9,8 @@ import useUserProfile from "../../Utils/API/useUserData";
 const Avatar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { currentProfileData, allProfilesData, loading } = useUserProfile();
+  const { currentProfileData, allProfilesData, switchProfile, loading } =
+    useUserProfile();
 
 
   const logoutUser = () => {
@@ -23,6 +24,31 @@ const Avatar = () => {
         console.log(error);
       });
   };
+
+  const user_profiles =
+    allProfilesData &&
+    allProfilesData?.map((profiles, index) => {
+      return (
+        <li
+          className={`user_profiles ${index === 0 ? "first_child" : ""}`}
+          key={profiles.profileKey}
+        >
+          <div className="profile-details">
+            <img src={profiles?.photoURL} width={30} height={30} />
+            <span className="display-name">{profiles?.displayName}</span>
+          </div>
+          <input
+            onChange={() => {
+              switchProfile(profiles.profileKey);
+            }}
+            id="f-option"
+            name="selector"
+            checked={currentProfileData?.profileKey === profiles.profileKey}
+            type="radio"
+          />
+        </li>
+      );
+    });
 
   return (
     <div className="avatar">
@@ -92,6 +118,7 @@ const Avatar = () => {
               Add profile
             </span>
           </li>
+          {user_profiles}
           <li>
             <button onClick={logoutUser} className="log-out">
               Sign out of netflix

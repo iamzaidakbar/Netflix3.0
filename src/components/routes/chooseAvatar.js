@@ -4,14 +4,21 @@ import avatar3 from "../../assets/images/Avatars/avatar3.png";
 import { Carousel } from "@trendyol-js/react-carousel";
 import "../../styles/choose-avatar.scss";
 import "../../styles/carousel.scss";
-import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { addAvatar } from "../../Utils/Slices/profileSlice";
+import { useLocation, useNavigate } from "react-router";
 
 const ChooseAvatar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const selectedAvatar = useSelector((store) => store?.avatar?.selectedAvatar);
+  const location = useLocation();
+
+  const isPathUpdateProfile = location.pathname.includes(
+    "profileType=update_profile"
+  );
+
+  const selectedAvatar = useSelector((store) => store?.profile?.selectedAvatar);
+  console.log(selectedAvatar)
 
   const carouselConfig = {
     useArrowKeys: true,
@@ -87,7 +94,7 @@ const ChooseAvatar = () => {
   const renderAvatarImages = (avatars) => {
     return avatars.map((avatar, index) => (
       <img
-      className="choose-avatar-image"
+        className="choose-avatar-image"
         key={index}
         src={avatar}
         width={140}
@@ -109,14 +116,18 @@ const ChooseAvatar = () => {
         <span className="sub-col-left">
           <span
             onClick={() => {
-              navigate("/create-profile");
+              navigate(
+                isPathUpdateProfile ? "/update-profile" : "/create-profile"
+              );
             }}
             className="material-icons-outlined arrow-back"
           >
             arrow_back
           </span>
           <span>
-            <h2 className="label-1">Edit Profile</h2>
+            <h2 className="label-1">
+              {isPathUpdateProfile ? "Update Profile" : "Edit Profile"}
+            </h2>
             <h2 className="label-2">Choose a profile icon.</h2>
           </span>
         </span>

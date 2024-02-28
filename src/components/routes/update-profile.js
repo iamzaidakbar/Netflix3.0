@@ -3,38 +3,28 @@ import "../../styles/create-profile.scss";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../../Utils/firebase";
 import useFormValidation from "../../Utils/API/useValidations";
-import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "../../Utils/Slices/userSlice";
+import { useSelector } from "react-redux";
 import { useState } from "react";
+import useUserProfile from "../../Utils/API/useUserData";
 
 const UpdateProfile = () => {
+  const [displayName, setDisplayName] = useState("");
+
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const { email, displayName, photoURL } = useSelector(
-    (store) => store?.user?.loggedInUser || {}
-  );
-
-  const [selectedDisplayName, setSelectedDisplayName] = useState(displayName);
+  const { currentProfileData, loading } = useUserProfile();
   const { errors, validateInput } = useFormValidation();
+  const selectedAvatar = useSelector((store) => store?.profile?.selectedAvatar);
+
+  if (loading) return <div id="loader" className="nfLoader"></div>;
+
 
   const updateUserProfile = async () => {
     try {
       await updateProfile(auth.currentUser, {
-        displayName: selectedDisplayName,
-        photoURL,
+        displayName: displayName,
+        photoURL: selectedAvatar,
       });
 
-      dispatch(
-        addUser({
-          email: email,
-          displayName: selectedDisplayName,
-          photoURL,
-        })
-      );
-      const data = {
-        backdrop_path: photoURL,
-      };
       console.log("User Updated.");
       navigate("/home");
     } catch (error) {
@@ -46,7 +36,7 @@ const UpdateProfile = () => {
     const { name, value } = e.target;
     validateInput(name, value);
     if (name === "name") {
-      setSelectedDisplayName(value);
+      setDisplayName(value);
     }
   };
 
@@ -60,26 +50,23 @@ const UpdateProfile = () => {
           </label>
         </div>
         <div className="c-col-2">
-          <img src={photoURL} width={120} height={120} alt="Choose Avatar" />
+          <img
+            src={selectedAvatar ? selectedAvatar : currentProfileData?.photoURL}
+            width={120}
+            height={120}
+            alt="Choose Avatar"
+          />
           <span className="c-sub-col">
             <input
               style={{
                 borderColor: errors.name && "red",
                 outline: errors.name && "red",
               }}
+              value={displayName}
               onChange={handleOnChange}
-              value={selectedDisplayName ? selectedDisplayName : displayName}
               type="text"
-              placeholder="Name"
+              placeholder={currentProfileData?.displayName}
               name="name"
-            />
-            <input
-              disabled
-              value={email}
-              name="email"
-              type="email"
-              placeholder="Email"
-              onChange={handleOnChange}
             />
             {errors.name && (
               <span className="error-message">
@@ -89,21 +76,29 @@ const UpdateProfile = () => {
             )}
           </span>
         </div>
+
         <div className="c-col-3">
-          <button
-            disabled={displayName?.length === 0}
-            onClick={updateUserProfile}
-            className="btn-continue"
-          >
+          <button onClick={updateUserProfile} className="btn-continue">
             Continue
           </button>
           <button
             onClick={() => {
-              navigate("/choose-avatar");
+              navigate(
+                "/choose-avatar/profileType=update_profile&username=" +
+                  currentProfileData?.displayName
+              );
             }}
             className="btn-choose-avatar"
           >
-            Choose Avatar
+            Change Avatar
+          </button>
+          <button
+            onClick={() => {
+              navigate("/home");
+            }}
+            className="btn-cancel"
+          >
+            Cancel
           </button>
         </div>
       </div>

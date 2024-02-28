@@ -29,6 +29,7 @@ const Home = () => {
   const navigate = useNavigate();
   const { myList } = useMyList();
 
+
   useEffect(() => {
     document.title = "Home - Netflix";
 
@@ -42,6 +43,7 @@ const Home = () => {
     fetchTopRated();
     fetchGetItOnAction();
   }, []);
+
 
   useEffect(() => {
     if (deviceType === "desktop") setShowSlides(6);
