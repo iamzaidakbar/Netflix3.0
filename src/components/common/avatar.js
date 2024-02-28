@@ -9,9 +9,13 @@ import useUserProfile from "../../Utils/API/useUserData";
 const Avatar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { currentProfileData, allProfilesData, switchProfile, loading } =
-    useUserProfile();
-
+  const {
+    currentProfileData,
+    allProfilesData,
+    switchProfile,
+    deleteProfile,
+    loading,
+  } = useUserProfile();
 
   const logoutUser = () => {
     signOut(auth)
@@ -25,6 +29,10 @@ const Avatar = () => {
       });
   };
 
+  const handleDeleteProfile = async (profileKey) => {
+    await deleteProfile(profileKey);
+  };
+
   const user_profiles =
     allProfilesData &&
     allProfilesData?.map((profiles, index) => {
@@ -36,6 +44,16 @@ const Avatar = () => {
           <div className="profile-details">
             <img src={profiles?.photoURL} width={30} height={30} />
             <span className="display-name">{profiles?.displayName}</span>
+            {currentProfileData?.profileKey != profiles.profileKey && (
+              <span
+                onClick={() => {
+                  handleDeleteProfile(profiles.profileKey);
+                }}
+                className="material-icons-outlined delete-icon"
+              >
+                delete
+              </span>
+            )}
           </div>
           <input
             onChange={() => {

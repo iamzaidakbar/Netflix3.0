@@ -80,6 +80,20 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        
+        .delete-icon {
+          font-size: 22px;
+          margin-top: 4px;
+          opacity: 0;
+          scale: 0.7;
+        }
+
+        &:hover {
+          .delete-icon {
+            opacity: 1;
+            scale: 1;
+          }
+        }
       }
     }
 

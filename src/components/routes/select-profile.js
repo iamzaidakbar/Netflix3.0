@@ -1,35 +1,32 @@
 import { useNavigate } from "react-router";
 import "../../styles/select-profile.scss";
 import useUserProfile from "../../Utils/API/useUserData";
+import { useMemo } from "react";
 
 const SelectProfile = () => {
   const navigate = useNavigate();
-  const {
-    currentProfileData,
-    allProfilesData,
-    switchProfile,
-    deleteProfile,
-    loading,
-  } = useUserProfile();
+  const { currentProfileData, allProfilesData, switchProfile, loading } =
+    useUserProfile();
 
-  if (loading) return <div id="loader" className="nfLoader"></div>;
+  const memoizedProfiles = useMemo(() => {
+    return allProfilesData?.map((profile) => (
+      <div
+        key={profile.displayName}
+        className="profile"
+        onClick={() => handleProfileClick(profile)}
+      >
+        <img
+          width={150}
+          height={150}
+          src={profile.photoURL}
+          alt={profile.displayName}
+        />
+        <p>{profile.displayName}</p>
+      </div>
+    ));
+  }, [allProfilesData, currentProfileData]);
 
-  console.log(currentProfileData);
-
-  const handleProfileClick = async (e, profile) => {
-    e.preventDefault();
-
-    await switchProfile(profile.profileKey);
-    navigate("/home");
-  };
-
-  const handleDeleteProfile = async (e, profileKey) => {
-    e.preventDefault();
-
-    await deleteProfile(profileKey);
-  };
-
-  const loggerInUser = (
+  const loggedInUser = (
     <div className="current_user">
       <span
         onClick={() => {
@@ -55,40 +52,19 @@ const SelectProfile = () => {
     </div>
   );
 
+  const handleProfileClick = async (profile) => {
+    await switchProfile(profile.profileKey);
+    navigate("/home");
+  };
+
+  if (loading) return <div id="loader" className="nfLoader"></div>;
+
   return (
     <>
-      {loggerInUser}
+      {loggedInUser}
       <div className="select-profile">
         <label>Who is Watching?</label>
-        <div className="profiles-container">
-          {allProfilesData?.map((profile) => (
-            <div
-              key={profile.displayName}
-              className="profile"
-              onClick={() => handleProfileClick(event, profile)}
-            >
-              <img
-                width={150}
-                height={150}
-                src={profile.photoURL}
-                alt={profile.displayName}
-              />
-              <p>{profile.displayName}</p>
-              {currentProfileData?.profileKey != profile.profileKey ? (
-                <span
-                  onClick={() => handleDeleteProfile(event, profile.profileKey)}
-                  className="material-icons-outlined delete-icon"
-                >
-                  delete
-                </span>
-              ) : (
-                <span className="material-icons-outlined user-icon">
-                  person
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
+        <div className="profiles-container">{memoizedProfiles}</div>
       </div>
     </>
   );

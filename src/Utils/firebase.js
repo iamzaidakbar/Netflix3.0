@@ -2,7 +2,13 @@
 import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getDatabase, ref, get, remove, set, push } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  push,
+  remove,
+  set,
+} from "firebase/database";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -22,4 +28,4 @@ const analytics = getAnalytics(app);
 const database = getDatabase(app); // Add this line to get the database object
 
 export const auth = getAuth();
-export { ref, get, remove, set, push, database }; // Include database in the export
+export { database, push, ref, remove, set }; // Include database in the export
