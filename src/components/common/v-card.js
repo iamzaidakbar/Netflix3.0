@@ -1,6 +1,5 @@
 import "../../styles/v-card.scss";
 import React, { useState } from "react";
-import { TMDB_IMG_URL } from "../../Utils/constants";
 import useHover from "../../Utils/API/useHover";
 import useDeviceType from "../../Utils/API/useDevicetype";
 import FrameMotionVideo from "./frame-motion-video";

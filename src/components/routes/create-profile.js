@@ -10,7 +10,7 @@ import useUserProfile from "../../Utils/API/useUserData";
 const CreateProfile = () => {
   const navigate = useNavigate();
   const user = auth.currentUser;
-  const { addProfile, switchProfile, currentProfileData, loading } =
+  const { addProfile, currentProfileData } =
     useUserProfile();
 
   const { errors, validateInput } = useFormValidation();

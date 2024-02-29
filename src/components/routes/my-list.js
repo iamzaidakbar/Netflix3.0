@@ -2,7 +2,7 @@ import VCard from "../common/v-card";
 import "../../styles/my-list.scss";
 import Footer from "../common/footer";
 import useMyList from "../../Utils/API/useMyList";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import ShimmerMap from "../../Utils/shimmerMap";
 
 const MyList = () => {

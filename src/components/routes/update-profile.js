@@ -1,13 +1,12 @@
 import { useNavigate } from "react-router";
 import "../../styles/create-profile.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import useUserProfile from "../../Utils/API/useUserData";
 import useFormValidation from "../../Utils/API/useValidations";
 
 const UpdateProfile = () => {
   const [displayName, setDisplayName] = useState("");
-
   const navigate = useNavigate();
   const { currentProfileData, updateProfile, loading } = useUserProfile();
   const { errors, validateInput } = useFormValidation();
@@ -48,12 +47,21 @@ const UpdateProfile = () => {
           </label>
         </div>
         <div className="c-col-2">
-          <img
-            src={selectedAvatar ? selectedAvatar : currentProfileData?.photoURL}
-            width={120}
-            height={120}
-            alt="Choose Avatar"
-          />
+          {selectedAvatar && currentProfileData?.photoURL ? (
+            <img
+              src={selectedAvatar}
+              width={120}
+              height={120}
+              alt="Choose Avatar"
+            />
+          ) : (
+            <img
+              src={currentProfileData?.photoURL}
+              width={120}
+              height={120}
+              alt="Choose Avatar"
+            />
+          )}
           <span className="c-sub-col">
             <input
               style={{

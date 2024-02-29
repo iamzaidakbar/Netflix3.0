@@ -3,15 +3,11 @@ const { createSlice } = require("@reduxjs/toolkit");
 const profileSlice = createSlice({
   name: "profile",
   initialState: {
-    selectedAvatar: null,
+    selectedAvatar: "",
   },
   reducers: {
     addAvatar: (state, action) => {
       state.selectedAvatar = action.payload;
-    },
-
-    removeAvatar: () => {
-      return null;
     },
   },
 });

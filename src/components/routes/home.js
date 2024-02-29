@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { Carousel } from "@trendyol-js/react-carousel";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { genre_details } from "../../Utils/constants";
-import usePageNavigation from "../../Utils/API/usePageNavigation";
 import useFetchTopRated from "../../Utils/API/useFetchTopRated";
 import useFetchMovies from "../../Utils/API/useFetchMovies";
 import makeApiRequest from "../../Utils/API/useFetchGenre";
@@ -17,6 +16,8 @@ import "../../styles/home.scss";
 import useMyList from "../../Utils/API/useMyList";
 import Main_Card_Shimmer from "../shimmer/ui/main-card-shimmer";
 import ShimmeMap from "../../Utils/shimmerMap";
+import defaultAvatar from "../../assets/images/Avatars/avatar1.png";
+import { addAvatar } from "../../Utils/Slices/profileSlice";
 
 const Home = () => {
   const fetchMovies = useFetchMovies();
@@ -24,14 +25,14 @@ const Home = () => {
   const fetchTopRated = useFetchTopRated();
   const [showSlides, setShowSlides] = useState(5.5);
   const deviceType = useDeviceType();
-  const navigatePage = usePageNavigation();
   const [getItOnAction, setGettOnAction] = useState();
   const navigate = useNavigate();
   const { myList } = useMyList();
-
+  const dispatch = useDispatch();
 
   useEffect(() => {
     document.title = "Home - Netflix";
+    dispatch(addAvatar(""));
 
     async function fetchGetItOnAction() {
       const response = await makeApiRequest(genre_details["action"]);
@@ -43,7 +44,6 @@ const Home = () => {
     fetchTopRated();
     fetchGetItOnAction();
   }, []);
-
 
   useEffect(() => {
     if (deviceType === "desktop") setShowSlides(6);
@@ -230,7 +230,7 @@ const Home = () => {
               My List
               <small
                 onClick={() => {
-                  navigatePage("/mylist");
+                  navigate("/mylist");
                 }}
                 style={{
                   fontSize: "13px",
