@@ -1,12 +1,16 @@
 import { useNavigate } from "react-router";
 import "../../styles/select-profile.scss";
 import useUserProfile from "../../Utils/API/useUserData";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 const SelectProfile = () => {
   const navigate = useNavigate();
   const { currentProfileData, allProfilesData, switchProfile, loading } =
     useUserProfile();
+
+    useEffect(()=>{
+      document.title = "Select Profile - Netflix";
+    },[])
 
   const memoizedProfiles = useMemo(() => {
     return allProfilesData?.map((profile) => (
@@ -26,7 +30,7 @@ const SelectProfile = () => {
     ));
   }, [allProfilesData, currentProfileData]);
 
-  const loggedInUser = (
+  const loggedInUser = currentProfileData && (
     <div className="current_user">
       <span
         onClick={() => {
@@ -36,19 +40,17 @@ const SelectProfile = () => {
       >
         arrow_back
       </span>
-      {currentProfileData && (
-        <div className="current_user_profile">
-          <img
-            width={50}
-            height={50}
-            src={currentProfileData.photoURL}
-            alt={currentProfileData.displayName}
-          />
-          <span className="current_user_name">
-            {currentProfileData.displayName}
-          </span>
-        </div>
-      )}
+      <div className="current_user_profile">
+        <img
+          width={50}
+          height={50}
+          src={currentProfileData.photoURL}
+          alt={currentProfileData.displayName}
+        />
+        <span className="current_user_name">
+          {currentProfileData.displayName}
+        </span>
+      </div>
     </div>
   );
 

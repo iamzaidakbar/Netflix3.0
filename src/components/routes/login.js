@@ -1,17 +1,20 @@
 import logo from "../../assets/logo/netflix-logo.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useFormValidation from "../../Utils/API/useValidations";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../Utils/firebase";
 import "../../styles/login.scss";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const { errors, validateInput } = useFormValidation();
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    document.title = "Login - Netflix";
+  },[])
 
   const validate = () => {
     return (

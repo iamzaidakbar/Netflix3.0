@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import useFormValidation from "../../Utils/API/useValidations";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../Utils/firebase";
-import { addUser } from "../../Utils/Slices/userSlice";
 import { useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
 
 const Signup = () => {
   const [active, setActive] = useState(false);
@@ -18,13 +16,10 @@ const Signup = () => {
   const [error, setError] = useState("");
   const { errors, validateInput } = useFormValidation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const USER = useSelector((store) => store?.user?.loggedInUser) || [];
 
   useEffect(() => {
-    setIsUserUpdated(true);
-  }, [USER]);
+    document.title = "Signup - Netflix";
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -58,21 +53,8 @@ const Signup = () => {
     } else {
       setError("");
       try {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          Email,
-          password
-        );
-        const user = {
-          email: userCredential?.user?.email,
-          displayName: "",
-          photoUrl: "",
-        };
-        console.log(user);
-        // dispatch(addUser(user));
-        setTimeout(() => {
-         isUserUpdated ? navigate("/create-profile") : '';
-        }, 500);
+        await createUserWithEmailAndPassword(auth, Email, password);
+        navigate("/create-profile");
       } catch (error) {
         const errorCode = error.code;
         const errorMessage = error.message;

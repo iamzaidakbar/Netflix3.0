@@ -18,6 +18,7 @@ const Genre = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.title = 'Genre - Netflix'
     const fetchData = async () => {
       const genreDataPromises = Object.entries(genre_details).map(
         async ([genreKey, genreId]) => {

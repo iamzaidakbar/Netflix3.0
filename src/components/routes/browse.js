@@ -15,6 +15,7 @@ const Browse = () => {
   const { mute, handleMuteToggle } = useMuteToggle(false);
 
   useEffect(() => {
+    document.title = 'Browse'
     fetchTrailers(paramsID);
   }, []);
 

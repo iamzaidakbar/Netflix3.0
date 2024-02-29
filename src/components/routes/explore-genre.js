@@ -10,6 +10,10 @@ const ExploreGenre = () => {
   const [genres, setGenres] = useState(null);
   const { id: genreID } = useParams();
 
+  useEffect(()=>{
+    document.title = 'Explore - Netflix'
+  },[])
+
   useEffect(() => {
     const fetchData = async () => {
       try {

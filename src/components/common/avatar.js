@@ -33,6 +33,18 @@ const Avatar = () => {
     await deleteProfile(profileKey);
   };
 
+
+  const loaderStyles = {
+    width: '40px',
+    height: '40px',
+    margin: '0 12px',
+    position: 'relative',
+    top: '4px',
+    right: '10px',
+    left: 'unset',
+    transform: 'unset',
+  };
+
   const user_profiles =
     allProfilesData &&
     allProfilesData?.map((profiles, index) => {
@@ -72,16 +84,7 @@ const Avatar = () => {
     <div className="avatar">
       <span className="avatar-logo">
         {loading ? (
-          <div
-            style={{
-              float: "right",
-              width: "40px",
-              height: "40px",
-              margin: "6px 12px",
-            }}
-            id="loader"
-            className="nfLoader"
-          ></div>
+          <div id="loader" style={loaderStyles} className="nfLoader"></div>
         ) : (
           <>
             <img src={currentProfileData?.photoURL} width={40} height={40} />

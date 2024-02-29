@@ -8,10 +8,42 @@ const useUserProfile = () => {
   const [loading, setLoading] = useState(true);
   const [componentChanged, setComponentChanged] = useState(false);
 
+  // Function to set the current user manually with a specific profileKey
+  const setCurrentUserManually = async (profileKey) => {
+    const userID = auth.currentUser.uid;
+    const userProfilesRef = ref(database, `profiles/${userID}/userProfiles`);
+
+    try {
+      const snapshot = await get(userProfilesRef);
+
+      if (snapshot.exists()) {
+        const profilesData = snapshot.val();
+        const profilesArray = Object.values(profilesData);
+
+        // Find the profile with the specified profileKey
+        const selectedProfile = profilesArray.find(
+          (profile) => profile.profileKey === profileKey
+        );
+
+        // Update the current profile data
+        setCurrentProfileData(selectedProfile);
+
+        // Set the current profileKey in localStorage
+        localStorage.setItem("currentProfileID", profileKey);
+      }
+    } catch (error) {
+      console.error("Error setting current user manually:", error);
+    }
+
+    setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
+  };
+
   // Function to switch the current profile
   const switchProfile = async (profileKey) => {
-    localStorage.setItem("currentProfileID", profileKey);
-    setComponentChanged((prev) => !prev); // Toggle the state to trigger useEffect
+    // Use the existing switchProfile logic
+    setLoading(true);
+    await setCurrentUserManually(profileKey); // Set the current user based on the selected profileKey
+    setLoading(false);
   };
 
   // Function for deleting a user.
@@ -23,7 +55,9 @@ const useUserProfile = () => {
     );
 
     try {
+      setLoading(true);
       await remove(profileRef);
+      setLoading(false);
       setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
     } catch (error) {
       console.error("Error deleting user profile:", error);
@@ -31,13 +65,14 @@ const useUserProfile = () => {
   };
 
   // Function to add a new profile
-  const addProfile = async (profileDetails) => {
+  const addProfile = async (profileDetails, flag = false) => {
     const userID = auth.currentUser.uid;
     const newProfileKey = push(
       ref(database, `profiles/${userID}/userProfiles`)
     ).key;
 
     try {
+      setLoading(true);
       await set(
         ref(database, `profiles/${userID}/userProfiles/${newProfileKey}`),
         {
@@ -45,6 +80,10 @@ const useUserProfile = () => {
           profileKey: newProfileKey,
         }
       );
+      if (flag) {
+        await switchProfile(newProfileKey);
+      }
+      setLoading(false);
       setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
     } catch (error) {
       console.error("Error adding user profile:", error);
@@ -60,7 +99,9 @@ const useUserProfile = () => {
     );
 
     try {
+      setLoading(true);
       await update(profileRef, updatedDetails);
+      setLoading(false);
       setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
     } catch (error) {
       console.error("Error updating user profile:", error);

@@ -8,6 +8,10 @@ import ShimmerMap from "../../Utils/shimmerMap";
 const MyList = () => {
   const { myList } = useMyList();
 
+  useEffect(()=>{
+    document.title = 'My List - Netflix'
+  },[])
+
   const memoized_my_list = useMemo(() => {
     return myList.map((data) => (
       <VCard className="vcard" key={data?.id} data={data} flag={false} />

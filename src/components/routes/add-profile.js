@@ -20,6 +20,7 @@ const AddProfile = () => {
   const selectedAvatar = useSelector((store) => store?.profile?.selectedAvatar);
 
   useEffect(() => {
+    document.title = "Add Profile - Netflix";
     dispatch(removeAvatar);
   }, []);
 
@@ -30,7 +31,7 @@ const AddProfile = () => {
       photoURL: selectedAvatar ? selectedAvatar : avatar,
     };
     addProfile(profileData);
-    navigate('/home')
+    navigate("/home");
   };
 
   const handleOnChange = (e) => {

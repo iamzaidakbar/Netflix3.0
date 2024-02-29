@@ -1,11 +1,9 @@
 import { useNavigate } from "react-router";
 import "../../styles/create-profile.scss";
-import { updateProfile } from "firebase/auth";
-import { auth } from "../../Utils/firebase";
-import useFormValidation from "../../Utils/API/useValidations";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useUserProfile from "../../Utils/API/useUserData";
+import useFormValidation from "../../Utils/API/useValidations";
 
 const UpdateProfile = () => {
   const [displayName, setDisplayName] = useState("");
@@ -14,6 +12,10 @@ const UpdateProfile = () => {
   const { currentProfileData, updateProfile, loading } = useUserProfile();
   const { errors, validateInput } = useFormValidation();
   const selectedAvatar = useSelector((store) => store?.profile?.selectedAvatar);
+
+  useEffect(() => {
+    document.title = "Update Profile - Netflix";
+  }, []);
 
   if (loading) return <div id="loader" className="nfLoader"></div>;
 

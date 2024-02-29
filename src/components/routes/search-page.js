@@ -18,6 +18,10 @@ const Search = () => {
   const dispatch = useDispatch();
   const cachedResults = useSelector((state) => state?.search);
 
+  useEffect(()=>{
+    document.title = `${query} - Netflix`
+  },[])
+
   const fetchData = async (searchQuery) => {
     const results = await searchApiRequest(searchQuery);
     dispatch(setResults({ [searchQuery]: results }));

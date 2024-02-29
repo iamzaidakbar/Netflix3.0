@@ -4,30 +4,33 @@ import "../../styles/create-profile.scss";
 import { auth } from "../../Utils/firebase";
 import useFormValidation from "../../Utils/API/useValidations";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useUserProfile from "../../Utils/API/useUserData";
 
 const CreateProfile = () => {
   const navigate = useNavigate();
   const user = auth.currentUser;
-  const { addProfile } = useUserProfile();
+  const { addProfile, switchProfile, currentProfileData, loading } =
+    useUserProfile();
 
   const { errors, validateInput } = useFormValidation();
 
   const [displayName, setDisplayName] = useState("");
   const selectedAvatar = useSelector((store) => store?.profile?.selectedAvatar);
 
-  console.log(user)
+  useEffect(() => {
+    document.title = "Create Profile - Netflix";
+  }, []);
 
-  const createProfile = () => {
+  const createProfile = async () => {
     const profileData = {
-      profileKey: user?.profileKey,
       email: user.email,
       displayName: displayName,
       photoURL: selectedAvatar ? selectedAvatar : avatar,
     };
-    addProfile(profileData);
-    navigate('/home')
+    await addProfile(profileData, true);
+    console.log(currentProfileData)
+    navigate("/home");
   };
 
   const handleOnChange = (e) => {
