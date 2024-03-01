@@ -16,8 +16,9 @@ import "../../styles/home.scss";
 import useMyList from "../../Utils/API/useMyList";
 import Main_Card_Shimmer from "../shimmer/ui/main-card-shimmer";
 import ShimmeMap from "../../Utils/shimmerMap";
-import defaultAvatar from "../../assets/images/Avatars/avatar1.png";
 import { addAvatar } from "../../Utils/Slices/profileSlice";
+import useUserProfile from "../../Utils/API/useUserData";
+import useVideoPlayed from "../../Utils/API/useVideoPlayed";
 
 const Home = () => {
   const fetchMovies = useFetchMovies();
@@ -27,8 +28,9 @@ const Home = () => {
   const deviceType = useDeviceType();
   const [getItOnAction, setGettOnAction] = useState();
   const navigate = useNavigate();
-  const { myList } = useMyList();
   const dispatch = useDispatch();
+  const { currentProfileData } = useUserProfile();
+  const { videoPlayed } = useVideoPlayed(currentProfileData?.profileKey);
 
   useEffect(() => {
     document.title = "Home - Netflix";
@@ -55,7 +57,6 @@ const Home = () => {
   const movies = useSelector((store) => store.movies?.nowPlayingMovies);
   const anime = useSelector((store) => store.anime?.animeVideos);
   const top10 = useSelector((store) => store?.topRated?.topRatedVideos);
-  const recently_played = JSON.parse(localStorage.getItem("video_played"));
 
   const memoizedVideoCard = useMemo(() => {
     if (!movies) {
@@ -106,7 +107,7 @@ const Home = () => {
     />
   ));
 
-  const myListItems = myList?.map((myList, index) => (
+  const myListItems = currentProfileData?.mylist?.map((myList, index) => (
     <VCard
       key={myList?.id}
       flag={false}
@@ -124,14 +125,16 @@ const Home = () => {
     />
   ));
 
-  const recentlyplayed = recently_played?.map((recently_played) => (
-    <VCard
-      key={recently_played?.data?.id}
-      flag={false}
-      data={recently_played?.data}
-      img_url={recently_played?.data?.backdrop_path}
-    />
-  ));
+  const recentlyplayed =
+    videoPlayed.length > 0 &&
+    videoPlayed?.map((recently_played) => (
+      <VCard
+        key={recently_played?.data?.id}
+        flag={false}
+        data={recently_played?.data}
+        img_url={recently_played?.data?.backdrop_path}
+      />
+    ));
 
   const carouselConfig = {
     useArrowKeys: true,
@@ -218,13 +221,13 @@ const Home = () => {
           </label>
           {memoizedActionCarousel}
         </span>
-        {recentlyplayed && recentlyplayed?.length > 6 && (
+        {recentlyplayed && recentlyplayed?.length > 0 && (
           <span className="recently-played">
             <label className="h-label">Recently Played</label>
             {memoizedRecentlyPlayedCarousel}
           </span>
         )}
-        {myList.length > 6 && (
+        {currentProfileData?.mylist && currentProfileData?.mylist?.length > 0 && (
           <span className="mylist">
             <label className="h-label">
               My List

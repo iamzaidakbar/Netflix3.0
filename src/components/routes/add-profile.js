@@ -7,13 +7,14 @@ import useFormValidation from "../../Utils/API/useValidations";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import useUserProfile from "../../Utils/API/useUserData";
+import useNotifications from "../../Utils/API/useNotifications";
 
 const AddProfile = () => {
   const navigate = useNavigate();
   const user = auth.currentUser;
   const dispatch = useDispatch();
-  const { addProfile } = useUserProfile();
-
+  const { addProfile, currentProfileData } = useUserProfile();
+  const { addNotification } = useNotifications(currentProfileData?.profileKey);
   const { errors, validateInput } = useFormValidation();
 
   const [displayName, setDisplayName] = useState("");
@@ -30,7 +31,11 @@ const AddProfile = () => {
       displayName: displayName,
       photoURL: selectedAvatar ? selectedAvatar : avatar,
     };
+    const notificationData = {
+      backdrop_path: selectedAvatar,
+    }
     addProfile(profileData);
+    addNotification(notificationData, "Account was added successfully", date, "/update-profile");
     navigate("/home");
   };
 

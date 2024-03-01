@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import useHover from "../../Utils/API/useHover";
 import useDeviceType from "../../Utils/API/useDevicetype";
 import FrameMotionVideo from "./frame-motion-video";
-import FrameMotionImage from "./frame-motio-image";
+import FrameMotionImage from "./frame-motion-image";
 
 const VCard = ({ data, flag }) => {
   const { isActive, trailers, handleMouseOver, handleMouseLeave } = useHover(

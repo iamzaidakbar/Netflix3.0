@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import "../../styles/create-profile.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import useUserProfile from "../../Utils/API/useUserData";
 import useFormValidation from "../../Utils/API/useValidations";
@@ -24,7 +24,6 @@ const UpdateProfile = () => {
       photoURL: selectedAvatar ? selectedAvatar : currentProfileData?.photoURL,
     };
     await updateProfile(currentProfileData.profileKey, updatedDetails);
-
     console.log("User Updated.");
     navigate("/home");
   };

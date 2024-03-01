@@ -1,34 +1,77 @@
-// useNotifications.js
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import { auth, database, ref, set, get } from "../../Utils/firebase";
 
-const useNotifications = () => {
+const useNotifications = (profileKey) => {
   const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchAllNotifications = async () => {
+    try {
+      setLoading(true);
+      if (!auth.currentUser || !profileKey) {
+        // Handle the case when the user or profile is not authenticated
+        return;
+      }
+
+      const userNotificationsRef = ref(
+        database,
+        `profiles/${auth.currentUser.uid}/userProfiles/${profileKey}/user_notification`
+      );
+      const snapshot = await get(userNotificationsRef);
+
+      if (snapshot.exists()) {
+        const notificationsData = snapshot.val();
+        setNotifications(notificationsData || []); // Set an empty array if data is null
+      }
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    // Periodically check for updates in local storage
+    // Fetch initial notifications when the component mounts or profile changes
+    // Periodically check for updates in the database
     const intervalId = setInterval(() => {
-      const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
-      setNotifications(storedNotifications);
-    }, 1000); // Adjust the interval based on your needs
+      fetchAllNotifications();
+    }, [1000]);
 
-    // Clean up the interval when the component unmounts
+    // Clean up the interval when the component unmounts or profile changes
     return () => {
       clearInterval(intervalId);
     };
-  }, []); // Dependency array is left empty to run only once when the component mounts
+  }, [profileKey]);
 
-  const addNotification = (data, title, date, to) => {
-    // Use the functional update form of setNotifications to ensure correct updating
-    setNotifications(prevNotifications => {
-      const newNotification = { data, title, date, to };
-      const updatedNotifications = [...prevNotifications, newNotification];
+  const addNotification = async (data, title, date, to) => {
+    try {
+      if (!auth.currentUser || !profileKey) {
+        // Handle the case when the user or profile is not authenticated
+        return;
+      }
 
-      localStorage.setItem('notifications', JSON.stringify(updatedNotifications));
-      return updatedNotifications;
-    });
+      const userNotificationsRef = ref(
+        database,
+        `profiles/${auth.currentUser.uid}/userProfiles/${profileKey}/user_notification`
+      );
+
+      // Fetch the current notifications
+      const currentNotifications = [...notifications];
+
+      // Update the notifications in the database
+      await set(userNotificationsRef, [
+        ...currentNotifications,
+        { data, title, date, to },
+      ]);
+
+      // Update the notifications locally
+      setNotifications([...currentNotifications, { data, title, date, to }]);
+    } catch (error) {
+      console.error("Error adding notification:", error);
+    }
   };
 
-  return { notifications, addNotification };
+  return { notifications, addNotification, loading };
 };
 
 export default useNotifications;

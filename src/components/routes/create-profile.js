@@ -10,11 +10,9 @@ import useUserProfile from "../../Utils/API/useUserData";
 const CreateProfile = () => {
   const navigate = useNavigate();
   const user = auth.currentUser;
-  const { addProfile, currentProfileData } =
-    useUserProfile();
 
+  const { addProfile, currentProfileData } = useUserProfile();
   const { errors, validateInput } = useFormValidation();
-
   const [displayName, setDisplayName] = useState("");
   const selectedAvatar = useSelector((store) => store?.profile?.selectedAvatar);
 
@@ -29,7 +27,7 @@ const CreateProfile = () => {
       photoURL: selectedAvatar ? selectedAvatar : avatar,
     };
     await addProfile(profileData, true);
-    console.log(currentProfileData)
+    console.log(currentProfileData);
     navigate("/home");
   };
 

@@ -4,21 +4,23 @@ import Footer from "../common/footer";
 import useMyList from "../../Utils/API/useMyList";
 import { useEffect, useMemo } from "react";
 import ShimmerMap from "../../Utils/shimmerMap";
+import useUserProfile from "../../Utils/API/useUserData";
 
 const MyList = () => {
-  const { myList } = useMyList();
+  const { currentProfileData } = useUserProfile();
 
-  useEffect(()=>{
-    document.title = 'My List - Netflix'
-  },[])
+  useEffect(() => {
+    document.title = "My List - Netflix";
+  }, []);
+  
 
   const memoized_my_list = useMemo(() => {
-    return myList.map((data) => (
+    return currentProfileData?.mylist?.map((data) => (
       <VCard className="vcard" key={data?.id} data={data} flag={false} />
     ));
-  }, [myList]);
+  }, [currentProfileData]);
 
-  if (myList.length === 0) {
+  if (!currentProfileData?.mylist) {
     return (
       <div className="no-result">
         <ShimmerMap />

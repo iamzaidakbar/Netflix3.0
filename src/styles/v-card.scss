@@ -60,16 +60,19 @@
   }
 
   .progress-bar-wrapper {
-    height: 3px;
+    height: 4px;
     position: relative;
     top: 5px;
     margin: 0 auto;
     background-color: rgb(76, 73, 73);
+    border-radius: 30px;
 
+    
     .bar {
+      border-radius: 30px;
       position: absolute;
       background-color: red;
-      height: 3px;
+      height: 100%;
     }
   }
 

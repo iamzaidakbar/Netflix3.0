@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useGenre from "../../Utils/API/useGenre";
 import useMuteToggle from "../../Utils/API/useMuteToggle";
 import useMyList from "../../Utils/API/useMyList";
@@ -7,23 +7,38 @@ import logo from "../../assets/logo/netflix-card-logo.png";
 import usePageNavigation from "../../Utils/API/usePageNavigation";
 import ReactPlayer from "react-player";
 import { addMovieTrailerDetails } from "../../Utils/Slices/movieTrailerSlice";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { TMDB_IMG_URL, VIDEO_URL } from "../../Utils/constants";
+import useUserProfile from "../../Utils/API/useUserData";
+import useVideoPlayed from "../../Utils/API/useVideoPlayed";
+import Spinner from "./spinner";
 
 const FrameMotionVideo = ({ data, trailers }) => {
   const isMyListRoute = location.pathname === "/mylist";
   const { mute, handleMuteToggle } = useMuteToggle(false);
-  const { myList, addToMyList, removeFromMyList } = useMyList();
+  const [itemInList, setItemInList] = useState(false);
   const genres = useGenre(data?.genre_ids);
   const dispatch = useDispatch();
   const navigatePage = usePageNavigation();
-  const { addNotification } = useNotifications();
-
+  const { currentProfileData } = useUserProfile();
+  const { addToMyList, removeFromMyList, loading } = useMyList();
+  const { addNotification } = useNotifications(currentProfileData?.profileKey);
+  const { updateVideoPlayed } = useVideoPlayed(currentProfileData?.profileKey);
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState("");
   const date = new Date().toISOString();
 
-  const isItemInList = myList?.some((item) => item?.id === data?.id);
+
+  // Use useCallback to memoize the function and prevent unnecessary re-renders
+  const isItemInList = useCallback(() => {
+    return currentProfileData?.mylist?.some((item) => item?.id === data?.id);
+  }, [currentProfileData?.mylist, data?.id]);
+
+
+  useEffect(() => {
+    const isInList = isItemInList();
+    setItemInList(isInList);
+  }, [currentProfileData?.mylist, data?.id, isItemInList]);
 
   function handleAddNotification(message) {
     const title = data?.original_title
@@ -38,23 +53,16 @@ const FrameMotionVideo = ({ data, trailers }) => {
     localStorage.setItem("movieDetails", JSON.stringify(data));
     navigatePage("/browse/" + data?.id);
   }
-  function handleProgress(state) {
-    const storedData = JSON.parse(localStorage.getItem("video_played")) || [];
-    const dataArray = Array.isArray(storedData) ? storedData : [];
-    const index = dataArray.findIndex((item) => item.id === data?.id);
 
-    if (index !== -1) {
-      dataArray[index].played = state.played;
-    } else {
-      dataArray.push({
-        id: data?.id,
-        played: state.played,
-        title: data?.original_title,
-        data,
-      });
-    }
-    localStorage.setItem("video_played", JSON.stringify(dataArray));
+  function handleProgress(state) {
+    const videoPlayedData = {
+      id: data?.id,
+      played: state.played,
+      data: data,
+    };
+    if (state.played > 0) updateVideoPlayed(videoPlayedData);
   }
+
   function handleDuration(duration) {
     const minutes = Math.floor(duration / 60);
     const remainingSeconds = duration % 60;
@@ -107,7 +115,7 @@ const FrameMotionVideo = ({ data, trailers }) => {
             {isMyListRoute && (
               <span
                 onClick={() => {
-                  removeFromMyList(data?.id);
+                  removeFromMyList(data?.id, currentProfileData?.profileKey);
                   handleAddNotification("removed from the list.");
                 }}
                 className="material-icons-outlined"
@@ -115,13 +123,15 @@ const FrameMotionVideo = ({ data, trailers }) => {
                 cancel
               </span>
             )}
-            {isItemInList && !isMyListRoute && (
+
+            {!currentProfileData?.profileKey ? (
+              <Spinner />
+            ) : itemInList ? (
               <span className="material-icons-outlined">check_circle</span>
-            )}
-            {!isItemInList && !isMyListRoute && (
+            ) : (
               <span
                 onClick={() => {
-                  addToMyList(data);
+                  addToMyList(data, currentProfileData?.profileKey);
                   handleAddNotification("added to list");
                 }}
                 className="material-icons-outlined"

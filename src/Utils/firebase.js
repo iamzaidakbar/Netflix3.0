@@ -7,7 +7,11 @@ import {
   ref,
   push,
   remove,
+  get,
   set,
+  onValue,
+  off,
+  update
 } from "firebase/database";
 
 // Your web app's Firebase configuration
@@ -28,4 +32,4 @@ const analytics = getAnalytics(app);
 const database = getDatabase(app); // Add this line to get the database object
 
 export const auth = getAuth();
-export { database, push, ref, remove, set }; // Include database in the export
+export { database, push, ref, remove, set, get, onValue, off, update }; // Include database in the export

@@ -1,58 +1,67 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { auth, database, ref, get, set } from "../../Utils/firebase";
 
 const useMyList = () => {
-  const [myList, setMyList] = useState(
-    JSON.parse(localStorage.getItem("my_list")) || []
-  );
+  const [myList, setMyList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    // Periodically check for updates in local storage
-    const intervalId = setInterval(() => {
-      // Retrieve the list from localStorage on component mount
-      const storedList = JSON.parse(localStorage.getItem("my_list")) || [];
-      setMyList(storedList);
-    }, 1000);
+  const addToMyList = async (movieData, profileKey) => {
+    try {
+      setLoading(true);
 
-    // Clean up the interval when the component unmounts
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
+      const userID = auth.currentUser.uid;
+      const myListRef = ref(
+        database,
+        `profiles/${userID}/userProfiles/${profileKey}/mylist`
+      );
 
-  const addToMyList = (movieData) => {
-    // Get existing list from localStorage or initialize an empty array
-    const existingList = JSON.parse(localStorage.getItem("my_list")) || [];
+      const snapshot = await get(myListRef);
+      const storedList = snapshot.val() || [];
 
-    // Check if the movie with the same ID already exists in the list
-    const isDuplicate = existingList.some((movie) => movie.id === movieData.id);
+      const isDuplicate = storedList.some((movie) => movie.id === movieData.id);
 
-    if (!isDuplicate) {
-      // Add the movieData to the list
-      existingList.push(movieData);
-
-      // Save the updated list to localStorage
-      localStorage.setItem("my_list", JSON.stringify(existingList));
-
-      // Update the state to trigger a re-render
-      setMyList(existingList);
+      if (!isDuplicate) {
+        await set(myListRef, [...storedList, movieData]);
+        setMyList([...storedList, movieData]);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("Error adding movie to mylist:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const removeFromMyList = (movieId) => {
-    console.log(movieId);
-    // Filter out the movie with the specified ID
-    console.log(myList);
-    const updatedList = myList.filter((movie) => movie.id !== movieId);
-    console.log(updatedList);
+  const removeFromMyList = async (movieId, profileKey) => {
+    try {
+      setLoading(true);
 
-    // Save the updated list to localStorage
-    localStorage.setItem("my_list", JSON.stringify(updatedList));
+      if (!auth.currentUser || !profileKey) {
+        // Handle the case when the user or profile is not authenticated
+        return;
+      }
 
-    // Update the state to trigger a re-render
-    setMyList(updatedList);
+      const userID = auth.currentUser.uid;
+      const myListRef = ref(
+        database,
+        `profiles/${userID}/userProfiles/${profileKey}/mylist`
+      );
+
+      const snapshot = await get(myListRef);
+      const storedList = snapshot.val() || [];
+
+      const updatedList = storedList.filter((movie) => movie.id !== movieId);
+
+      await set(myListRef, updatedList);
+      setMyList(updatedList);
+    } catch (error) {
+      console.error("Error removing movie from mylist:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  return { myList, addToMyList, removeFromMyList };
+  return { myList, addToMyList, removeFromMyList, loading };
 };
 
 export default useMyList;

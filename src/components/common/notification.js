@@ -4,10 +4,11 @@ import { TMDB_IMG_URL } from "../../Utils/constants";
 import { formatDistanceToNow } from "date-fns";
 import "../../styles/notifications.scss";
 import { useEffect, useState } from "react";
+import useUserProfile from "../../Utils/API/useUserData";
 
 const Notification = () => {
-  const { notifications } = useNotifications();
   const [active, setActive] = useState(false);
+  const { currentProfileData } = useUserProfile();
 
   const formatRelativeTime = (dateString) => {
     const distance = formatDistanceToNow(new Date(dateString), {
@@ -16,14 +17,11 @@ const Notification = () => {
     return distance;
   };
 
-  useEffect(() => {
-    JSON.parse(localStorage.getItem("notifications")) || [];
-  }, [notifications]);
 
   // Sort notifications based on date in descending order
-  const sortedNotifications = notifications
-    .slice()
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  const sortedNotifications = currentProfileData?.user_notification
+    ?.slice()
+    ?.sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
     <>
@@ -37,7 +35,7 @@ const Notification = () => {
         >
           notifications
         </span>
-        <span className="n-badge">{notifications?.length}</span>
+        <span className="n-badge">{sortedNotifications?.length || 0}</span>
 
         <div
           onMouseLeave={() => {
