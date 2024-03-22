@@ -11,7 +11,7 @@ const CreateProfile = () => {
   const navigate = useNavigate();
   const user = auth.currentUser;
 
-  const { addProfile, currentProfileData } = useUserProfile();
+  const { addProfile } = useUserProfile();
   const { errors, validateInput } = useFormValidation();
   const [displayName, setDisplayName] = useState("");
   const selectedAvatar = useSelector((store) => store?.profile?.selectedAvatar);
@@ -26,8 +26,7 @@ const CreateProfile = () => {
       displayName: displayName,
       photoURL: selectedAvatar ? selectedAvatar : avatar,
     };
-    await addProfile(profileData, true);
-    console.log(currentProfileData);
+    addProfile(profileData, true);
     navigate("/home");
   };
 
@@ -75,7 +74,7 @@ const CreateProfile = () => {
         </div>
         <div className="c-col-3">
           <button
-            disabled={displayName.length == 0}
+            disabled={displayName.length === 0}
             onClick={createProfile}
             className="btn-continue"
           >
@@ -96,4 +95,5 @@ const CreateProfile = () => {
     </div>
   );
 };
+
 export default CreateProfile;

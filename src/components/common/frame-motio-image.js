@@ -3,9 +3,16 @@ import { TMDB_IMG_URL } from "../../Utils/constants";
 import logo from "../../assets/logo/netflix-card-logo.png";
 import defaultBackdropPath from "../../assets/images/default-card-bg.png";
 import Badge from "./badge";
+import useUserProfile from "../../Utils/API/useUserData";
 
 const FrameMotionImage = ({ flag, preview, data }) => {
   const deviceType = useDeviceType();
+
+  const { allProfilesData } = useUserProfile()
+
+  const currentActiveUser = allProfilesData.find(profile => profile.isCurrentUser);
+  console.log('currentActiveUser', currentActiveUser)
+
 
   const image = (
     <>
@@ -33,24 +40,23 @@ const FrameMotionImage = ({ flag, preview, data }) => {
         }
       />
       {!preview && <Badge message={"Preview not available"} />}
-      {JSON.parse(localStorage.getItem("video_played"))?.find(
+      {JSON.parse(currentActiveUser.video_played)?.find(
         (video) => video.id === data?.id
       )?.played > 0 && (
-        <div style={{ width: "180px" }} className="progress-bar-wrapper">
-          <span
-            className="bar"
-            style={{
-              width: `${
-                (
-                  JSON.parse(localStorage.getItem("video_played"))?.find(
-                    (video) => video.id === data?.id
-                  )?.played || 0
-                ).toFixed(3) * 100
-              }%`,
-            }}
-          ></span>
-        </div>
-      )}
+          <div style={{ width: "180px" }} className="progress-bar-wrapper">
+            <span
+              className="bar"
+              style={{
+                width: `${(
+                    JSON.parse(currentActiveUser.video_played)?.find(
+                      (video) => video.id === data?.id
+                    )?.played || 0
+                  ).toFixed(3) * 100
+                  }%`,
+              }}
+            ></span>
+          </div>
+        )}
     </>
   );
   return image;

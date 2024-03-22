@@ -1,63 +1,49 @@
 import { useState, useEffect } from "react";
-import { auth, database, ref, get, onValue, set } from "../../Utils/firebase";
+import useUserProfile from "./useUserData";
 
-const useVideoPlayed = (profileKey) => {
+const useVideoPlayed = () => {
   const [videoPlayed, setVideoPlayed] = useState([]);
+  const { allProfilesData } = useUserProfile()
+  const LOCAL_STORAGE_KEY = "userProfiles";
+
 
   useEffect(() => {
-    const userID = auth.currentUser?.uid;
-    const videoPlayedRef = ref(
-      database,
-      `profiles/${userID}/userProfiles/${profileKey}/video_played`
-    );
+    if (!allProfilesData || allProfilesData.length === 0) return;
 
-    const fetchVideoPlayed = async () => {
-      try {
-        const snapshot = await get(videoPlayedRef);
-        const videoPlayedList = snapshot.val() || [];
-        setVideoPlayed(videoPlayedList);
-      } catch (error) {
-        console.error("Error fetching video_played from Firebase:", error);
-      }
-    };
+    const currentActiveUser = allProfilesData.find(profile => profile.isCurrentUser);
+    if (!currentActiveUser) return;
 
-    fetchVideoPlayed();
+    const currentUserVideoPlayed = currentActiveUser.video_played || [];
+    setVideoPlayed(currentUserVideoPlayed);
+  }, [allProfilesData]);
 
-    const listener = onValue(videoPlayedRef, () => {
-      fetchVideoPlayed();
-    });
-
-    return () => {
-      listener();
-    };
-  }, [profileKey]);
-
-  const updateVideoPlayed = async (videoPlayedData) => {
+  const updateVideoPlayed = (updatedVideoPlayed) => {
     try {
-      // Assuming videoPlayedData has a structure like { id, played }
-      const existingIndex = videoPlayed.findIndex(
-        (item) => item.id === videoPlayedData.id
-      );
+      const profilesData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+      const updatedProfilesData = { ...profilesData };
 
-      if (existingIndex !== -1) {
-        // If the item exists, update the played state
-        videoPlayed[existingIndex].played = videoPlayedData.played;
-      } else {
-        // If the item doesn't exist, add it to the array
-        videoPlayed.push(videoPlayedData);
+      const currentActiveUser = allProfilesData.find(profile => profile.isCurrentUser);
+      const profileKey = currentActiveUser?.profileKey;
+      let currentVideoPlayed = updatedProfilesData[profileKey]?.video_played;
+      if (!Array.isArray(currentVideoPlayed)) {
+        currentVideoPlayed = [];
       }
-
-      // Update the "video_played" in the database
-      const userID = auth.currentUser.uid;
-      const videoPlayedRef = ref(
-        database,
-        `profiles/${userID}/userProfiles/${profileKey}/video_played`
-      );
-      await set(videoPlayedRef, videoPlayed);
+      const isDuplicate = currentVideoPlayed.some(item => item.id === updatedVideoPlayed.id);
+      if (!isDuplicate) {
+        const updatedVideoPlayedArray = [...currentVideoPlayed, updatedVideoPlayed];
+        updatedProfilesData[profileKey].video_played = updatedVideoPlayedArray;
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedProfilesData));
+        setVideoPlayed(updatedVideoPlayedArray);
+      }
     } catch (error) {
-      console.error("Error updating video_played:", error);
+      console.error("Error updating video played:", error);
     }
   };
+
+
+
+
+
 
   return { videoPlayed, updateVideoPlayed };
 };

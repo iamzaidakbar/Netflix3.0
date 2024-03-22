@@ -20,10 +20,11 @@ const FrameMotionVideo = ({ data, trailers }) => {
   const genres = useGenre(data?.genre_ids);
   const dispatch = useDispatch();
   const navigatePage = usePageNavigation();
-  const { currentProfileData } = useUserProfile();
-  const { addToMyList, removeFromMyList, loading } = useMyList();
-  const { addNotification } = useNotifications(currentProfileData?.profileKey);
-  const { updateVideoPlayed } = useVideoPlayed(currentProfileData?.profileKey);
+  const { allProfilesData } = useUserProfile();
+  const currentActiveUser = allProfilesData.find(profile => profile.isCurrentUser)
+  const { addToMyList, removeFromMyList } = useMyList();
+  const { addNotification } = useNotifications(currentActiveUser?.profileKey);
+  const { updateVideoPlayed } = useVideoPlayed();
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState("");
   const date = new Date().toISOString();
@@ -31,14 +32,14 @@ const FrameMotionVideo = ({ data, trailers }) => {
 
   // Use useCallback to memoize the function and prevent unnecessary re-renders
   const isItemInList = useCallback(() => {
-    return currentProfileData?.mylist?.some((item) => item?.id === data?.id);
-  }, [currentProfileData?.mylist, data?.id]);
+    return currentActiveUser?.mylist?.some((item) => item?.id === data?.id);
+  }, [currentActiveUser?.mylist, data?.id]);
 
 
   useEffect(() => {
     const isInList = isItemInList();
     setItemInList(isInList);
-  }, [currentProfileData?.mylist, data?.id, isItemInList]);
+  }, [currentActiveUser?.mylist, data?.id, isItemInList]);
 
   function handleAddNotification(message) {
     const title = data?.original_title
@@ -60,8 +61,11 @@ const FrameMotionVideo = ({ data, trailers }) => {
       played: state.played,
       data: data,
     };
-    if (state.played > 0) updateVideoPlayed(videoPlayedData);
+    if (state.played > 0) {
+      updateVideoPlayed(videoPlayedData);
+    }
   }
+
 
   function handleDuration(duration) {
     const minutes = Math.floor(duration / 60);
@@ -115,7 +119,7 @@ const FrameMotionVideo = ({ data, trailers }) => {
             {isMyListRoute && (
               <span
                 onClick={() => {
-                  removeFromMyList(data?.id, currentProfileData?.profileKey);
+                  removeFromMyList(data?.id, currentActiveUser?.profileKey);
                   handleAddNotification("removed from the list.");
                 }}
                 className="material-icons-outlined"
@@ -124,14 +128,14 @@ const FrameMotionVideo = ({ data, trailers }) => {
               </span>
             )}
 
-            {!currentProfileData?.profileKey ? (
+            {!currentActiveUser?.profileKey ? (
               <Spinner />
             ) : itemInList ? (
               <span className="material-icons-outlined">check_circle</span>
             ) : (
               <span
                 onClick={() => {
-                  addToMyList(data, currentProfileData?.profileKey);
+                  addToMyList(data, currentActiveUser?.profileKey);
                   handleAddNotification("added to list");
                 }}
                 className="material-icons-outlined"

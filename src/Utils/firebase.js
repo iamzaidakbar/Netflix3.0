@@ -31,5 +31,36 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const database = getDatabase(app); // Add this line to get the database object
 
+// Variable to hold the connection status
+let isConnected = false;
+
+// Function to check Firebase Realtime Database connection status
+const checkDatabaseConnection = () => {
+  const connectedRef = ref(database, ".info/connected");
+
+  onValue(connectedRef, (snapshot) => {
+    isConnected = snapshot.val() === true;
+    if (isConnected) {
+      console.log("Firebase Realtime Database connected");
+    } else {
+      console.log("Firebase Realtime Database not connected");
+    }
+  });
+};
+
+// Call the function to check the database connection status
+checkDatabaseConnection();
+
 export const auth = getAuth();
-export { database, push, ref, remove, set, get, onValue, off, update }; // Include database in the export
+export {
+  database,
+  push,
+  ref,
+  remove,
+  set,
+  get,
+  onValue,
+  off,
+  update,
+  isConnected,
+}; // Include database and isConnected in the export

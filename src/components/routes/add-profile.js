@@ -31,11 +31,7 @@ const AddProfile = () => {
       displayName: displayName,
       photoURL: selectedAvatar ? selectedAvatar : avatar,
     };
-    const notificationData = {
-      backdrop_path: selectedAvatar,
-    }
     addProfile(profileData);
-    addNotification(notificationData, "Account was added successfully", date, "/update-profile");
     navigate("/home");
   };
 

@@ -1,66 +1,30 @@
 import { useState, useEffect } from "react";
-import { auth, database, push } from "../../Utils/firebase";
-import { ref, get, remove, set, push, update } from "firebase/database";
+import { useDispatch } from "react-redux";
+import { addUser } from "../Slices/userSlice";
 
 const useUserProfile = () => {
-  const [currentProfileData, setCurrentProfileData] = useState(null);
+  const dispatch = useDispatch()
   const [allProfilesData, setAllProfilesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [componentChanged, setComponentChanged] = useState(false);
 
+  const LOCAL_STORAGE_KEY = "userProfiles";
+
   // Function to fetch all user profiles
-  const fetchAllUsersProfiles = async () => {
-    const userID = auth.currentUser.uid;
-    const userProfilesRef = ref(database, `profiles/${userID}/userProfiles`);
-
+  const fetchAllUsersProfiles = () => {
     try {
-      const snapshot = await get(userProfilesRef);
-
-      if (snapshot.exists()) {
-        const profilesData = snapshot.val();
-        const profilesArray = Object.values(profilesData);
-
-        // Filter out profiles with undefined profileKey and delete them
-
-        const filteredProfiles = profilesArray.filter((profile) => {
-          if (profile.profileKey === undefined) {
-            deleteProfile(profile.profileKey);
-          } else {
-            return profile;
-          }
-        });
-
-        // Set all profiles data
-        setAllProfilesData(filteredProfiles);
-      }
+      const profilesData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+      const profilesArray = Object.values(profilesData);
+      setAllProfilesData(profilesArray);
     } catch (error) {
       console.error("Error fetching all user profiles:", error);
     }
   };
 
   // Function to set the current user manually with a specific profileKey
-  const setCurrentUserManually = async (profileKey) => {
-    const userID = auth.currentUser.uid;
-    const userProfilesRef = ref(database, `profiles/${userID}/userProfiles`);
-
+  const setCurrentUserManually = (profileKey) => {
     try {
-      const snapshot = await get(userProfilesRef);
-
-      if (snapshot.exists()) {
-        const profilesData = snapshot.val();
-        const profilesArray = Object.values(profilesData);
-
-        // Find the profile with the specified profileKey
-        const selectedProfile = profilesArray.find(
-          (profile) => profile.profileKey === profileKey
-        );
-
-        // Update the current profile data
-        setCurrentProfileData(selectedProfile);
-
-        // Set the current profileKey in localStorage
-        localStorage.setItem("currentProfileID", profileKey);
-      }
+      localStorage.setItem("currentProfileID", profileKey);
     } catch (error) {
       console.error("Error setting current user manually:", error);
     }
@@ -68,26 +32,35 @@ const useUserProfile = () => {
     setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
   };
 
+
   // Function to switch the current profile
-  const switchProfile = async (profileKey) => {
-    // Use the existing switchProfile logic
+  const switchProfile = (profileKey) => {
     setLoading(true);
-    await setCurrentUserManually(profileKey); // Set the current user based on the selected profileKey
+    setCurrentUserManually(profileKey); // Set the current user based on the selected profileKey
+
+    const profilesData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+    const updatedProfilesData = { ...profilesData };
+
+    // Update isCurrentUser property for all profiles
+    Object.keys(updatedProfilesData).forEach((key) => {
+      updatedProfilesData[key].isCurrentUser = key === profileKey;
+    });
+
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedProfilesData));
+
+    setAllProfilesData(Object.values(updatedProfilesData)); // Update allProfilesData state
+
     setLoading(false);
     setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
   };
 
-  // Function for deleting a user.
-  const deleteProfile = async (profileKey) => {
-    const userID = auth.currentUser.uid;
-    const profileRef = ref(
-      database,
-      `profiles/${userID}/userProfiles/${profileKey}`
-    );
 
+  // Function for deleting a user profile
+  const deleteProfile = (profileKey) => {
     try {
-      setLoading(true);
-      await remove(profileRef);
+      const profilesData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+      delete profilesData[profileKey];
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(profilesData));
       setLoading(false);
       setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
     } catch (error) {
@@ -96,46 +69,43 @@ const useUserProfile = () => {
   };
 
   // Function to add a new profile
-  const addProfile = async (profileDetails, flag = false) => {
-    const userID = auth.currentUser.uid;
-    const newProfileKey = push(
-      ref(database, `profiles/${userID}/userProfiles`)
-    ).key;
-
+  const addProfile = (profileDetails, flag = false) => {
     try {
-      setLoading(true);
-      await set(
-        ref(database, `profiles/${userID}/userProfiles/${newProfileKey}`),
-        {
-          ...profileDetails,
-          profileKey: newProfileKey,
-          mylist: [],
-          user_notifications: [],
-          video_played: [],
-          recently_played: [],
-        }
-      );
+      const profilesData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+      const newProfileKey = `profile_${Date.now()}`;
+      profilesData[newProfileKey] = {
+        ...profileDetails,
+        profileKey: newProfileKey,
+        mylist: [],
+        user_notifications: [],
+        video_played: [],
+        recently_played: [],
+        isCurrentUser: flag,
+      };
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(profilesData));
       if (flag) {
-        await switchProfile(newProfileKey);
+        switchProfile(newProfileKey);
       }
       setLoading(false);
       setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
+      dispatch(addUser(profileDetails));
+
+      // Store the current profile key in localStorage
+      localStorage.setItem("currentProfileID", newProfileKey);
     } catch (error) {
       console.error("Error adding user profile:", error);
     }
   };
 
   // Function to update a user profile
-  const updateProfile = async (profileKey, updatedDetails) => {
-    const userID = auth.currentUser.uid;
-    const profileRef = ref(
-      database,
-      `profiles/${userID}/userProfiles/${profileKey}`
-    );
-
+  const updateProfile = (profileKey, updatedDetails) => {
     try {
-      setLoading(true);
-      await update(profileRef, updatedDetails);
+      const profilesData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+      profilesData[profileKey] = {
+        ...profilesData[profileKey],
+        ...updatedDetails
+      };
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(profilesData));
       setLoading(false);
       setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
     } catch (error) {
@@ -144,46 +114,21 @@ const useUserProfile = () => {
   };
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(
-      async (user) => {
-        if (user) {
-          const userID = user.uid;
-          const userProfilesRef = ref(
-            database,
-            `profiles/${userID}/userProfiles`
-          );
+    fetchAllUsersProfiles(); // Fetch all user profiles
+    setLoading(false); // Move setLoading(false) outside of the try-catch block
 
-          try {
-            await fetchAllUsersProfiles(); // Fetch all user profiles
+    // Get the profile key from localStorage
+    const currentProfileKey = localStorage.getItem("currentProfileID");
 
-            // Get the profile key from localStorage
-            const currentProfileKey = localStorage.getItem("currentProfileID");
-
-            // Find the profile with the stored profileKey
-            const currentProfile = allProfilesData.find(
-              (profile) => profile.profileKey === currentProfileKey
-            );
-
-            // Update the current profile data
-            setCurrentProfileData(currentProfile);
-          } catch (error) {
-            console.error("Error reading user profiles:", error);
-          } finally {
-            setLoading(false);
-          }
-        } else {
-          console.error("User not authenticated!");
-          setLoading(false);
-        }
-      },
-      [componentChanged]
+    // Find the profile with the stored profileKey
+    const currentProfile = allProfilesData.find(
+      (profile) => profile.profileKey === currentProfileKey
     );
 
-    return () => unsubscribe(); // Cleanup the subscription when the component unmounts
-  }, [componentChanged, allProfilesData]); // Include allProfilesData in the dependency array
+  }, [componentChanged]); // Remove allProfilesData from the dependency array
+
 
   return {
-    currentProfileData,
     allProfilesData,
     loading,
     switchProfile,

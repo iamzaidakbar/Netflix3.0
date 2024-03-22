@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import "./App.scss";
 import { RouterProvider } from "react-router-dom";
@@ -11,6 +11,10 @@ import Store from "./src/Utils/Store/store";
 dotenv.config();
 
 const App = () => {
+
+  useEffect(() => {
+    console.log(localStorage.getItem('firebase:previous_websocket_failure'))
+  }, [])
 
   return (
     <div className="App">

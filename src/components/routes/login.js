@@ -41,7 +41,7 @@ const Login = () => {
 
     try {
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
-      navigate("/select-profile");
+      navigate("/home");
     } catch (error) {
       const errorMessage = error.message;
       setError(errorMessage);

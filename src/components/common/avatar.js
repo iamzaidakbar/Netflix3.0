@@ -5,22 +5,30 @@ import { signOut } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { removeUser } from "../../Utils/Slices/userSlice";
 import useUserProfile from "../../Utils/API/useUserData";
+import { useEffect, useState } from "react";
 
 const Avatar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [activeUser, setActiveUser] = useState(null)
   const {
-    currentProfileData,
     allProfilesData,
     switchProfile,
     deleteProfile,
     loading,
   } = useUserProfile();
 
+
+  const currentActiveUser = allProfilesData.filter(profile => profile.isCurrentUser)
+  
+  useEffect(() => {
+    setActiveUser(currentActiveUser[0])
+  }, [currentActiveUser])
+
+
   const logoutUser = () => {
     signOut(auth)
       .then(() => {
-        localStorage.clear();
         dispatch(removeUser());
         navigate("/login");
       })
@@ -29,8 +37,8 @@ const Avatar = () => {
       });
   };
 
-  const handleDeleteProfile = async (profileKey) => {
-    await deleteProfile(profileKey);
+  const handleDeleteProfile = (profileKey) => {
+    deleteProfile(profileKey);
   };
 
 
@@ -56,7 +64,7 @@ const Avatar = () => {
           <div className="profile-details">
             <img src={profiles?.photoURL} width={30} height={30} />
             <span className="display-name">{profiles?.displayName}</span>
-            {currentProfileData?.profileKey != profiles.profileKey && (
+            {activeUser?.profileKey != profiles.profileKey && (
               <span
                 onClick={() => {
                   handleDeleteProfile(profiles.profileKey);
@@ -73,7 +81,7 @@ const Avatar = () => {
             }}
             id="f-option"
             name="selector"
-            checked={currentProfileData?.profileKey === profiles.profileKey}
+            checked={activeUser?.profileKey === profiles.profileKey}
             type="radio"
           />
         </li>
@@ -87,7 +95,7 @@ const Avatar = () => {
           <div id="loader" style={loaderStyles} className="nfLoader"></div>
         ) : (
           <>
-            <img src={currentProfileData?.photoURL} width={40} height={40} />
+            <img src={activeUser?.photoURL} width={40} height={40} />
             <span className="material-icons-outlined drop">
               arrow_drop_down
             </span>
@@ -97,9 +105,9 @@ const Avatar = () => {
         {/* dropdown */}
         <ul className="settings">
           <li>
-            <img src={currentProfileData?.photoURL} width={30} height={30} />
+            <img src={activeUser?.photoURL} width={30} height={30} />
             <span className="display-name">
-              {currentProfileData?.displayName}
+              {activeUser?.displayName}
             </span>
           </li>
           <li>
