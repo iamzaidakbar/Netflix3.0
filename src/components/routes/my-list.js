@@ -6,7 +6,7 @@ import ShimmerMap from "../../Utils/shimmerMap";
 import useUserProfile from "../../Utils/API/useUserData";
 
 const MyList = () => {
-  const { fetchAllUsersProfiles, currentUser } = useUserProfile();
+  const { fetchAllUsersProfiles, currentUser, removeDuplicatesFromMyList } = useUserProfile();
 
   useEffect(() => {
     document.title = "My List - Netflix";
@@ -14,6 +14,7 @@ const MyList = () => {
 
   useEffect(() => {
       fetchAllUsersProfiles();
+      removeDuplicatesFromMyList()
   },[]);
 
 

@@ -121,6 +121,40 @@ const useUserProfile = () => {
     }
   };
 
+  const removeDuplicatesFromMyList = () => {
+    try {
+      const profilesData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+      const updatedProfilesData = { ...profilesData };
+  
+      // Iterate through all profiles
+      Object.keys(updatedProfilesData).forEach((key) => {
+        const profile = updatedProfilesData[key];
+        
+        // Check if the profile has a mylist
+        if (profile && profile.mylist && Array.isArray(profile.mylist)) {
+          // Remove duplicates from mylist
+          const uniqueMyList = profile.mylist.reduce((acc, currentItem) => {
+            const isDuplicate = acc.some(item => item.id === currentItem.id);
+            if (!isDuplicate) {
+              acc.push(currentItem);
+            }
+            return acc;
+          }, []);
+  
+          // Update the profile's mylist with unique items
+          updatedProfilesData[key].mylist = uniqueMyList;
+        }
+      });
+  
+      // Update the localStorage with the updated profile data
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedProfilesData));
+      console.log("Duplicates removed from mylist successfully.");
+    } catch (error) {
+      console.error("Error removing duplicates from mylist:", error);
+    }
+  };
+  
+
 
   // Function to update current user after fetching profiles
   const updateCurrentUserData = () => {
@@ -154,9 +188,8 @@ const useUserProfile = () => {
     deleteProfile,
     addProfile,
     updateProfile,
-    getCurrentUser,
     currentUser,
-    componentChanged
+    removeDuplicatesFromMyList,
   };
 };
 
