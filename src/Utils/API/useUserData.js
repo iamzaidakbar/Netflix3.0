@@ -1,22 +1,27 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addUser } from "../Slices/userSlice";
+import { LOCAL_STORAGE_KEY } from "../constants";
 
 const useUserProfile = () => {
   const dispatch = useDispatch()
   const [allProfilesData, setAllProfilesData] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [componentChanged, setComponentChanged] = useState(false);
 
-  const LOCAL_STORAGE_KEY = "userProfiles";
 
   // Function to fetch all user profiles
   const fetchAllUsersProfiles = () => {
     try {
+      setLoading(true)
       const profilesData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
       const profilesArray = Object.values(profilesData);
       setAllProfilesData(profilesArray);
+      updateCurrentUserData() // Update current user after fetching profiles
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       console.error("Error fetching all user profiles:", error);
     }
   };
@@ -31,7 +36,6 @@ const useUserProfile = () => {
 
     setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
   };
-
 
   // Function to switch the current profile
   const switchProfile = (profileKey) => {
@@ -49,11 +53,10 @@ const useUserProfile = () => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedProfilesData));
 
     setAllProfilesData(Object.values(updatedProfilesData)); // Update allProfilesData state
-
+    fetchAllUsersProfiles()
     setLoading(false);
     setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
   };
-
 
   // Function for deleting a user profile
   const deleteProfile = (profileKey) => {
@@ -61,6 +64,7 @@ const useUserProfile = () => {
       const profilesData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
       delete profilesData[profileKey];
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(profilesData));
+      fetchAllUsersProfiles()
       setLoading(false);
       setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
     } catch (error) {
@@ -86,6 +90,7 @@ const useUserProfile = () => {
       if (flag) {
         switchProfile(newProfileKey);
       }
+      fetchAllUsersProfiles()
       setLoading(false);
       setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
       dispatch(addUser(profileDetails));
@@ -97,8 +102,8 @@ const useUserProfile = () => {
     }
   };
 
-  // Function to update a user profile
   const updateProfile = (profileKey, updatedDetails) => {
+    console.log(updatedDetails, 'api')
     try {
       const profilesData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
       profilesData[profileKey] = {
@@ -106,35 +111,52 @@ const useUserProfile = () => {
         ...updatedDetails
       };
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(profilesData));
+      fetchAllUsersProfiles()
+      console.log("Profile updated successfully");
       setLoading(false);
       setComponentChanged((prev) => !prev); // Trigger useEffect to update profiles
     } catch (error) {
       console.error("Error updating user profile:", error);
+      setLoading(false); // Set loading to false in case of error
     }
   };
 
+
+  // Function to update current user after fetching profiles
+  const updateCurrentUserData = () => {
+    try {
+      const currentProfile = allProfilesData?.find(
+        (profile) => profile.isCurrentUser
+      );
+      setCurrentUser(currentProfile)
+      localStorage.setItem('currentUser', JSON.stringify(currentProfile));
+    } catch (error) {
+      console.error("Error updating current user:", error);
+    }
+  }
+
+  const getCurrentUser = () => {
+    fetchAllUsersProfiles()
+    return currentUser
+  }
+
+
   useEffect(() => {
-    fetchAllUsersProfiles(); // Fetch all user profiles
-    setLoading(false); // Move setLoading(false) outside of the try-catch block
+    fetchAllUsersProfiles();
 
-    // Get the profile key from localStorage
-    const currentProfileKey = localStorage.getItem("currentProfileID");
-
-    // Find the profile with the stored profileKey
-    const currentProfile = allProfilesData.find(
-      (profile) => profile.profileKey === currentProfileKey
-    );
-
-  }, [componentChanged]); // Remove allProfilesData from the dependency array
-
+  }, [componentChanged, loading]);
 
   return {
+    fetchAllUsersProfiles,
     allProfilesData,
     loading,
     switchProfile,
     deleteProfile,
     addProfile,
     updateProfile,
+    getCurrentUser,
+    currentUser,
+    componentChanged
   };
 };
 

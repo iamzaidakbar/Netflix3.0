@@ -3,12 +3,20 @@ import { TMDB_IMG_URL } from "../../Utils/constants";
 import logo from "../../assets/logo/netflix-card-logo.png";
 import defaultBackdropPath from "../../assets/images/default-card-bg.png";
 import Badge from "./badge";
-import useVideoPlayed from "../../Utils/API/useVideoPlayed";
 import useUserProfile from "../../Utils/API/useUserData";
+import { useEffect, useState } from "react";
 
 const FrameMotionImage = ({ flag, preview, data }) => {
   const deviceType = useDeviceType();
-  const { currentProfileData } = useUserProfile();
+  const { allProfilesData } = useUserProfile();
+  const [currentActiveUser, setCurrentActiveUser] = useState(null)
+
+  useEffect(() => {
+    if (allProfilesData) {
+      setCurrentActiveUser(allProfilesData.find(profile => profile.isCurrentUser));
+    }
+  }, [allProfilesData])
+
 
   const image = (
     <>
@@ -36,26 +44,27 @@ const FrameMotionImage = ({ flag, preview, data }) => {
         }
       />
       {!preview && <Badge message={"Preview not available"} />}
-      {currentProfileData?.video_played?.length > 0 &&
-        currentProfileData?.video_played?.find((video) => video.id === data?.id)
+      {currentActiveUser?.video_played?.length > 0 &&
+        currentActiveUser?.video_played?.find((video) => video.id === data?.id)
           ?.played > 0 && (
           <div style={{ width: "180px" }} className="progress-bar-wrapper">
             <span
               className="bar"
               style={{
-                width: `${
-                  (
-                    currentProfileData?.video_played?.find(
-                      (video) => video.id === data?.id
-                    )?.played || 0
-                  ).toFixed(3) * 100
-                }%`,
+                width: `${(
+                  currentActiveUser?.video_played?.find(
+                    (video) => video.id === data?.id
+                  )?.played || 0
+                ).toFixed(3) * 100
+                  }%`,
               }}
             ></span>
           </div>
         )}
     </>
   );
+
+
   return image;
 };
 export default FrameMotionImage;

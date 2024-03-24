@@ -1,26 +1,29 @@
 import VCard from "../common/v-card";
 import "../../styles/my-list.scss";
 import Footer from "../common/footer";
-import useMyList from "../../Utils/API/useMyList";
 import { useEffect, useMemo } from "react";
 import ShimmerMap from "../../Utils/shimmerMap";
 import useUserProfile from "../../Utils/API/useUserData";
 
 const MyList = () => {
-  const { currentProfileData } = useUserProfile();
+  const { fetchAllUsersProfiles, currentUser } = useUserProfile();
 
   useEffect(() => {
     document.title = "My List - Netflix";
   }, []);
-  
+
+  useEffect(() => {
+      fetchAllUsersProfiles();
+  },[]);
+
 
   const memoized_my_list = useMemo(() => {
-    return currentProfileData?.mylist?.map((data) => (
+    return currentUser?.mylist?.map((data) => (
       <VCard className="vcard" key={data?.id} data={data} flag={false} />
     ));
-  }, [currentProfileData]);
+  }, [currentUser?.mylist]);
 
-  if (!currentProfileData?.mylist) {
+  if (!currentUser?.mylist) {
     return (
       <div className="no-result">
         <ShimmerMap />

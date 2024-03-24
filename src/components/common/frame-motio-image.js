@@ -11,7 +11,7 @@ const FrameMotionImage = ({ flag, preview, data }) => {
   const { allProfilesData } = useUserProfile()
 
   const currentActiveUser = allProfilesData.find(profile => profile.isCurrentUser);
-  console.log('currentActiveUser', currentActiveUser)
+  console.log('currentActiveUser')
 
 
   const image = (
@@ -40,7 +40,7 @@ const FrameMotionImage = ({ flag, preview, data }) => {
         }
       />
       {!preview && <Badge message={"Preview not available"} />}
-      {JSON.parse(currentActiveUser.video_played)?.find(
+      {JSON.parse(currentActiveUser?.video_played)?.find(
         (video) => video.id === data?.id
       )?.played > 0 && (
           <div style={{ width: "180px" }} className="progress-bar-wrapper">
@@ -48,7 +48,7 @@ const FrameMotionImage = ({ flag, preview, data }) => {
               className="bar"
               style={{
                 width: `${(
-                    JSON.parse(currentActiveUser.video_played)?.find(
+                    JSON.parse(currentActiveUser?.video_played)?.find(
                       (video) => video.id === data?.id
                     )?.played || 0
                   ).toFixed(3) * 100

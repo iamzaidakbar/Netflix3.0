@@ -12,6 +12,8 @@ export const API_OPTIONS = {
   },
 };
 
+export const LOCAL_STORAGE_KEY = "userProfiles";
+
 export const genre_details = {
   "animation": 16,
   "comedy": 35,

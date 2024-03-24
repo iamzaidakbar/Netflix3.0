@@ -13,12 +13,9 @@ import VCard from "../common/v-card";
 import Footer from "../common/footer";
 import "../../styles/carousel.scss";
 import "../../styles/home.scss";
-import useMyList from "../../Utils/API/useMyList";
-import Main_Card_Shimmer from "../shimmer/ui/main-card-shimmer";
 import ShimmeMap from "../../Utils/shimmerMap";
 import { addAvatar } from "../../Utils/Slices/profileSlice";
 import useUserProfile from "../../Utils/API/useUserData";
-import useVideoPlayed from "../../Utils/API/useVideoPlayed";
 
 const Home = () => {
   const fetchMovies = useFetchMovies();
@@ -29,8 +26,11 @@ const Home = () => {
   const [getItOnAction, setGettOnAction] = useState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { currentProfileData } = useUserProfile();
-  const { videoPlayed } = useVideoPlayed(currentProfileData?.profileKey);
+  const { currentUser, fetchAllUsersProfiles } = useUserProfile()
+
+  useEffect(() => {
+    fetchAllUsersProfiles()
+  }, []);
 
   useEffect(() => {
     document.title = "Home - Netflix";
@@ -48,8 +48,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (deviceType === "desktop") setShowSlides(6);
-    if (deviceType === "laptop") setShowSlides(5.5);
+    if (deviceType === "laptop" || "desktop") setShowSlides(6);
     if (deviceType === "tablet") setShowSlides(3);
     if (deviceType === "mobile") setShowSlides(2);
   }, [deviceType]);
@@ -60,16 +59,7 @@ const Home = () => {
 
   const memoizedVideoCard = useMemo(() => {
     if (!movies) {
-      return (
-        <Main_Card_Shimmer
-          w={"90vw"}
-          h={"500px"}
-          mb={"90px"}
-          mt={"90px"}
-          mr={"auto"}
-          ml={"auto"}
-        />
-      );
+      return null
     }
 
     const randomIndex = Math.floor(Math.random() * movies.length);
@@ -107,7 +97,7 @@ const Home = () => {
     />
   ));
 
-  const myListItems = currentProfileData?.mylist?.map((myList, index) => (
+  const myListItems = currentUser?.mylist?.map((myList, index) => (
     <VCard
       key={myList?.id}
       flag={false}
@@ -126,8 +116,8 @@ const Home = () => {
   ));
 
   const recentlyplayed =
-    videoPlayed.length > 0 &&
-    videoPlayed?.map((recently_played) => (
+    currentUser?.video_played?.length > 0 &&
+    currentUser?.video_played?.map((recently_played) => (
       <VCard
         key={recently_played?.data?.id}
         flag={false}
@@ -192,7 +182,7 @@ const Home = () => {
 
   return (
     <div id="home" className="home">
-      <div className="h-main-menu">{memoizedVideoCard}</div>
+      <div className="h-main-menu">{memoizedVideoCard ? memoizedVideoCard : ''}</div>
 
       <div className="h-sections">
         <span className="top10">
@@ -227,7 +217,7 @@ const Home = () => {
             {memoizedRecentlyPlayedCarousel}
           </span>
         )}
-        {currentProfileData?.mylist && currentProfileData?.mylist?.length > 0 && (
+        {currentUser?.mylist && currentUser?.mylist?.length > 0 && (
           <span className="mylist">
             <label className="h-label">
               My List

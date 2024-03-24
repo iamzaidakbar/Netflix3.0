@@ -18,6 +18,15 @@ const mockData = [
     id: 4,
     name: "Shimmer 4",
   },
+  {
+    id: 5,
+    name: "Shimmer 5",
+  },
+  {
+    id: 6,
+    name: "Shimmer 6",
+  },
+ 
 ];
 
 const ShimmerMap = () => {

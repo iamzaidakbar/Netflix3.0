@@ -1,7 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import useGenre from "../../Utils/API/useGenre";
 import useMuteToggle from "../../Utils/API/useMuteToggle";
-import useMyList from "../../Utils/API/useMyList";
 import useNotifications from "../../Utils/API/useNotifications";
 import logo from "../../assets/logo/netflix-card-logo.png";
 import usePageNavigation from "../../Utils/API/usePageNavigation";
@@ -11,35 +10,36 @@ import { useState, useMemo, useEffect, useCallback } from "react";
 import { TMDB_IMG_URL, VIDEO_URL } from "../../Utils/constants";
 import useUserProfile from "../../Utils/API/useUserData";
 import useVideoPlayed from "../../Utils/API/useVideoPlayed";
-import Spinner from "./spinner";
 
 const FrameMotionVideo = ({ data, trailers }) => {
   const isMyListRoute = location.pathname === "/mylist";
   const { mute, handleMuteToggle } = useMuteToggle(false);
-  const [itemInList, setItemInList] = useState(false);
   const genres = useGenre(data?.genre_ids);
   const dispatch = useDispatch();
   const navigatePage = usePageNavigation();
-  const { allProfilesData } = useUserProfile();
-  const currentActiveUser = allProfilesData.find(profile => profile.isCurrentUser)
-  const { addToMyList, removeFromMyList } = useMyList();
-  const { addNotification } = useNotifications(currentActiveUser?.profileKey);
-  const { updateVideoPlayed } = useVideoPlayed();
+  const { currentUser, updateProfile } = useUserProfile();
+  const { addNotification } = useNotifications(currentUser?.profileKey);
+  const { updateVideoPlayed } = useVideoPlayed(currentUser?.profileKey);
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState("");
   const date = new Date().toISOString();
 
+  function updateUserProfile(data, flag) {
+    if (!currentUser) {
+      console.log('currentUser not found!')
+      return
+    }
 
-  // Use useCallback to memoize the function and prevent unnecessary re-renders
-  const isItemInList = useCallback(() => {
-    return currentActiveUser?.mylist?.some((item) => item?.id === data?.id);
-  }, [currentActiveUser?.mylist, data?.id]);
-
-
-  useEffect(() => {
-    const isInList = isItemInList();
-    setItemInList(isInList);
-  }, [currentActiveUser?.mylist, data?.id, isItemInList]);
+    if (flag === 'add') {
+      const updatedList = [...currentUser?.mylist, data]
+      console.log(updatedList, 'add-updatedList')
+      updateProfile(currentUser?.profileKey, { mylist: updatedList })
+    } else {
+      const updatedList = currentUser?.mylist.filter(movie => movie.id !== data)
+      console.log(updatedList, 'remove-updatedList')
+      updateProfile(currentUser?.profileKey, { mylist: updatedList })
+    }
+  }
 
   function handleAddNotification(message) {
     const title = data?.original_title
@@ -118,31 +118,21 @@ const FrameMotionVideo = ({ data, trailers }) => {
             </span>
             {isMyListRoute && (
               <span
-                onClick={() => {
-                  removeFromMyList(data?.id, currentActiveUser?.profileKey);
-                  handleAddNotification("removed from the list.");
-                }}
+                onClick={() => { updateUserProfile(data?.id, 'remove') }}
                 className="material-icons-outlined"
               >
                 cancel
               </span>
             )}
 
-            {!currentActiveUser?.profileKey ? (
-              <Spinner />
-            ) : itemInList ? (
-              <span className="material-icons-outlined">check_circle</span>
-            ) : (
+            {!currentUser?.mylist?.some((item) => item?.id === data?.id) ? (
               <span
-                onClick={() => {
-                  addToMyList(data, currentActiveUser?.profileKey);
-                  handleAddNotification("added to list");
-                }}
+                onClick={() => { updateUserProfile(data, 'add') }}
                 className="material-icons-outlined"
               >
                 add_circle
               </span>
-            )}
+            ) : <span className="material-icons-outlined">check_circle</span>}
 
             <button onClick={handleNavigation} className="more-info">
               <span className="material-icons-outlined">info</span>
